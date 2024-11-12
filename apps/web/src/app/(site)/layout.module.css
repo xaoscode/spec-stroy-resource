@@ -1,0 +1,47 @@
+.wrapper {
+	display: grid;
+	grid-template:
+		". header ." auto
+		". body ." 1fr
+		". call . " auto
+		". footer ." auto
+		/ auto minmax(320px, 1530px) auto;
+	min-height: 100vh;
+	background-color: var(--primary-brand-ligth);
+}
+.header {
+	grid-area: header;
+
+	background: var(--primary-brand-dark);
+}
+.body {
+	grid-area: body;
+	background: var(--primary-brand-dark);
+}
+.call {
+	grid-area: call;
+	background: var(--primary-brand-ligth);
+}
+.footer {
+	grid-area: footer;
+	background: var(--primary-brand-dark);
+}
+
+@media (width <= 765px) {
+	.wrapper {
+		grid-template-columns: minmax(320px, 1fr);
+		grid-template-areas:
+			"header"
+			"body"
+			"call"
+			"footer";
+	}
+
+	.sidebar {
+		display: none;
+	}
+
+	.header {
+		display: block;
+	}
+}

@@ -1,0 +1,10 @@
+.block {
+	display: flex;
+	backdrop-filter: blur(10px) saturate(150%);
+	padding: 10px;
+	-webkit-backdrop-filter: blur(10px) saturate(150%);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 20px;
+	min-width: 300px;
+	min-height: 500px;
+}

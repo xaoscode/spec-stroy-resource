@@ -1,0 +1,160 @@
+.component {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	align-items: center;
+}
+
+.image__block {
+	display: flex;
+	flex-direction: column;
+	min-height: 100px;
+	align-items: center;
+}
+
+.header {
+	display: flex;
+	min-height: 150px; /* Минимальная высота */
+	width: 100%;
+	align-items: center;
+}
+
+.header__text {
+	font-weight: 600;
+	font-size: 24px;
+	flex-wrap: wrap;
+	text-align: center;
+	color: var(--primary-brand-ligth);
+}
+
+.image {
+	min-width: 100px;
+	min-height: 100px;
+}
+
+.text__block {
+	padding: 15px;
+}
+
+.description {
+	text-align: justify;
+	font-size: 16px;
+	line-height: 1.6;
+	color: var(--primary-brand-ligth);
+}
+
+/* Полупрозрачное свечение */
+.text__block::before {
+	content: "";
+	position: absolute;
+	width: 150px;
+	height: 150px;
+	background: rgba(255, 255, 255, 0.1);
+	filter: blur(85px);
+	border-radius: 50%;
+	pointer-events: none;
+}
+
+/* Адаптация под большие экраны */
+@media (max-width: 1440px) {
+	.header__text {
+		font-size: 22px;
+	}
+	.description {
+		font-size: 18px;
+		line-height: 1.6;
+	}
+}
+
+/* Адаптация для стандартных ноутбуков и небольших настольных экранов */
+@media (max-width: 1280px) {
+	.header__text {
+		font-size: 20px;
+	}
+	.text__block {
+		padding: 20px;
+	}
+}
+
+/* Адаптация для планшетов и маленьких ноутбуков */
+@media (max-width: 1024px) {
+	.header__text {
+		font-size: 18px;
+	}
+	.image {
+		display: none;
+	}
+	.description {
+		font-size: 15px;
+		line-height: 1.5;
+	}
+}
+
+/* Адаптация для планшетов в портретной ориентации */
+@media (max-width: 768px) {
+	.header__text {
+		font-size: 16px;
+	}
+	.image {
+		display: none;
+	}
+	.description {
+		font-size: 14px;
+		line-height: 1.4;
+	}
+}
+
+/* Маленькие планшеты и большие мобильные устройства */
+@media (max-width: 600px) {
+	.header__text {
+		font-size: 15px;
+		font-weight: 400;
+	}
+	.image {
+		width: 120px;
+		height: 120px;
+	}
+	.description {
+		font-size: 13px;
+		line-height: 1.4;
+	}
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 425px) {
+	.header__text {
+		font-size: 14px;
+	}
+	.text__block {
+		padding: 10px;
+	}
+	.description {
+		font-size: 12px;
+		line-height: 1.3;
+	}
+}
+
+/* Стандартные мобильные устройства (ширина до 375px) */
+@media (max-width: 375px) {
+	.header__text {
+		font-size: 13px;
+	}
+	.description {
+		font-size: 11px;
+		line-height: 1.2;
+	}
+}
+
+/* Маленькие мобильные устройства (ширина до 320px) */
+@media (max-width: 320px) {
+	.header__text {
+		font-size: 12px;
+	}
+	.text__block {
+		padding: 5px;
+	}
+	.description {
+		font-size: 10px;
+		line-height: 1.1;
+	}
+}
