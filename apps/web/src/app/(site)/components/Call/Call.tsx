@@ -5,13 +5,16 @@ import styles from "./Call.module.css"
 import { useState } from "react";
 import { Input, PhoneInp } from "@/components/inputs/PhoneInput/PhoneInput";
 import { Button } from "@/components/Button/Button";
-import Image from "next/image"
+import OrnIcon from "@/../public/orn.svg"
+import Orn2Icon from "@/../public/orn2.svg"
+
 export default function Call({ className, ...props }: CallProps) {
     const [phone, setPhone] = useState<string>()
     console.log(typeof (phone))
     return (
         <div className={ cn(className, styles.call) } { ...props }>
-            <Image src={ "/or.svg" } alt={ "or" } width={ 260 } height={ 348 }></Image>
+            <OrnIcon />
+
             <form className={ styles.form }>
 
                 <h1 className={ styles.header__text }>
@@ -32,7 +35,7 @@ export default function Call({ className, ...props }: CallProps) {
                 <Button size="lg">Оставить</Button>
 
             </form>
-            <Image src={ "/or2.svg" } alt={ "or" } width={ 260 } height={ 348 }></Image>
+            <Orn2Icon />
 
         </div>
     )

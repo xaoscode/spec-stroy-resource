@@ -2,12 +2,22 @@
 	display: grid;
 	grid-template:
 		". header ." auto
-		". body ." 1fr
-		". call . " auto
+		". body ." auto
 		". footer ." auto
 		/ auto minmax(320px, 1530px) auto;
 	min-height: 100vh;
 	background-color: var(--primary-brand-ligth);
+	margin-right: 0;
+}
+.scrollbar__placeholder {
+	position: fixed;
+	top: 0;
+	right: 0;
+	height: 100vh;
+	width: 8px; /* Изначально ширина 0 */
+	background: white; /* Цвет совпадает с фоном */
+	z-index: 1000; /* Убедитесь, что контейнер поверх содержимого */
+	transition: width 0.2s ease; /* Плавное появление контейнера */
 }
 .header {
 	grid-area: header;
@@ -18,6 +28,7 @@
 	grid-area: body;
 	background: var(--primary-brand-dark);
 }
+
 .call {
 	grid-area: call;
 	background: var(--primary-brand-ligth);
@@ -33,7 +44,6 @@
 		grid-template-areas:
 			"header"
 			"body"
-			"call"
 			"footer";
 	}
 

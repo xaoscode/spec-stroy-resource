@@ -1,32 +1,15 @@
 .page {
 	display: flex;
 	flex-direction: column;
-	height: 100%;
-	width: 100%;
-	position: relative;
+
 	overflow: hidden;
 }
 
 .main {
 	display: flex;
 	flex-direction: column;
-	height: 130vh;
-	position: relative;
-}
-.main::before {
-	content: "";
-	position: absolute;
-	top: -200px;
-	left: -200px;
-	right: 0;
-	bottom: 0;
-
-	/* Фоновое изображение */
 	background-image: url("http://localhost:3002/images/maini.webp");
 	background-size: cover;
-
-	/* Полупрозрачность */
-	opacity: 0.2;
 }
 
 .info {
@@ -37,8 +20,13 @@
 	width: 100%;
 }
 
-.services {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
+.link__container {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--primary-brand-ligth);
+	border-radius: 12px;
+	margin: 5px;
+	gap: 10px;
 }

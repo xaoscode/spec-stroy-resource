@@ -1,0 +1,104 @@
+.content {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	z-index: 50;
+	display: grid;
+	width: 100%;
+	max-width: 32rem; /* Примерное значение для max-w-lg */
+	transform: translate(-50%, -50%);
+	background: var(--primary-brand-dark);
+	border-radius: 35px;
+	padding: 50px;
+	margin: 0 30px 0;
+	box-shadow:
+		inset 0 0 0 5px #2e3133,
+		inset 0 0 0 10px #ebe2d1;
+	transition-duration: 200ms;
+	margin-right: 17px;
+}
+.overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 50;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+.overlay[data-state="open"] {
+	animation: fadeIn 200ms ease-in;
+}
+
+.overlay[data-state="closed"] {
+	animation: fadeOut 200ms ease-out;
+}
+
+.input__group {
+	position: relative;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 16px;
+	border: none;
+}
+.label__text {
+	display: flex;
+	color: var(--primary-brand-ligth);
+}
+.title {
+	color: var(--primary-brand-ligth);
+	margin-bottom: 30px;
+}
+.description {
+	color: var(--primary-brand-ligth);
+}
+
+.content[data-state="open"] {
+	animation: zoomIn 200ms ease-in-out;
+}
+
+.content[data-state="closed"] {
+	animation: zoomOut 200ms ease-in-out;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes zoomIn {
+	from {
+		transform: scale(0.5) translate(-50%, -48%);
+		opacity: 0; /* Добавляем плавное появление */
+	}
+	to {
+		transform: scale(1) translate(-50%, -50%);
+		opacity: 1;
+	}
+}
+
+@keyframes zoomOut {
+	from {
+		transform: scale(1) translate(-50%, -50%);
+		opacity: 1;
+	}
+	to {
+		transform: scale(0.5) translate(-50%, -48%);
+		opacity: 0; /* Плавное исчезновение */
+	}
+}
+
+@media (min-width: 640px) {
+	.content {
+	}
+}

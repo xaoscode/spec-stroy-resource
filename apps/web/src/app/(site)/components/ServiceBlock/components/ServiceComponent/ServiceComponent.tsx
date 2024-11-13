@@ -10,7 +10,7 @@ export default function ServiceComponent({ image, header, className, ...props }:
                     <h3 className={ styles.header__text }>{ header }</h3>
                 </div>
 
-                <Image className={ styles.image } src={ image } alt={ "image" } width={ 350 } height={ 350 }></Image>
+                <Image className={ styles.image } src={ image } title="" alt={ "image" } width={ 350 } height={ 350 }></Image>
             </div>
             <div className={ styles.text__block }>
                 <p className={ styles.description }>
