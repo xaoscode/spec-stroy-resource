@@ -1,32 +1,52 @@
 .page {
-	display: flex;
-	flex-direction: column;
-
-	overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .main {
-	display: flex;
-	flex-direction: column;
-	background-image: url("http://localhost:3002/images/maini.webp");
-	background-size: cover;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-image: url("http://localhost:3002/images/maini.webp");
+  background-size: cover;
 }
 
 .info {
-	display: flex;
-	flex-wrap: wrap;
-	padding: 20px;
-	gap: 20px;
-	width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 20px;
+  gap: 20px;
+  width: 100%;
+  flex-wrap: nowrap;
 }
 
 .link__container {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	background-color: var(--primary-brand-ligth);
-	border-radius: 12px;
-	margin: 5px;
-	gap: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary-brand-ligth);
+  border-radius: 12px;
+  margin: 5px;
+  gap: 10px;
+}
+
+.header {
+  color: var(--primary-brand-ligth);
+  font-weight: 700;
+  font-size: 40px;
+  text-align: center;
+  letter-spacing: 12px;
+}
+.header__main {
+  color: var(--primary-brand-ligth);
+  text-align: center;
+  font-size: 40px;
+}
+@media (max-width: 765px) {
+  .info {
+    justify-content: center;
+  }
 }

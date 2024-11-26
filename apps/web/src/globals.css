@@ -1,9 +1,11 @@
 :root {
 	--font: "Roboto Flex", sans-serif;
-	--primary-brand-ligth: #ebe2d1;
+	--primary-brand-ligth: white;
 	--primary-rgb: 216, 212, 205;
-	--primary-brand-dark: linear-gradient(to left, #2e3133, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-	--primary-dark-rgb: 46, 49, 51;
+	--primary-brand-dark: linear-gradient(to left, #293238, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	--primary-dark-rgb: #2e3133;
+	/* --primary-brand-ligth: #ebe2d1; */
+
 }
 
 body {

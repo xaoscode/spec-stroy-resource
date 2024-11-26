@@ -1,0 +1,32 @@
+services:
+  postgres:
+    container_name: postgres-nestjs2
+    image: postgres
+    restart: always
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/postgres
+    env_file:
+      - docker.env
+    networks:
+      - spec
+  pgadmin:
+    container_name: pgadmin-nestjs2
+    image: dpage/pgadmin4
+    depends_on:
+      - postgres
+    ports:
+      - "8081:80"
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    env_file:
+      - docker.env
+    networks:
+      - spec
+networks:
+  spec:
+    driver: bridge
+volumes:
+  postgres:
+  pgadmin:
