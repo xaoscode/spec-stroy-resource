@@ -1,57 +1,34 @@
 .wrapper {
-	display: grid;
-	grid-template:
-		". header ." auto
-		". body ." auto
-		". footer ." auto
-		/ auto minmax(320px, 1530px) auto;
-	min-height: 100vh;
-	background-color: var(--primary-brand-ligth);
-	margin-right: 0;
+  display: grid;
+  grid-template:
+    "header" auto
+    "body" auto
+    "footer" auto
+    / auto;
+  width: 100%;
 }
-.scrollbar__placeholder {
-	position: fixed;
-	top: 0;
-	right: 0;
-	height: 100vh;
-	width: 8px; /* Изначально ширина 0 */
-	background: white; /* Цвет совпадает с фоном */
-	z-index: 1000; /* Убедитесь, что контейнер поверх содержимого */
-	transition: width 0.2s ease; /* Плавное появление контейнера */
-}
-.header {
-	grid-area: header;
 
-	background: var(--primary-brand-dark);
+.header {
+  grid-area: header;
+  justify-content: center;
 }
 .body {
-	grid-area: body;
-	background: var(--primary-brand-dark);
+  grid-area: body;
+  width: 100%;
+  justify-content: center;
 }
 
-.call {
-	grid-area: call;
-	background: var(--primary-brand-ligth);
-}
 .footer {
-	grid-area: footer;
-	background: var(--primary-brand-dark);
+  grid-area: footer;
+  background: var(--primary-brand-dark);
 }
 
 @media (width <= 765px) {
-	.wrapper {
-		grid-template-columns: minmax(320px, 1fr);
-		grid-template-areas:
-			"header"
-			"body"
-			"footer";
-	}
-
-	.sidebar {
-		display: none;
-	}
-
-	.header {
-		display: block;
-	}
+  .wrapper {
+    grid-template-columns: minmax(320px, 1fr);
+    grid-template-areas:
+      "header"
+      "body"
+      "footer";
+  }
 }

@@ -8,6 +8,7 @@ export class CommunicationController {
 
   @Post('message')
   async newMessage(@Body() dto: MessageDto) {
+    console.log('message');
     this.communicationService.newMessage(dto);
   }
 }

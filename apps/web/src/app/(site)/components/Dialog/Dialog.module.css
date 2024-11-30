@@ -1,120 +1,116 @@
 .content {
-	position: fixed;
-	left: 50%;
-	top: 50%;
-	z-index: 50;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	width: 100%;
-	max-width: 32rem; /* Примерное значение для max-w-lg */
-	transform: translate(-50%, -100%);
-	background: var(--primary-brand-dark);
-	border-radius: 20px;
-	padding: 50px;
-	margin: 0 30px 0;
-	box-shadow:
-		0 0 0 5px #2e3133,
-		inset 0 0 0 5px #ebe2d1;
-
-	transition-duration: 200ms;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 32rem; /* Примерное значение для max-w-lg */
+  transform: translate(-50%, -100%);
+  background: var(--primary-brand-dark);
+  border-radius: 20px;
+  padding: 50px;
+  margin: 0 30px 0;
+  transition-duration: 200ms;
 }
 .x {
-	position: absolute;
-	right: 10px;
-	top: 10px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
 }
 .x__icon {
-	fill: var(--primary-brand-ligth);
+  fill: var(--primary-brand-ligth);
 }
 .overlay {
-	position: fixed;
-	inset: 0;
-	z-index: 50;
-	background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 .overlay[data-state="open"] {
-	animation: fadeIn 200ms ease-in;
+  animation: fadeIn 200ms ease-in;
 }
 
 .overlay[data-state="closed"] {
-	animation: fadeOut 200ms ease-out;
+  animation: fadeOut 200ms ease-out;
 }
 
 .input__group {
-	position: relative;
-	align-items: center;
-	gap: 8px;
-	margin-bottom: 16px;
-	border: none;
+  position: relative;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  border: none;
 }
 .label__text {
-	display: flex;
-	color: var(--primary-brand-ligth);
+  display: flex;
+  color: var(--primary-brand-ligth);
 }
 .title {
-	color: var(--primary-brand-ligth);
-	margin-bottom: 10px;
-	font-weight: 700;
-	text-align: center;
+  color: var(--primary-brand-ligth);
+  margin-bottom: 10px;
+  font-weight: 700;
+  text-align: center;
 }
 .description {
-	color: var(--primary-brand-ligth);
-	text-align: center;
+  color: var(--primary-brand-ligth);
+  text-align: center;
 }
 
 .form {
-	display: flex;
-	flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-	padding-top: 10px;
-	justify-content: center;
-	align-items: center;
+  padding-top: 10px;
+  justify-content: center;
+  align-items: center;
 }
 .content[data-state="open"] {
-	animation: zoomIn 200ms ease-in-out;
+  animation: zoomIn 200ms ease-in-out;
 }
 
 .content[data-state="closed"] {
-	animation: zoomOut 200ms ease-in-out;
+  animation: zoomOut 200ms ease-in-out;
 }
 
 @keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fadeOut {
-	from {
-		opacity: 1;
-	}
-	to {
-		opacity: 0;
-	}
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 @keyframes zoomIn {
-	from {
-		transform: scale(1) translate(-50%, -150%);
-		opacity: 0; /* Добавляем плавное появление */
-	}
-	to {
-		transform: scale(1) translate(-50%, -100%);
-		opacity: 1;
-	}
+  from {
+    transform: scale(1) translate(-50%, -150%);
+    opacity: 0; /* Добавляем плавное появление */
+  }
+  to {
+    transform: scale(1) translate(-50%, -100%);
+    opacity: 1;
+  }
 }
 
 @keyframes zoomOut {
-	from {
-		transform: scale(1) translate(-50%, -100%);
-		opacity: 1;
-	}
-	to {
-		transform: scale(1) translate(-50%, -150%);
-		opacity: 0; /* Плавное исчезновение */
-	}
+  from {
+    transform: scale(1) translate(-50%, -100%);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1) translate(-50%, -150%);
+    opacity: 0; /* Плавное исчезновение */
+  }
 }

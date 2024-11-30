@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Roboto_Flex } from "next/font/google"
+import { Roboto_Flex } from "next/font/google";
 import "@/globals.css";
-import styles from "./layout.module.css"
+import styles from "./layout.module.css";
 import Footer from "./components/Footer/Footer";
-import cn from "classnames"
+import cn from "classnames";
+import Header from "./components/Header/Header";
 const roboto = Roboto_Flex({
-  subsets: ['latin'],
-  display: 'swap',
-})
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Строительная компания",
@@ -20,17 +21,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" >
-
-      <body className={ cn(roboto.className, styles.body__scroll) } >
-        <div className={ styles.wrapper }>
-          <div className={ styles.body }>
-            { children }
-          </div>
-          <Footer className={ styles.footer } />
+    <html lang="ru">
+      <body className={cn(roboto.className, styles.body__scroll)}>
+        <div className={styles.wrapper}>
+          <Header className={styles.header}></Header>
+          <div className={styles.body}>{children}</div>
+          <Footer className={styles.footer} />
         </div>
       </body>
-
-    </html >
+    </html>
   );
 }

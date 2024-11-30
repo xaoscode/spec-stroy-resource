@@ -1,49 +1,58 @@
 import { HeaderProps } from "./Header.props";
-import cn from "classnames"
-import styles from "./Header.module.css"
+import cn from "classnames";
+import styles from "./Header.module.css";
 import { Button } from "@/components/Button/Button";
-import Image from "next/image"
+import Image from "next/image";
 import { Dialog } from "../Dialog/Dialog";
 import Link from "next/link";
-import PhoneIcon from '@/../public/phone.svg'
-import MailIcon from '@/../public/mail.svg'
-
+import Map from "./components/Map/Map";
+import { ContactData } from "./components/ContactData/ContactData";
 export default function Header({ className, ...props }: HeaderProps) {
   return (
     <div className={cn(className, styles.header)} {...props}>
-      <Dialog text="Рассчитать цену" className={styles.dialog}></Dialog>
+      <div className={styles.main__header}>
+        <Dialog text="Рассчитать цену" className={styles.dialog}></Dialog>
 
-      <div className={styles.logo__wrapper}>
-        <Link href={'/'}>
-          <Image className={styles.logo} src={"/logo.svg"} alt={"Логотип компании Спец Строй Ресурс"} width={100} height={100} ></Image>
-        </Link>
-      </div>
+        <div className={styles.logo__wrapper}>
+          <Link href={"/"}>
+            <Image
+              className={styles.logo}
+              src={"/logo.svg"}
+              alt={"Логотип компании Спец Строй Ресурс"}
+              width={100}
+              height={100}
+            ></Image>
+          </Link>
+        </div>
 
-
-      <div className={styles.links}>
-        <Button variant="link" size="sm" >О компании</Button>
-        <Button size="sm" variant="link">Выполненные проекты</Button>
-        <Button size="sm" variant="link">Допуски</Button>
-        <Button size="sm" variant="link">Сотрудники</Button>
-      </div>
-
-      <div className={styles.commun}>
-        <Link href="tel:89966831963" passHref >
+        <div className={styles.links}>
           <Button variant="link" size="sm">
-            <PhoneIcon />
-            <span>8 996 683-19-63</span>
+            О компании
           </Button>
-        </Link>
-        <span>/</span>
-        <Link href="mailto:horny.bad.boy1337@gmail.com" passHref >
-          <Button variant="link" size="sm">
-            <MailIcon />
-            <span>horny.bad.boy1337@gmail.com</span>
+          <Button size="sm" variant="link">
+            Выполненные проекты
           </Button>
-        </Link>
+          <Button size="sm" variant="link">
+            Допуски
+          </Button>
+          <Button size="sm" variant="link">
+            Сотрудники
+          </Button>
+        </div>
+        <ContactData className={styles.commun}></ContactData>
+        <Dialog
+          text="Заказать обратный звонок"
+          className={styles.instr}
+        ></Dialog>
       </div>
-
-      <Dialog text="Заказать обратный звонок" className={styles.instr}></Dialog>
+      <div className={styles.home__header}>
+        <h1 className={styles.header__text}>
+          Подготовим для вас проектную документацию для строительства,
+          гарантируя её соответствие требованиям экспертизы и успешное получение
+          разрешения на строительство.
+        </h1>
+        <Map></Map>
+      </div>
     </div>
-  )
+  );
 }

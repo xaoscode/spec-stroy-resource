@@ -1,60 +1,91 @@
 .header {
-	display: grid;
-	grid-template: 
-	"logo commun ." auto
-	"dialog links instr" auto
-	 / auto auto auto;
-	backdrop-filter: blur(10px) saturate(150%);
-	padding: 20px;
-	-webkit-backdrop-filter: blur(10px) saturate(150%);
-	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-	gap: 20px;
-	background-color: rgba(0, 0, 0, 0.1); 
-	width: 100%;
-
+  display: grid;
+  grid-template:
+    "main" auto
+    "home" auto
+    / var(--main-content-width);
+  padding: 20px 10px 20px;
+  background: var(--primary-brand-dark);
+  gap: 40px;
 }
-
+.main__header {
+  grid-area: main;
+  display: grid;
+  grid-template:
+    "logo commun ." auto
+    "dialog links instr" auto
+    / auto auto auto;
+  gap: 20px;
+}
+.home__header {
+  grid-area: home;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+.header__text {
+  text-align: center;
+  color: white;
+  max-width: 1200px;
+  font-weight: 500;
+}
 .links {
-	grid-area: links;
-    display: flex;
-    width: 100%;
-	justify-content: space-between;
+  grid-area: links;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .commun {
-	grid-area: commun;
-	display: flex;
-	align-items: center;
-	width: 100%;
-	gap: 10px;
-	color: white;
-	font-size: 32px;
+  grid-area: commun;
 }
-.logo__wrapper{
-	width: 100%;
-	grid-area: logo;
-	
+.logo__wrapper {
+  width: 100%;
+  grid-area: logo;
 }
 .logo {
-
-	width: 300px;
+  width: 300px;
 }
 .dialog {
-	grid-area: dialog;
-	width: 100%;
-
+  grid-area: dialog;
+  width: 100%;
 }
 .instr {
-	grid-area: instr;
-	width: 100%;
+  grid-area: instr;
+  width: 100%;
+}
+.map {
+  display: none;
 }
 
 @media (max-width: 765px) {
-	.header {
-		grid-template-columns: auto;
-		grid-template-areas: "logo" "commun" "links";
-	}
-	.links {
-		display: none;
-	}
+  .header {
+    justify-items: center;
+  }
+  .main__header {
+    grid-template-columns: auto;
+    grid-template-areas: "logo" "commun" "links";
+  }
+  .links {
+    display: none;
+  }
+  .instr {
+    display: none;
+  }
+  .dialog {
+    display: none;
+  }
+}
+@media (max-width: 1200px) {
+  .main__header {
+    grid-template-columns: auto;
+    grid-template-areas:
+      "logo"
+      "commun"
+      "links"
+      "dialog"
+      "instr";
+  }
 }

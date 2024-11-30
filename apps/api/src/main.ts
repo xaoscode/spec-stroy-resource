@@ -7,6 +7,11 @@ import { join } from 'path';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use('/images', express.static(join(process.cwd(), 'uploads/images')));
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    methods: 'GET, POST, PUT, UPDATE, DELET, PATCH, HEAD',
+    credentials: true,
+  });
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3002;
