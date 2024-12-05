@@ -27,16 +27,16 @@ export default function Header({ className, ...props }: HeaderProps) {
 
         <div className={styles.links}>
           <Button variant="link" size="sm">
-            О компании
+            <Link href={"/"}>О компании</Link>
           </Button>
           <Button size="sm" variant="link">
-            Выполненные проекты
+            <Link href={"/"}>Выполненные проекты</Link>
           </Button>
           <Button size="sm" variant="link">
-            Допуски
+            <Link href={"/"}>Допуски</Link>
           </Button>
           <Button size="sm" variant="link">
-            Сотрудники
+            <Link href={"/"}>Сотрудники</Link>
           </Button>
         </div>
         <ContactData className={styles.commun}></ContactData>
@@ -44,14 +44,6 @@ export default function Header({ className, ...props }: HeaderProps) {
           text="Заказать обратный звонок"
           className={styles.instr}
         ></Dialog>
-      </div>
-      <div className={styles.home__header}>
-        <h1 className={styles.header__text}>
-          Подготовим для вас проектную документацию для строительства,
-          гарантируя её соответствие требованиям экспертизы и успешное получение
-          разрешения на строительство.
-        </h1>
-        <Map></Map>
       </div>
     </div>
   );

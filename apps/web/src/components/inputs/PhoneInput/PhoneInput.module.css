@@ -6,7 +6,9 @@
   font-size: 24px;
   transition: 0.6s ease;
   outline: none;
-  font-weight: 500;
+  width: 100%;
+  min-width: 50px;
+  font-weight: 400;
   font-family: var(--font);
   text-align: left;
   color: black;

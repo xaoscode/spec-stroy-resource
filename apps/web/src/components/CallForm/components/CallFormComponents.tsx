@@ -116,7 +116,7 @@ export const FormLabel = ({
   return (
     <label
       htmlFor={formItemId}
-      className={cn(error && styles.error, className)}
+      className={cn(error && styles.error, className, styles.label)}
       {...props}
     >
       {children}

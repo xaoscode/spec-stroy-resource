@@ -18,7 +18,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-} from "./components/CallFromComponents";
+} from "./components/CallFormComponents";
 import { newMessage } from "@/app/(site)/api/Communication";
 
 const formSchema = z.object({
@@ -49,60 +49,63 @@ export default function CallForm({ className, ...props }: CallFormProps) {
         className={cn(styles.form, className)}
         {...props}
       >
-        <h2 className={styles.header__text}>
+        <div className={styles.header__text}>
           Воспользуйтесь консультацией от специалиста
-        </h2>
-        <FormField
-          name={"name"}
-          render={function ({
-            field,
-          }: {
-            field: ControllerRenderProps<FieldValues, string>;
-          }): ReactElement {
-            return (
-              <FormItem>
-                <FormLabel>Имя</FormLabel>
-                <FormControl>
-                  <Input {...field}></Input>
-                </FormControl>
-              </FormItem>
-            );
-          }}
-        />
-        <FormField
-          name={"phone"}
-          render={function ({
-            field,
-          }: {
-            field: ControllerRenderProps<FieldValues, string>;
-          }): ReactElement {
-            return (
-              <FormItem>
-                <FormLabel>Номер</FormLabel>
-                <FormControl>
-                  <PhoneInp {...field}></PhoneInp>
-                </FormControl>
-              </FormItem>
-            );
-          }}
-        />
-        <FormField
-          name={"email"}
-          render={function ({
-            field,
-          }: {
-            field: ControllerRenderProps<FieldValues, string>;
-          }): ReactElement {
-            return (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input {...field}></Input>
-                </FormControl>
-              </FormItem>
-            );
-          }}
-        />
+        </div>
+        <div className={styles.inputs}>
+          <FormField
+            name={"name"}
+            render={function ({
+              field,
+            }: {
+              field: ControllerRenderProps<FieldValues, string>;
+            }): ReactElement {
+              return (
+                <FormItem>
+                  <FormLabel>Имя</FormLabel>
+                  <FormControl>
+                    <Input {...field}></Input>
+                  </FormControl>
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            name={"phone"}
+            render={function ({
+              field,
+            }: {
+              field: ControllerRenderProps<FieldValues, string>;
+            }): ReactElement {
+              return (
+                <FormItem>
+                  <FormLabel>Номер</FormLabel>
+                  <FormControl>
+                    <PhoneInp {...field}></PhoneInp>
+                  </FormControl>
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            name={"email"}
+            render={function ({
+              field,
+            }: {
+              field: ControllerRenderProps<FieldValues, string>;
+            }): ReactElement {
+              return (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input {...field}></Input>
+                  </FormControl>
+                </FormItem>
+              );
+            }}
+          />
+        </div>
+
         <Button type="submit" size="lg">
           Оставить заявку
         </Button>
