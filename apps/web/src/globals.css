@@ -2,15 +2,15 @@
   --font: "Roboto Flex", sans-serif;
   --primary-brand-ligth: white;
   --primary-rgb: 216, 212, 205;
-  --primary-brand-dark: #00abb4;
+  --primary-brand-dark: #00c9d4;
   --subtext-color: #8f8f8f;
   /* #00abb4; */
   /* #04c0c9; */
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   --primary-dark-rgb: #2e3133;
-  /* --primary-brand-ligth: #ebe2d1; */
   --border-line: 1px solid rgba(255, 255, 255);
-  --main-content-width: minmax(320px, 1530px);
+  --max-width: 1530px;
+  --min-width: 320px;
+  --main-content-width: minmax(var(--min-width), var(--max-width));
 }
 * {
   margin: 0;

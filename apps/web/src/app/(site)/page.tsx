@@ -3,17 +3,17 @@ import ServiceBlock from "./components/ServiceBlock/ServiceBlock";
 import styles from "./page.module.css";
 import InfoBlock from "./components/InfoBlock/InfoBlock";
 import { OurProjects } from "./components/OurProjects/OurProjects";
+import { Metadata } from "next";
+import HomeMap from "./components/HomeMap/HomeMap";
+
+export const metadata: Metadata = { title: "Главная" };
 
 export default function Home() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.home__header}>
-        <h1 className={styles.header__text}>
-          Подготовим для вас проектную документацию для строительства,
-          гарантируя её соответствие требованиям экспертизы и успешное получение
-          разрешения на строительство.
-        </h1>
-        <Map></Map>
+        <div className={styles.header__text}>ПРОЕКТ - ОСНОВА НАДЕЖНОСТИ</div>
+        <HomeMap />
       </div>
 
       <InfoBlock className={styles.services}>
@@ -23,12 +23,10 @@ export default function Home() {
       <div className={styles.consult}>
         <Call className={styles.call} />
       </div>
-      <div>
-        <InfoBlock className={styles.projects}>
-          <h2 className={styles.header}>НАШИ ПРОЕКТЫ</h2>
-          <OurProjects />
-        </InfoBlock>
-      </div>
+      <InfoBlock className={styles.projects}>
+        <h2 className={styles.header}>НАШИ ПРОЕКТЫ</h2>
+        <OurProjects />
+      </InfoBlock>
     </div>
   );
 }

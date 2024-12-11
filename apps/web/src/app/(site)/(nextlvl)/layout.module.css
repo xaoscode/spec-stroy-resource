@@ -1,0 +1,25 @@
+.wrapper {
+  display: grid;
+  grid-template:
+    "header" auto
+    "body" auto
+    "footer" auto
+    / auto;
+  width: 100%;
+}
+
+.header {
+  grid-area: header;
+  justify-content: center;
+}
+.body {
+  grid-area: body;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 1530px) {
+  .header {
+    padding: 20px;
+  }
+}

@@ -1,61 +1,42 @@
 .header {
   display: grid;
-  grid-template-areas:
-    "main"
-    "home";
-  grid-template-rows: auto auto;
-  grid-template-columns: var(--main-content-width); /* Полная ширина */
-  padding: 20px 10px;
+  grid-template-areas: "main";
+  grid-template-rows: auto;
+  grid-template-columns: var(--main-content-width);
+  padding: 20px 0 30px;
   background: var(--primary-brand-dark);
-  gap: 40px;
 }
 
 .main__header {
   grid-area: main;
   display: grid;
   grid-template-areas:
-    "logo commun ."
+    "commun commun commun"
     "dialog links instr";
   grid-template-rows: auto auto;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: 1fr 2fr 1fr;
   gap: 20px;
   align-items: center;
-}
-
-.home__header {
-  grid-area: home;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 25px;
-  padding: 0 0 50px;
-}
-
-.header__text {
-  text-align: center;
-  color: white;
-  max-width: 1400px;
-  font-weight: 400;
 }
 
 .links {
   grid-area: links;
   display: flex;
   justify-content: space-between;
+  flex-wrap: nowrap;
 }
 
+.link {
+  color: white;
+  font-size: 1.5rem;
+  text-wrap: nowrap;
+  &:hover {
+    text-decoration: underline;
+  }
+}
 .commun {
   grid-area: commun;
-}
-
-.logo__wrapper {
-  grid-area: logo;
-  max-width: 300px;
-}
-
-.logo {
-  width: 100%;
+  justify-content: center;
 }
 
 .dialog {
@@ -66,17 +47,19 @@
   grid-area: instr;
 }
 
-.map {
-  display: none;
-}
-
-@media (max-width: 1200px) {
+@media (max-width: 1530px) {
   .main__header {
+    padding: 0 20px 0;
+  }
+}
+@media (max-width: 1500px) {
+  .main__header {
+    padding: 0 20px 0;
     grid-template-columns: auto;
     grid-template-areas:
-      " links links"
-      "logo commun"
-      " dialog dialog"
+      "commun commun"
+      "links links"
+      "dialog dialog"
       "instr instr";
   }
 }
@@ -86,10 +69,10 @@
     justify-items: center;
   }
   .main__header {
+    padding: 0 20px 0;
     grid-template-columns: 1fr;
     grid-template-areas:
       "links"
-      "logo"
       "commun"
       "dialog"
       "instr";

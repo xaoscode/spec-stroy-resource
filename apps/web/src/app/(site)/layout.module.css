@@ -1,17 +1,19 @@
 .wrapper {
   display: grid;
-  grid-template:
-    "header" auto
-    "body" auto
-    "footer" auto
-    / auto;
+  grid-template-areas:
+    "header"
+    "body"
+    "footer";
+  grid-template-rows: auto 1fr auto; /* Футер всегда снизу */
   width: 100%;
+  min-height: 100vh; /* Высота всей страницы */
 }
 
 .header {
   grid-area: header;
   justify-content: center;
 }
+
 .body {
   grid-area: body;
   width: 100%;
@@ -21,14 +23,17 @@
 .footer {
   grid-area: footer;
   background: var(--primary-brand-dark);
+  width: 100%;
+  height: 100px;
 }
 
-@media (width <= 765px) {
+@media (max-width: 765px) {
+  /* Уточнён синтаксис для медиа-запросов */
   .wrapper {
-    grid-template-columns: minmax(320px, 1fr);
     grid-template-areas:
       "header"
       "body"
       "footer";
+    grid-template-columns: minmax(320px, 1fr);
   }
 }

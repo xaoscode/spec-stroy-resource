@@ -1,0 +1,17 @@
+.navigation__component {
+  display: grid;
+  grid-template-areas: "breadcrumb" "butt";
+  grid-template-columns: 1fr auto;
+  flex-direction: row;
+  gap: 20px;
+}
+.breadcrumb {
+  grid-area: breadcrumb;
+}
+.list {
+  height: 100%;
+}
+.button {
+  grid-area: butt;
+  text-decoration: underline;
+}

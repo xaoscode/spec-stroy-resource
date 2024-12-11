@@ -1,0 +1,14 @@
+.wrapper {
+	display: grid;
+	grid-template-areas: ". body .";
+	grid-template-columns: 1fr auto 1fr; /* Центральный столбец для body */
+	grid-template-rows: 1fr; /* Выравнивание body по вертикали */
+	height: 100vh;
+}
+
+.body {
+	grid-area: body;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
