@@ -16,7 +16,8 @@
   justify-content: center;
   gap: 25px;
   padding: 0 0 50px;
-  background: var(--primary-brand-dark);
+
+  background-color: rgb(var(--primary-color));
   width: 100%;
 }
 .header__text {
@@ -37,6 +38,8 @@
 }
 .consult {
   grid-area: consult;
+  width: 100%;
+  background: rgb(var(--primary-color));
 }
 .projects {
   grid-area: projects;
@@ -53,6 +56,11 @@
 }
 @media (max-width: 768px) {
   .header__text {
-    font-size: 3rem;
+    font-size: 2rem;
+  }
+}
+@media (max-width: 500px) {
+  .header__text {
+    font-size: 2rem;
   }
 }

@@ -1,56 +1,39 @@
 import { HeaderProps } from "./Header.props";
 import cn from "classnames";
 import styles from "./Header.module.css";
-import { Dialog } from "../Dialog/Dialog";
+import { DialogWin } from "../Dialog/Dialog";
 import Link from "next/link";
 import { ContactData } from "@/components/ContactData/ContactData";
-const links = [
-  {
-    link: "/",
-    name: "О компании",
-  },
-  {
-    link: "/projects",
-    name: "Проекты",
-  },
-  {
-    link: "/services",
-    name: "Услуги",
-  },
-  {
-    link: "/",
-    name: "Допуски",
-  },
-  {
-    link: "/",
-    name: "Сотрудники",
-  },
-];
+import { urls } from "../lib/urls";
+import { DraweMod } from "./components/DrawerMod/DrawerMod";
+
 export default function Header({ className, ...props }: HeaderProps) {
   return (
     <div className={cn(className, styles.header)} {...props}>
       <div className={styles.main__header}>
-        <Dialog
-          variant="outline"
+        <DialogWin
+          variant="default"
           size="lg"
           text="Рассчитать цену"
           className={styles.dialog}
         />
-
         <ul className={styles.links}>
-          {links.map((value, i) => (
+          {urls.map((value, i) => (
             <li key={i}>
-              <Link className={styles.link} href={value.link}>
+              <Link className={styles.link} href={value.url}>
                 {value.name}
               </Link>
             </li>
           ))}
         </ul>
+        <div className={styles.drawer}>
+          <DraweMod />
+        </div>
         <ContactData className={styles.commun}></ContactData>
-        <Dialog
-          variant="outline"
+        <DialogWin
+          variant="default"
           size="lg"
-          text="Заказать обратный звонок"
+          text="Заказать звонок"
           className={styles.instr}
         />
       </div>

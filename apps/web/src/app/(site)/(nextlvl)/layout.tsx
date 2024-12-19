@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import SubHeader from "./components/SubHeader/SubHeader";
 import styles from "./layout.module.css";
+import CallForm from "@/components/CallForm/CallForm";
 
 export const metadata: Metadata = {
   title: "Проекты",
@@ -14,8 +15,13 @@ export default function ProjectLayout({
 }>) {
   return (
     <div className={styles.wrapper}>
-      <SubHeader className={styles.header} />
+      <div className={styles.header}>
+        <SubHeader />
+      </div>
       <div className={styles.body}>{children}</div>
+      <div className={styles.call}>
+        <CallForm />
+      </div>
     </div>
   );
 }

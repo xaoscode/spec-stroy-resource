@@ -8,6 +8,7 @@ export interface ButtonProps
   asChild?: boolean;
   variant?:
     | "default"
+    | "filled"
     | "destructive"
     | "outline"
     | "secondary"

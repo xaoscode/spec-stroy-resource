@@ -18,7 +18,7 @@ export const Button = forwardRef(
     const Comp = asChild ? Slot : "button";
     return (
       <Comp
-        className={cn(styles.button, styles[variant], styles[size], className)}
+        className={cn(className, styles.button, styles[variant], styles[size])}
         ref={ref}
         {...props}
       />

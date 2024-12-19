@@ -1,9 +1,11 @@
 export const breadcrumbTranslations: Record<string, string> = {
   projects: "Проекты",
-  staff: "Сотрудники",
+  contacts: "Контакты",
   services: "Услуги",
   about: "О компании",
-  allowances: "Допуски",
+  dopusk: "Допуски",
+  "stroitelno-tekhnicheskaya-ekspertiza-zhilya":
+    "Строительно-техническая экспертиза жилья",
   "instrumentalno-tekhnicheskoe-obsledovanie":
     "Инструментально техническое обследование",
 };

@@ -4,7 +4,7 @@
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
   &:hover {
-    box-shadow: 0 0 8px rgba(0, 201, 212, 1);
+    box-shadow: 0 0 8px rgba(var(--primary-color));
   }
 }
 .image {

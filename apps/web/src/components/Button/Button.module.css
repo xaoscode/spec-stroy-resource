@@ -14,14 +14,21 @@
 }
 
 .button.default {
-  background-color: var(--primary-brand-ligth);
+  background-color: var(--second-color);
   color: black;
   &:hover {
+    box-shadow: 0 0 1 1px black;
   }
   &:active {
   }
 }
-
+.button.filled {
+  background-color: rgb(var(--primary-color));
+  color: var(--second-color);
+  &:hover {
+    text-decoration: underline;
+  }
+}
 .button.destructive {
   background-color: var(--destructive);
   color: var(--destructive-foreground);
@@ -32,7 +39,9 @@
 }
 
 .button.outline {
-  background-color: var(--primary-brand-ligth);
+  background-color: var(--second-color);
+  box-shadow: 0 0 1 1px black;
+
   &:hover {
     text-decoration: underline;
     box-shadow: 0 0 1 1px black;
@@ -40,8 +49,6 @@
 }
 
 .button.secondary {
-  background-color: var(--secondary);
-  color: var(--secondary-foreground);
 }
 
 .button.secondary:hover {
@@ -54,7 +61,7 @@
 }
 
 .button.link {
-  color: var(--primary-brand-ligth);
+  color: var(--second-color);
   background: none;
 
   &:hover {

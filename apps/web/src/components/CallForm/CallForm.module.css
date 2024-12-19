@@ -3,14 +3,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--primary-brand-dark);
-  padding: 3rem;
-  border: 5px solid white;
+  background-color: rgb(var(--primary-color));
+  padding: 2rem;
 }
 
 .header__text {
-  color: var(--primary-brand-ligth);
-  font-size: 2.5rem;
+  color: var(--second-color);
+  font-size: 2.2rem;
   text-align: center;
   width: 100%;
 }
@@ -20,6 +19,8 @@
   gap: 20px;
   width: 100%;
   justify-content: space-between;
+  color: white;
+  font-size: 1.5rem;
 }
 
 @media (max-width: 768px) {

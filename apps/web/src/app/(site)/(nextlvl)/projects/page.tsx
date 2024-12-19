@@ -1,8 +1,8 @@
-import { Input } from "@/components/inputs/PhoneInput/PhoneInput";
 import styles from "./page.module.css";
-import Image from "next/image";
 import { ProjectItem } from "./components/ProjectItem/ProjectItem";
 import { IProject } from "@repo/interfaces";
+import { Combobox } from "./components/Combobox/Combobox";
+import InputWithIcon from "./components/SearchInput/SearchInput";
 const project: IProject = {
   id: 1,
   name: "Зерносушильный комплекс в Смоленской области",
@@ -11,32 +11,24 @@ const project: IProject = {
   price: 2342423,
   area: 234234,
   images: ["http://localhost:3002/images/maini.webp"],
+  client: "",
+  workStructure: "",
+  sector: "dsafasdfsa",
+  service: "dasfsadfa",
+  term: "",
 };
 
 export default function Projects() {
   return (
-    <div className={styles.projects__wrapper}>
-      <div className={styles.projects__header}>
-        <div className={styles.text__header}>Наши проекты</div>
-        <div className={styles.actions}>
-          <div className={styles.input__group}>
-            <Input
-              id="search"
-              className={styles.input}
-              placeholder="Введите название объкта"
-            ></Input>
-            <label className={styles.label} htmlFor={"search"}>
-              <Image
-                src={"/search.svg"}
-                alt={"иконка поиска"}
-                width={30}
-                height={30}
-              />
-            </label>
-          </div>
+    <div className="flex flex-col gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2">
+        <div className="text-2xl font-bold text-primary">Наши проекты</div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <InputWithIcon placeholder={"Поиск проекта"} className="w-[100%]" />
+          <Combobox />
         </div>
       </div>
-      <div className={styles.body}>
+      <div className={"grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"}>
         <ProjectItem project={project}></ProjectItem>
         <ProjectItem project={project}></ProjectItem>
         <ProjectItem project={project}></ProjectItem>

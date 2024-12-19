@@ -4,7 +4,7 @@
     "header"
     "body"
     "footer";
-  grid-template-rows: auto 1fr auto; /* Футер всегда снизу */
+  grid-template-rows: auto 1fr auto;
   width: 100%;
   min-height: 100vh; /* Высота всей страницы */
 }
@@ -12,6 +12,7 @@
 .header {
   grid-area: header;
   justify-content: center;
+  background: rgb(var(--primary-color));
 }
 
 .body {
@@ -22,13 +23,11 @@
 
 .footer {
   grid-area: footer;
-  background: var(--primary-brand-dark);
   width: 100%;
   height: 100px;
 }
 
 @media (max-width: 765px) {
-  /* Уточнён синтаксис для медиа-запросов */
   .wrapper {
     grid-template-areas:
       "header"

@@ -2,24 +2,44 @@
   display: grid;
   grid-template:
     "header" auto
-    "body" auto
-    "footer" auto
+    "body" 1fr
+    "call" auto
     / auto;
-  width: 100%;
 }
 
 .header {
   grid-area: header;
-  justify-content: center;
-}
-.body {
-  grid-area: body;
   display: flex;
   justify-content: center;
+  background: rgb(var(--primary-color));
+}
+
+.body {
+  grid-area: body;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  max-width: var(--max-width);
+  margin: 50px auto;
+}
+
+.call {
+  grid-area: call;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(var(--primary-color));
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 @media (max-width: 1530px) {
   .header {
     padding: 20px;
+  }
+}
+@media (max-width: 768px) {
+  .body {
+    padding: 0 10px 0;
   }
 }

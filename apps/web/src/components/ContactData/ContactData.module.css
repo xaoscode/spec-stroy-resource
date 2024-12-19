@@ -28,3 +28,8 @@
     display: none;
   }
 }
+@media (max-width: 414px) {
+  .li {
+    font-size: 1.2rem;
+  }
+}

@@ -9,8 +9,7 @@
   width: 100%;
   max-width: 32rem; /* Примерное значение для max-w-lg */
   transform: translate(-50%, -100%);
-  background: var(--primary-brand-dark);
-  border-radius: 20px;
+  background-color: rgb(var(--primary-color));
   padding: 50px;
   margin: 0 30px 0;
   transition-duration: 200ms;
@@ -20,14 +19,12 @@
   right: 10px;
   top: 10px;
 }
-.x__icon {
-  fill: var(--primary-brand-ligth);
-}
+
 .overlay {
   position: fixed;
   inset: 0;
   z-index: 50;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 .overlay[data-state="open"] {
   animation: fadeIn 200ms ease-in;
@@ -37,35 +34,35 @@
   animation: fadeOut 200ms ease-out;
 }
 
-.input__group {
-  position: relative;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
-  border: none;
-}
-.label__text {
-  display: flex;
-  color: var(--primary-brand-ligth);
-}
 .title {
-  color: var(--primary-brand-ligth);
+  color: var(--second-color);
   margin-bottom: 10px;
   font-weight: 700;
   text-align: center;
+  font-size: 2rem;
 }
 .description {
-  color: var(--primary-brand-ligth);
+  color: var(--second-color);
   text-align: center;
+  font-size: 1.2rem;
+  font-weight: 500;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-
+  gap: 20px;
   padding-top: 10px;
   justify-content: center;
   align-items: center;
+  width: 435px;
+}
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--second-color);
+  width: 100%;
 }
 .content[data-state="open"] {
   animation: zoomIn 200ms ease-in-out;
@@ -73,44 +70,4 @@
 
 .content[data-state="closed"] {
   animation: zoomOut 200ms ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes zoomIn {
-  from {
-    transform: scale(1) translate(-50%, -150%);
-    opacity: 0; /* Добавляем плавное появление */
-  }
-  to {
-    transform: scale(1) translate(-50%, -100%);
-    opacity: 1;
-  }
-}
-
-@keyframes zoomOut {
-  from {
-    transform: scale(1) translate(-50%, -100%);
-    opacity: 1;
-  }
-  to {
-    transform: scale(1) translate(-50%, -150%);
-    opacity: 0; /* Плавное исчезновение */
-  }
 }

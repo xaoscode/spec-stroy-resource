@@ -1,17 +1,31 @@
 .navigation__component {
   display: grid;
-  grid-template-areas: "breadcrumb" "butt";
+  grid-template-areas: "breadcrumb butt";
   grid-template-columns: 1fr auto;
-  flex-direction: row;
   gap: 20px;
 }
+
 .breadcrumb {
   grid-area: breadcrumb;
 }
+
+.butt {
+  grid-area: butt;
+}
+
 .list {
   height: 100%;
 }
-.button {
-  grid-area: butt;
-  text-decoration: underline;
+
+@media (max-width: 765px) {
+  .navigation__component {
+    grid-template-areas:
+      "breadcrumb"
+      "butt";
+    gap: 10px;
+  }
+
+  .butt {
+    justify-self: end; /* Прижать элемент вправо */
+  }
 }

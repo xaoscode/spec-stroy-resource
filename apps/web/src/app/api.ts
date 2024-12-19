@@ -6,6 +6,9 @@ export const API = {
   product: {
     find: process.env.NEXT_PUBLIC_DOMAIN + "/api/product/find",
   },
+  projects: {
+    filtred: process.env.NEXT_PUBLIC_DOMAIN + "/api/projects/:",
+  },
   review: {
     createDemo: process.env.NEXT_PUBLIC_DOMAIN + "/api/review/create-demo",
   },

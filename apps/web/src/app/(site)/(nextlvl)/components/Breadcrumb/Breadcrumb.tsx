@@ -1,19 +1,19 @@
 "use client";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { Fragment } from "react";
+import styles from "./Breadcrumb.module.css";
+import { breadcrumbTranslations } from "./lib/breadcrumbTranslations";
+import cyrillicToTranslit from "cyrillic-to-translit-js";
 import {
   Breadcrumb,
   BreadcrumbList,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbSeparator,
-} from "./components/Breadcrumb.components";
-import { usePathname, useRouter } from "next/navigation";
-import { Fragment } from "react";
-import { Button } from "@/components/Button/Button";
-import styles from "./Breadcrumb.module.css";
-import Image from "next/image";
-import { breadcrumbTranslations } from "./lib/breadcrumbTranslations";
-import cyrillicToTranslit from "cyrillic-to-translit-js";
+} from "@/components/ui/breadcrumb";
+import { MoveLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function BreadcrumbModule() {
   const pathname = usePathname();
@@ -61,12 +61,12 @@ export function BreadcrumbModule() {
       </Breadcrumb>
       <Button
         onClick={handleBackClick}
-        variant="outline"
+        variant="link"
         size="sm"
         className={styles.butt}
       >
-        <Image src={"/arrowleft.svg"} alt={""} width={30} height={30} />
-        <span>Вернуться назад</span>
+        <MoveLeft className="text-white" />
+        <span className="text-white">Назад</span>
       </Button>
     </div>
   );

@@ -2,31 +2,20 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import cn from "classnames";
 import { ReactElement } from "react";
-import {
-  ControllerRenderProps,
-  FieldValues,
-  FormProvider,
-  useForm,
-} from "react-hook-form";
 import { z } from "zod";
-import { Button } from "../Button/Button";
 import { Input, PhoneInp } from "../inputs/PhoneInput/PhoneInput";
 import styles from "./CallForm.module.css";
 import { CallFormProps } from "./CallForm.props";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "./components/CallFormComponents";
 import { newMessage } from "@/app/(site)/api/Communication";
+import { useForm, ControllerRenderProps, FieldValues } from "react-hook-form";
+import { FormField, FormItem, FormLabel, FormControl, Form } from "../ui/form";
+import { Button } from "../Button/Button";
 
 const formSchema = z.object({
   name: z.string(),
   email: z.string().email("Кажется, такой почты не существует"),
   phone: z.string(),
 });
-export function ContactForm() {}
 
 export default function CallForm({ className, ...props }: CallFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -43,7 +32,7 @@ export default function CallForm({ className, ...props }: CallFormProps) {
   }
 
   return (
-    <FormProvider {...form}>
+    <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className={cn(styles.form, className)}
@@ -106,10 +95,10 @@ export default function CallForm({ className, ...props }: CallFormProps) {
           />
         </div>
 
-        <Button type="submit" size="lg">
+        <Button type="submit" variant="default" size="lg">
           Оставить заявку
         </Button>
       </form>
-    </FormProvider>
+    </Form>
   );
 }

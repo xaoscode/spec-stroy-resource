@@ -1,7 +1,6 @@
 import { IComMesage } from "@repo/interfaces";
 
 export async function newMessage(message: IComMesage) {
-  console.log(message, "fasdfaf");
   await fetch("http://localhost:3002/api/communication/message", {
     method: "POST",
     headers: {
