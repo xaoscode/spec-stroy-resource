@@ -29,7 +29,7 @@ export function ProjectItem({
       <div className="relative group">
         <Image
           className={styles.image}
-          src={project.images[0]}
+          src={`http://localhost:3002/images/${project.images[0]}`}
           alt={`Изображение ${project.name}`}
           width={300}
           height={300}
@@ -54,22 +54,16 @@ export function ProjectItem({
 
         <div className="grid grid-cols-[120px_1fr] gap-4 mt-4">
           <div className="font-light text-primary text-lg">Описание:</div>
-          <div>{project.description}</div>
+          <p>{project.description}</p>
 
           <div className="font-light text-primary text-lg">Состав работ:</div>
-          <div>{project.workStructure}</div>
+          <p>{project.workStructure}</p>
 
           <div className="font-light text-primary text-lg">Заказчик:</div>
-          <div>{project.client}</div>
-
-          <div className="font-light text-primary text-lg">Площадь:</div>
-          <div>{project.area}</div>
+          <p>{project.client}</p>
 
           <div className="font-light text-primary text-lg">Сумма:</div>
-          <div>{project.price}</div>
-
-          <div className="font-light text-primary text-lg">Срок:</div>
-          <div>{project.term}</div>
+          <p>{new Intl.NumberFormat("ru-RU").format(project.price)} ₽</p>
         </div>
       </div>
     </div>

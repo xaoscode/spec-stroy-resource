@@ -22,7 +22,5 @@ export interface IProject {
     price: number;
     sector: string;
     service: string;
-    term: string;
-    area: number;
     images: string[];
 }

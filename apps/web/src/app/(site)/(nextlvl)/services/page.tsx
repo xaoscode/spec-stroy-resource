@@ -28,7 +28,7 @@ const services = [
 ];
 export default function Services() {
   return (
-    <div className="grid grid-cols-1 gap-8 pt-10">
+    <div className="grid grid-cols-1 gap-8">
       <div className="text-2xl font-bold text-primary">Наши услуги</div>
       <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-5 justify-center">
         {services.map((service, index) => (
