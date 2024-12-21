@@ -40,8 +40,8 @@ export function PaginationMod({
   const visiblePages = getVisiblePages();
 
   return (
-    <Pagination>
-      <PaginationContent>
+    <Pagination className="pt-10">
+      <PaginationContent className="flex-wrap">
         {/* Previous Button */}
         <PaginationItem>
           <PaginationPrevious

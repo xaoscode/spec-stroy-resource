@@ -1,7 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import DatabaseService from 'src/database/database.service';
 import ProjectDto from '../dto/project.dto';
+export enum Sector {
+  administrative_buildings = 'Административные здания',
+  apartment_buildings = 'Многоквартирные жилые дома',
+  industrial_facilities = 'Промышленные объекты',
+  educational_institutions = 'Образовательные учреждения',
+  logistics_centers = 'Логистические центры и склады',
+  reconstruction = 'Реконструкция',
+}
 
+export enum Service {
+  stroitelno_tekhnicheskaya_ekspertiza_zhilya = 'Строительно-техническая экспертиза жилья',
+  instrumentalno_tekhnicheskoe_obsledovanie = 'Инструментальноe обследование объектов',
+  bim_design = 'BIM проектирование',
+  comprehensive_design = 'Комплексное проектирование',
+  engineering_systems_design = 'Проектирование инженерных систем и сетей',
+}
 @Injectable()
 export default class ProjectsRepository {
   constructor(private readonly databaseService: DatabaseService) {}
@@ -75,8 +90,8 @@ export default class ProjectsRepository {
     sector?: string,
     service?: string,
   ) {
+    console.log(Service[service]);
     const offset = (page - 1) * limit;
-
     let query = `
     SELECT * FROM projects
     WHERE 1=1
@@ -87,18 +102,16 @@ export default class ProjectsRepository {
   `;
     const params = [];
     let index = 1;
-
     if (sector) {
       query += ` AND sector = $${index}`;
       countQuery += ` AND sector = $${index}`;
-      params.push(sector);
+      params.push(Sector[sector]);
       index++;
     }
-
     if (service) {
       query += ` AND service = $${index}`;
       countQuery += ` AND service = $${index}`;
-      params.push(service);
+      params.push(Service[service]);
       index++;
     }
 
@@ -107,8 +120,8 @@ export default class ProjectsRepository {
     LIMIT $${index} OFFSET $${index + 1};
   `;
     params.push(limit, offset);
-
     const response = await this.databaseService.runQuery(query, params);
+    console.log(response.rows);
     const countResponse = await this.databaseService.runQuery(
       countQuery,
       params.slice(0, index - 1),

@@ -16,9 +16,7 @@
   justify-content: center;
   gap: 25px;
   padding: 0 0 50px;
-
   background-color: rgb(var(--primary-color));
-  width: 100%;
 }
 .header__text {
   max-width: var(--max-width);

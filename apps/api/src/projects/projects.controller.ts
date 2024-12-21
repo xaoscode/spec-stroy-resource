@@ -15,29 +15,28 @@ import ProjectDto from './dto/project.dto';
 export default class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
-  // Получить проект по ID
-  @Get('/:id')
+  @Get('get/:id')
   async getProjectById(@Param('id', ParseIntPipe) id: number) {
     return this.projectsService.getProjectById(id);
   }
 
-  // Получить проекты с пагинацией
-  @Get()
+  @Get('all')
   async getProjects(
     @Query('page', ParseIntPipe) page: number,
     @Query('limit', ParseIntPipe) limit: number,
   ) {
+    console.log('def');
     return this.projectsService.getProjects(page, limit);
   }
 
-  // Получить проекты по фильтрам с пагинацией
-  @Get('/filter')
+  @Get('filter')
   async getProjectsByFilters(
     @Query('page', ParseIntPipe) page: number,
     @Query('limit', ParseIntPipe) limit: number,
     @Query('sector') sector?: string,
     @Query('service') service?: string,
   ) {
+    console.log('filter');
     return this.projectsService.getProjectsByFilters(
       page,
       limit,
@@ -46,14 +45,12 @@ export default class ProjectsController {
     );
   }
 
-  // Добавить новый проект
-  @Post()
+  @Post('add')
   async createProject(@Body() dto: ProjectDto) {
     return this.projectsService.addProject(dto);
   }
 
-  // Удалить проект по ID
-  @Delete('/:id')
+  @Delete('delete/:id')
   async deleteProject(@Param('id', ParseIntPipe) id: number) {
     return this.projectsService.deleteProjectById(id);
   }

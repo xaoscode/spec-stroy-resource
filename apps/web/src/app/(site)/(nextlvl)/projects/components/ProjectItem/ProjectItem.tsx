@@ -29,7 +29,7 @@ export function ProjectItem({
       <div className="relative group">
         <Image
           className={styles.image}
-          src={`http://localhost:3002/images/${project.images[0]}`}
+          src={project.images[0]}
           alt={`Изображение ${project.name}`}
           width={300}
           height={300}

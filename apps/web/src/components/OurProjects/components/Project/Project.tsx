@@ -1,8 +1,8 @@
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 import EmblaCarousel from "../EmblaCarousel/OurProjects.components";
-import styles from "./Project.module.css";
 import cn from "classnames";
 import { IProject } from "@repo/interfaces";
+import Link from "next/link";
 
 interface ProjectProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -11,40 +11,51 @@ interface ProjectProps
 }
 
 export function Project({ index, project, className, ...props }: ProjectProps) {
+  const isReversed = index % 2 !== 0;
+
   return (
     <div
-      className={cn(className, styles.project, {
-        [styles.reverse]: index % 2 !== 0,
-      })}
-      {...props}
+      className={ cn(
+        "flex flex-col lg:flex-row gap-8",
+        {
+          "lg:flex-row-reverse": isReversed, // Кастомизация ширины колонок
+        },
+        className,
+      ) }
+      { ...props }
     >
-      <EmblaCarousel slides={project.images} />
-      <div className={styles.info}>
-        <div className="flex flex-col gap-10">
-          <div className="text-2xl sm:text-3xl text-primary font-medium">
-            {project.name}
-          </div>
-          <p className="text-sm sm:text-base">{project.description}</p>
+      {/* Галерея */ }
+      <div className={ cn({}) }>
+        <EmblaCarousel slides={ project.images } />
+      </div>
+
+      {/* Информация */ }
+      <div className="flex flex-col gap-6 lg:w-2/3 justify-between">
+        {/* Название и описание */ }
+        <div className="flex flex-col gap-4 ">
+          <Link
+            className="text-2xl  sm:text-3xl text-primary font-medium hover:underline"
+            href={ `/projects/${project.id}` }
+          >
+            { project.name }
+          </Link>
+          <p className="text-sm text-justify sm:text-base text-gray-700 leading-relaxed">
+            { project.description }
+          </p>
         </div>
-        <div className={styles.priceArea}>
-          <div className="flex flex-col">
-            <div className="text-base sm:text-xl text-black">Площадь:</div>
-            <div className="text-2xl sm:text-3xl text-primary font-bold">
-              {project.area}
-              <span> м²</span>
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <div className="text-base sm:text-xl text-black">
-              Стоимость проектирования:
-            </div>
-            <div className="text-2xl sm:text-3xl text-primary font-bold">
-              {Intl.NumberFormat("ru-RU").format(project.price)}
-              <span> ₽</span>
-            </div>
-          </div>
+
+        {/* Площадь и стоимость */ }
+        <div className={ cn("flex flex-col", { "ml-auto": !isReversed }) }>
+          <span className="text-base sm:text-lg text-gray-800">
+            Стоимость проектирования:
+          </span>
+          <span className="text-2xl sm:text-3xl text-primary font-bold">
+            { Intl.NumberFormat("ru-RU").format(project.price) }
+            <span> ₽</span>
+          </span>
         </div>
       </div>
     </div>
+
   );
 }

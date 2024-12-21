@@ -3,12 +3,12 @@ const services = [
   {
     header: "Строительно-техническая экспертиза жилья",
     image: "/inspection.webp",
-    url: "services/stroitelno-tekhnicheskaya-ekspertiza-zhilya",
+    url: "services/stroitelno_tekhnicheskaya_ekspertiza_zhilya",
   },
   {
     header: "Инструментально техническое обследование объектов",
     image: "/instrumental.webp",
-    url: "services/instrumentalno-tekhnicheskoe-obsledovanie",
+    url: "services/instrumentalno_tekhnicheskoe_obsledovanie",
   },
   {
     header: "BIM проектирование",

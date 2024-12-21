@@ -1,6 +1,5 @@
 "use client";
 import * as React from "react";
-import { useRouter, usePathname } from "next/navigation";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -17,78 +16,92 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+export enum Sector {
+  administrative_buildings = "Административные здания.",
+  apartment_buildings = "Многоквартирные жилые дома",
+  industrial_facilities = "Промышленные объекты: заводы и фабрики.",
+  educational_institutions = "Образовательные учреждения",
+  logistics_centers = "Логистические центры и склады.",
+  reconstruction = "Реконструкция",
+}
 
-const frameworks = [
+export enum Service {
+  housing_technical_inspection = "Строительно-техническая экспертиза жилья",
+  instrumental_inspection = "Инструментальное обследование объектов",
+  bim_design = "BIM проектирование",
+  comprehensive_design = "Комплексное проектирование",
+  engineering_systems_design = "Проектирование инженерных систем и сетей",
+}
+const sectors = [
   {
-    value: "next.js",
-    label: "Next.js",
-    url: "next.js",
+    label: "Административные здания.",
+    value: "administrative_buildings",
   },
   {
-    value: "sveltekit",
-    label: "SvelteKit",
-    url: "sveltekit",
+    label: "Многоквартирные жилые дома",
+    value: "apartment_buildings",
   },
   {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-    url: "nuxt.js",
+    label: "Промышленные объекты: заводы и фабрики.",
+    value: "industrial_facilities",
   },
   {
-    value: "remix",
-    label: "Remix",
-    url: "remix",
+    label: "Образовательные учреждения",
+    value: "educational_institutions",
   },
   {
-    value: "astro",
-    label: "Astro",
-    url: "astro",
+    label: "Логистические центры и склады.",
+    value: "logistics_centers",
+  },
+  {
+    label: "Реконструкция",
+    value: "reconstruction",
   },
 ];
 
-export function Combobox() {
+interface ComboboxProps {
+  onComboChange: (filter: string) => void;
+}
+
+export function Combobox({ onComboChange }: ComboboxProps) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
-  const router = useRouter();
-  const pathname = usePathname();
+
+  const handleSelect = (currentValue: string) => {
+    const newValue = currentValue === value ? "" : currentValue;
+    setValue(newValue);
+    setOpen(false);
+    onComboChange(newValue);
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          className="h-[100%]"
+          className="h-[100%] w-full  truncate"
           variant="outline"
           role="combobox"
           aria-expanded={open}
         >
-          {value
-            ? frameworks.find((framework) => framework.value === value)?.label
-            : "Выберите отрасль"}
+          <span className="truncate">
+            {value
+              ? sectors.find((framework) => framework.value === value)?.label
+              : "Выберите отрасль"}
+          </span>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 text-black" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0">
+      <PopoverContent className="w-[350px] p-0">
         <Command>
           <CommandInput placeholder="Найти отрасль" />
           <CommandList>
-            <CommandEmpty>Отралсь не найдена</CommandEmpty>
+            <CommandEmpty>Отрасль не найдена</CommandEmpty>
             <CommandGroup>
-              {frameworks.map((framework) => (
+              {sectors.map((framework) => (
                 <CommandItem
                   key={framework.value}
                   value={framework.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
-                    setOpen(false);
-                    if (currentValue !== value) {
-                      const selectedFramework = frameworks.find(
-                        (fw) => fw.value === currentValue,
-                      );
-                      if (selectedFramework) {
-                        router.push(`${pathname}/${selectedFramework.url}`);
-                      }
-                    }
-                  }}
+                  onSelect={handleSelect}
                 >
                   <Check
                     className={cn(

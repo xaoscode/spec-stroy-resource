@@ -5,4 +5,5 @@
   padding: 0px 0 100px;
   background-color: var(--primary-brand-ligth);
   width: 100%;
+  gap: 50px;
 }

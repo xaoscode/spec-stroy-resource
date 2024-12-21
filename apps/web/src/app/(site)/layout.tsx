@@ -5,6 +5,7 @@ import styles from "./layout.module.css";
 import Footer from "./components/Footer/Footer";
 import cn from "classnames";
 import Header from "./components/Header/Header";
+import Call from "./components/Call/Call";
 const roboto = Roboto_Flex({
   subsets: ["latin"],
   display: "swap",
@@ -26,6 +27,9 @@ export default function RootLayout({
         <div className={styles.wrapper}>
           <Header className={styles.header}></Header>
           <div className={styles.body}>{children}</div>
+          <div className={styles.call}>
+            <Call></Call>
+          </div>
           <Footer className={styles.footer} />
         </div>
       </body>

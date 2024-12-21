@@ -11,14 +11,23 @@ export async function getProjects(page: number, limit: number) {
   return data;
 }
 export async function getFilteredProjects(
-  page = 1,
-  limit = 9,
-  sector: string,
-  service: string,
+  page: number,
+  limit: number,
+  service?: string,
+  sector?: string,
 ) {
-  const response = await fetch(
-    `${API.projects}/filter?page=${page}&limit=${limit}&sector=${sector}&service=${service}`,
-  );
+  const params = new URLSearchParams({
+    page: page.toString(),
+    limit: limit.toString(),
+    ...(service && { service }),
+    ...(sector && { sector }),
+  });
+  const url =
+    service || sector
+      ? `${API.projects}/filter?${params.toString()}`
+      : `${API.projects}/all?${params.toString()}`;
+
+  const response = await fetch(url);
   const data = await response.json();
   return data;
 }

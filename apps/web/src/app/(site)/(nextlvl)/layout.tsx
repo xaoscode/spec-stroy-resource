@@ -19,9 +19,6 @@ export default function ProjectLayout({
         <SubHeader />
       </div>
       <div className={styles.body}>{children}</div>
-      <div className={styles.call}>
-        <CallForm />
-      </div>
     </div>
   );
 }
