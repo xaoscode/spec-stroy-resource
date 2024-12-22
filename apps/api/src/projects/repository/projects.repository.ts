@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import DatabaseService from 'src/database/database.service';
 import ProjectDto from '../dto/project.dto';
+import { IProjectFilters } from '@repo/interfaces';
 export enum Sector {
   administrative_buildings = 'Административные здания',
   apartment_buildings = 'Многоквартирные жилые дома',
@@ -12,7 +13,7 @@ export enum Sector {
 
 export enum Service {
   stroitelno_tekhnicheskaya_ekspertiza_zhilya = 'Строительно-техническая экспертиза жилья',
-  instrumentalno_tekhnicheskoe_obsledovanie = 'Инструментальноe обследование объектов',
+  instrumentalno_tekhnicheskoe_obsledovanie = 'Инструментальное обследование объектов',
   bim_design = 'BIM проектирование',
   comprehensive_design = 'Комплексное проектирование',
   engineering_systems_design = 'Проектирование инженерных систем и сетей',
@@ -83,54 +84,84 @@ export default class ProjectsRepository {
     };
   }
 
-  // Получить проекты по фильтрам с пагинацией
+  async getTotalProjectsCount(filters?: IProjectFilters) {
+    const baseCountQuery = `
+      SELECT COUNT(*) AS total FROM projects
+      WHERE 1=1
+    `;
+
+    const filterConditions: string[] = [];
+    const params: (string | number)[] = [];
+
+    if (filters?.sector) {
+      filterConditions.push(`sector = $${filterConditions.length + 1}`);
+      params.push(Sector[filters.sector]);
+    }
+
+    if (filters?.service) {
+      filterConditions.push(`service = $${filterConditions.length + 1}`);
+      params.push(Service[filters.service]);
+    }
+
+    if (filters?.search) {
+      filterConditions.push(`name ILIKE $${filterConditions.length + 1}`);
+      params.push(`%${filters.search}%`);
+    }
+
+    const countQuery = `
+      ${baseCountQuery}
+      ${filterConditions.length ? 'AND ' + filterConditions.join(' AND ') : ''}
+    `;
+
+    // Выполняем запрос для подсчета общего количества
+    const countResponse = await this.databaseService.runQuery(
+      countQuery,
+      params,
+    );
+    return parseInt(countResponse.rows[0].total, 10);
+  }
+
   async getProjectsByFilters(
     page: number,
     limit: number,
-    sector?: string,
-    service?: string,
+    filters?: IProjectFilters,
   ) {
-    console.log(Service[service]);
     const offset = (page - 1) * limit;
-    let query = `
-    SELECT * FROM projects
-    WHERE 1=1
-  `;
-    let countQuery = `
-    SELECT COUNT(*) AS total FROM projects
-    WHERE 1=1
-  `;
-    const params = [];
-    let index = 1;
-    if (sector) {
-      query += ` AND sector = $${index}`;
-      countQuery += ` AND sector = $${index}`;
-      params.push(Sector[sector]);
-      index++;
-    }
-    if (service) {
-      query += ` AND service = $${index}`;
-      countQuery += ` AND service = $${index}`;
-      params.push(Service[service]);
-      index++;
+
+    const baseQuery = `
+      SELECT * FROM projects
+      WHERE 1=1
+    `;
+
+    const filterConditions: string[] = [];
+    const params: (string | number)[] = [];
+
+    if (filters?.sector) {
+      filterConditions.push(`sector = $${filterConditions.length + 1}`);
+      params.push(Sector[filters.sector]);
     }
 
-    query += `
-    ORDER BY id
-    LIMIT $${index} OFFSET $${index + 1};
-  `;
+    if (filters?.service) {
+      filterConditions.push(`service = $${filterConditions.length + 1}`);
+      params.push(Service[filters.service]);
+    }
+
+    if (filters?.search) {
+      filterConditions.push(`name ILIKE $${filterConditions.length + 1}`);
+      params.push(`%${filters.search}%`);
+    }
+
+    const query = `
+      ${baseQuery}
+      ${filterConditions.length ? 'AND ' + filterConditions.join(' AND ') : ''}
+      ORDER BY id
+      LIMIT $${params.length + 1} OFFSET $${params.length + 2};
+    `;
     params.push(limit, offset);
-    const response = await this.databaseService.runQuery(query, params);
-    console.log(response.rows);
-    const countResponse = await this.databaseService.runQuery(
-      countQuery,
-      params.slice(0, index - 1),
-    ); // Параметры для подсчета
 
-    return {
-      projects: response.rows,
-      total: parseInt(countResponse.rows[0].total, 10),
-    };
+    const response = await this.databaseService.runQuery(query, params);
+
+    return response.rows;
   }
 
   // Удалить проект по ID

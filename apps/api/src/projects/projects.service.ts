@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import ProjectDto from './dto/project.dto';
 import ProjectsRepository from './repository/projects.repository';
+import { IProjectFilters } from '@repo/interfaces';
 
 @Injectable()
 export default class ProjectsService {
@@ -35,19 +36,16 @@ export default class ProjectsService {
   async getProjectsByFilters(
     page: number,
     limit: number,
-    sector?: string,
-    service?: string,
+    filters: IProjectFilters,
   ) {
     if (page < 1 || limit < 1) {
       throw new Error('Page and limit must be greater than 0');
     }
 
-    return this.projectsRepository.getProjectsByFilters(
-      page,
-      limit,
-      sector,
-      service,
-    );
+    return this.projectsRepository.getProjectsByFilters(page, limit, filters);
+  }
+  async getTotalProjectsCount(filters: IProjectFilters) {
+    return this.projectsRepository.getTotalProjectsCount(filters);
   }
 
   // Удалить проект по ID

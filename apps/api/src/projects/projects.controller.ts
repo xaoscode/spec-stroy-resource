@@ -35,14 +35,31 @@ export default class ProjectsController {
     @Query('limit', ParseIntPipe) limit: number,
     @Query('sector') sector?: string,
     @Query('service') service?: string,
+    @Query('search') search?: string,
   ) {
     console.log('filter');
-    return this.projectsService.getProjectsByFilters(
-      page,
-      limit,
+    console.log(sector, service);
+
+    return this.projectsService.getProjectsByFilters(page, limit, {
       sector,
       service,
-    );
+      search,
+    });
+  }
+  @Get('count')
+  async getTotalProjectsCount(
+    @Query('sector') sector?: string,
+    @Query('service') service?: string,
+    @Query('search') search?: string,
+  ) {
+    console.log('filter');
+    console.log(sector, service);
+
+    return this.projectsService.getTotalProjectsCount({
+      sector,
+      service,
+      search,
+    });
   }
 
   @Post('add')
