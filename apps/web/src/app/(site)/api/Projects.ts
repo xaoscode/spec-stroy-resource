@@ -1,15 +1,21 @@
 import { API } from "@/app/api";
 import { IProject, IProjectFilters } from "@repo/interfaces";
+
 export async function getProject(id: number) {
 	const response = await fetch(`${API.projects}/${id}`);
 	const data = await response.json();
 	return data;
 }
+
 export async function getProjects(page: number, limit: number) {
 	const response = await fetch(`${API.projects}?page=${page}&limit=${limit}`);
 	const data = await response.json();
 	return data;
 }
+
+// Универсальная Функция для получения как всех так и отфильтрованных проектов с пагинацией
+// и ревалидацией данных для ISG страниц
+// Если фильтры не передаются, то с бэка придут все проекты
 export async function fetchFilteredProjects(page: number, limit: number, filters?: IProjectFilters) {
 	const params = new URLSearchParams({
 		page: page.toString(),
@@ -20,7 +26,8 @@ export async function fetchFilteredProjects(page: number, limit: number, filters
 	});
 
 	const url = `${API.projects}/filter?${params.toString()}`;
-	const response = await fetch(url);
+
+	const response = await fetch(url, { next: { tags: ["projects"] } });
 
 	if (!response.ok) {
 		throw new Error(`Ошибка загрузки проектов: ${response.statusText}`);
@@ -29,6 +36,7 @@ export async function fetchFilteredProjects(page: number, limit: number, filters
 	const data = await response.json();
 	return data;
 }
+
 export async function fetchProjectsCout(filters?: IProjectFilters) {
 	const params = new URLSearchParams({
 		...(filters?.sector && { sector: filters.sector }),
@@ -37,6 +45,7 @@ export async function fetchProjectsCout(filters?: IProjectFilters) {
 	});
 
 	const url = `${API.projects}/count?${params.toString()}`;
+
 	const response = await fetch(url);
 
 	if (!response.ok) {
@@ -46,6 +55,7 @@ export async function fetchProjectsCout(filters?: IProjectFilters) {
 	const data = await response.json();
 	return data;
 }
+
 export async function addProject(newProject: IProject) {
 	await fetch(`${API.projects}`, {
 		method: "POST",

@@ -1,10 +1,17 @@
+import { fetchFilteredProjects } from "@/app/(site)/api/Projects";
 import { IProject } from "@repo/interfaces";
 import type { Metadata, ResolvingMetadata } from "next";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{ projectName: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
+
+export async function generateStaticParams() {
+  const projects = await fetchFilteredProjects(1, 1)
+  return projects.map((item: IProject) => ({ id: String(item.id) }))
+}
 
 export async function generateMetadata(
   { params }: Props,
@@ -29,6 +36,14 @@ export async function generateMetadata(
   };
 }
 
-export default async function ProjectDetails({}: Props) {
-  return <div>{}</div>;
+export default async function ProjectDetails({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const data = await fetchFilteredProjects(1, 1)
+  if (!data) {
+    notFound();
+  }
+  return <div>{ }</div>;
 }

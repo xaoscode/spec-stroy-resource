@@ -1,12 +1,16 @@
 .wrapper {
-  display: grid;
-  grid-template-areas: "sidebar body";
-  grid-template-columns: auto 1fr;
-  height: 100vh;
+	display: grid;
+	grid-template-areas: "sidebar body";
+	grid-template-columns: auto 1fr;
+	height: 100vh;
+	width: 100%;
 }
 .sidebar {
-  grid-area: sidebar;
+	grid-area: sidebar;
 }
 .body {
-  grid-area: body;
+	grid-area: body;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }

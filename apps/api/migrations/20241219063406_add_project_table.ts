@@ -1,25 +1,6 @@
 import type { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
-  // await knex.raw(`
-  //   CREATE TYPE sector_enum AS ENUM (
-  //     'Административные здания',
-  //     'Многоквартирные жилые дома',
-  //     'Промышленные объекты',
-  //     'Образовательные учреждения',
-  //     'Логистические центры и склады',
-  //     'Реконструкция'
-  //   );
-  //
-  //   CREATE TYPE service_enum AS ENUM (
-  //     'Строительно техническая экспертиза жилья',
-  //     'Инструментальноe обследование объектов',
-  //     'BIM проектирование',
-  //     'Комплексное проектирование',
-  //     'Проектирование инженерных систем и сетей'
-  //   );
-  // `);
-
   await knex.raw(`
     CREATE TABLE projects (
       id SERIAL PRIMARY KEY,

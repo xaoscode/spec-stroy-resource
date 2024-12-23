@@ -17,4 +17,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./lib/commessage.interface"), exports);
 __exportStar(require("./lib/project.interface"), exports);
 __exportStar(require("./lib/projectFilters.interface"), exports);
+__exportStar(require("./lib/pages.interface"), exports);
 //# sourceMappingURL=index.js.map

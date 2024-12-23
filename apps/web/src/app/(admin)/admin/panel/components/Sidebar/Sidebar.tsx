@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import { Home, Inbox } from "lucide-react";
 
 import {
   Sidebar,
@@ -17,49 +17,47 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@radix-ui/react-collapsible";
+import Link from "next/link";
 
 // Menu items.
 const items = [
   {
-    title: "Home",
+    title: "Редактирование страниц",
     url: "#",
     icon: Home,
     subItems: [
-      { title: "Dashboard", url: "#dashboard" },
-      { title: "Activity", url: "#activity" },
+      {
+        title: "Услуги",
+        url: null,
+        subSubItems: [
+          { title: "Строительно-техническая экспертиза жилья", url: "stroy" },
+          { title: "Инструментальное обследование объектов", url: "instrumental" },
+          { title: "BIM проектирование", url: "bim" },
+          { title: "Комплексное проектирование", url: "complex" },
+          { title: "Проектирование инженерных систем и сетей", url: "project" },
+
+        ],
+      },
+      { title: "О компании", url: "about" },
+      { title: "Допуски", url: "dopusk" },
+      { title: "Контакты", url: "contacts" },
     ],
   },
   {
-    title: "Inbox",
+    title: "Управление проектами",
     url: "#",
     icon: Inbox,
     subItems: [
-      { title: "Messages", url: "#messages" },
-      { title: "Notifications", url: "#notifications" },
+      { title: "Все проекты", url: "#messages" },
+      { title: "Добавить проект", url: "#notifications" },
     ],
   },
   {
-    title: "Calendar",
+    title: "Связь с клиентами",
     url: "#",
-    icon: Calendar,
+    icon: Inbox,
     subItems: [
-      { title: "Events", url: "#events" },
-      { title: "Reminders", url: "#reminders" },
-    ],
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-    subItems: [],
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-    subItems: [
-      { title: "Profile", url: "#profile" },
-      { title: "Preferences", url: "#preferences" },
+      { title: "Звонок", url: "#messages" },
     ],
   },
 ];
@@ -67,14 +65,14 @@ const items = [
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+      <SidebarContent >
+        <SidebarGroup >
+          <SidebarGroupLabel>Спец Строй Ресурс</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
+            <SidebarMenu  >
+              { items.map((item) => (
                 <Collapsible
-                  key={item.title}
+                  key={ item.title }
                   defaultOpen
                   className="group/collapsible"
                 >
@@ -82,23 +80,50 @@ export function AppSidebar() {
                     <CollapsibleTrigger asChild>
                       <SidebarMenuButton>
                         <item.icon className="mr-2 h-5 w-5" />
-                        {item.title}
+                        { item.title }
                       </SidebarMenuButton>
                     </CollapsibleTrigger>
-                    {item.subItems.length > 0 && (
+                    { item.subItems.length > 0 && (
                       <CollapsibleContent>
                         <SidebarMenuSub>
-                          {item.subItems.map((subItem) => (
-                            <SidebarMenuSubItem key={subItem.title}>
-                              <a href={subItem.url}>{subItem.title}</a>
-                            </SidebarMenuSubItem>
-                          ))}
+                          { item.subItems.map((subItem) => (
+                            <Collapsible key={ subItem.title } defaultOpen>
+                              <SidebarMenuSubItem>
+                                { subItem.subSubItems ? (
+                                  <CollapsibleTrigger asChild>
+                                    <span className="cursor-pointer">
+                                      { subItem.title }
+                                    </span>
+                                  </CollapsibleTrigger>
+                                ) : (
+                                  <Link href={ `${subItem.url}` || "#" }>
+                                    { subItem.title }
+                                  </Link>
+                                ) }
+                              </SidebarMenuSubItem>
+                              { subItem.subSubItems && (
+                                <CollapsibleContent>
+                                  <SidebarMenuSub className="pl-4">
+                                    { subItem.subSubItems.map((subSubItem) => (
+                                      <SidebarMenuSubItem
+                                        key={ subSubItem.title }
+                                      >
+                                        <Link className="" href={ `${subSubItem.url}` }>
+                                          { subSubItem.title }
+                                        </Link>
+                                      </SidebarMenuSubItem>
+                                    )) }
+                                  </SidebarMenuSub>
+                                </CollapsibleContent>
+                              ) }
+                            </Collapsible>
+                          )) }
                         </SidebarMenuSub>
                       </CollapsibleContent>
-                    )}
+                    ) }
                   </SidebarMenuItem>
                 </Collapsible>
-              ))}
+              )) }
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

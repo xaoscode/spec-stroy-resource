@@ -6,6 +6,7 @@ import DatabaseModule from './database/database.module';
 import { ConfigModule } from './config/config.module';
 import { CommunicationModule } from './communication/communication.module';
 import ProjectsModule from './projects/projects.module';
+import PagesModule from './pages/pages.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import ProjectsModule from './projects/projects.module';
     CommunicationModule,
     ConfigModule,
     ProjectsModule,
+    PagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
