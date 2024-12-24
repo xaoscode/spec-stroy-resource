@@ -35,7 +35,8 @@ export default class PagesRepositroy {
       `
         INSERT INTO sections (title, order_number, type, page_id)
         VALUES ($1, $2, $3, $4)
-        RETURNING id
+        RETURNING *
+
       `,
       [section.title, section.orderNumber, section.type, pageId],
     );
@@ -48,17 +49,25 @@ export default class PagesRepositroy {
         await this.addContent(content, sectionId);
       }
     }
+    return response.rows[0];
   }
 
   // Добавление контента
   async addContent(content: ContentDto, sectionId: string) {
-    await this.databaseService.runQuery(
+    const res = await this.databaseService.runQuery(
       `
-        INSERT INTO content (content_type, content_text, section_id)
-        VALUES ($1, $2, $3)
+        INSERT INTO content (content_type, content_text, section_id, order_number)
+        VALUES ($1, $2, $3, $4)
+        RETURNING *
       `,
-      [content.contentType, content.contentText, sectionId],
+      [
+        content.contentType,
+        content.contentText,
+        sectionId,
+        content.orderNumber,
+      ],
     );
+    return res.rows[0];
   }
 
   // Получение страницы по slug
@@ -69,13 +78,12 @@ export default class PagesRepositroy {
       `,
       [slug],
     );
-
     if (response.rows.length === 0) {
       throw new Error('Page not found');
     }
 
     const page = response.rows[0];
-
+    console.log(page.id);
     // Получаем секции для этой страницы
     const sectionsResponse = await this.databaseService.runQuery(
       `
@@ -85,6 +93,7 @@ export default class PagesRepositroy {
     );
 
     const sections = sectionsResponse.rows;
+    console.log(sections);
 
     // Получаем контент для каждой секции
     for (const section of sections) {
@@ -97,7 +106,6 @@ export default class PagesRepositroy {
 
       section.content = contentResponse.rows;
     }
-
     return { ...page, sections };
   }
   // Обновление страницы

@@ -19,6 +19,7 @@ export class SectionDto implements ISection {
 
 export class ContentDto implements IContent {
   id?: string;
+  orderNumber: number;
   contentType: string;
   contentText: string;
   sectionId: string;

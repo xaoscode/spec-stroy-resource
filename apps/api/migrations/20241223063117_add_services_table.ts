@@ -39,6 +39,7 @@ export async function up(knex: Knex): Promise<void> {
       CREATE TABLE content (
           id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
           content_type VARCHAR(50) NOT NULL,
+          order_number INTEGER NOT NULL,
           content_text TEXT,
           section_id UUID REFERENCES sections(id) ON DELETE CASCADE
       );

@@ -19,5 +19,6 @@ export interface IContent {
 	id?: string;
 	contentType: string;
 	contentText: string | null;
+	orderNumber: number;
 	sectionId: string;
 }

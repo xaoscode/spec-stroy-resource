@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import PagesRepositroy from './repository/pages.repositroy';
+import { ContentDto, SectionDto } from './dto/page.dto';
 
 @Injectable()
 export default class PagesService {
@@ -13,5 +14,15 @@ export default class PagesService {
     }
 
     return page;
+  }
+
+  async addSection(id: string, dto: SectionDto) {
+    const section = await this.pageRepository.addSection(dto, id);
+
+    return section;
+  }
+  async addContent(id: string, dto: ContentDto) {
+    const content = await this.pageRepository.addContent(dto, id);
+    return content;
   }
 }

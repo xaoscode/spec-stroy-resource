@@ -1,5 +1,4 @@
 import { Home, Inbox } from "lucide-react";
-
 import {
   Sidebar,
   SidebarContent,
@@ -35,7 +34,6 @@ const items = [
           { title: "BIM проектирование", url: "bim" },
           { title: "Комплексное проектирование", url: "complex" },
           { title: "Проектирование инженерных систем и сетей", url: "project" },
-
         ],
       },
       { title: "О компании", url: "about" },
@@ -65,11 +63,11 @@ const items = [
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarContent >
-        <SidebarGroup >
+      <SidebarContent>
+        <SidebarGroup>
           <SidebarGroupLabel>Спец Строй Ресурс</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu  >
+            <SidebarMenu>
               { items.map((item) => (
                 <Collapsible
                   key={ item.title }
@@ -96,7 +94,7 @@ export function AppSidebar() {
                                     </span>
                                   </CollapsibleTrigger>
                                 ) : (
-                                  <Link href={ `${subItem.url}` || "#" }>
+                                  <Link href={ `/admin/panel/${subItem.url || ""}` }>
                                     { subItem.title }
                                   </Link>
                                 ) }
@@ -108,7 +106,7 @@ export function AppSidebar() {
                                       <SidebarMenuSubItem
                                         key={ subSubItem.title }
                                       >
-                                        <Link className="" href={ `${subSubItem.url}` }>
+                                        <Link href={ `/admin/panel/${subSubItem.url || ""}` }>
                                           { subSubItem.title }
                                         </Link>
                                       </SidebarMenuSubItem>
