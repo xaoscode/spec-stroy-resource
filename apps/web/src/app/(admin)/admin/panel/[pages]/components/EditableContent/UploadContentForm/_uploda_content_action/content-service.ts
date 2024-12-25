@@ -1,4 +1,4 @@
-"only server";
+"use server";
 
 import { API } from "@/app/api";
 import { IContent } from "@repo/interfaces";

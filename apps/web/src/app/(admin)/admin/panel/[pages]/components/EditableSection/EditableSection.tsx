@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { GripVertical } from "lucide-react";
 import { ISection } from "@repo/interfaces";
@@ -13,7 +13,9 @@ interface Item extends ISection {
 
 export function EditableSection({ sections, pageId }: { sections: Item[], pageId: string }) {
     const [optimisticItems, setOptimisticItems] = useState(sections);
-
+    useEffect(() => {
+        setOptimisticItems(sections)
+    }, [sections])
     const swapItems = (sourceIndex: number, destinationIndex: number) => {
         const newItems = [...optimisticItems];
         const temp = newItems[sourceIndex];
@@ -74,9 +76,9 @@ export function EditableSection({ sections, pageId }: { sections: Item[], pageId
         <div className="flex flex-col gap-5 items-center justify-center min-w-full bg-gray-100 p-4">
             <h1 className="text-2xl font-bold text-gray-800 mb-6">Draggable List</h1>
 
-            <Button onClick={ () => addNewItem('секция') }>Добавить секцию</Button>
+            <Button onClick={ async () => addNewItem('секция') }>Добавить секцию</Button>
 
-            <DragDropContext onDragEnd={ onDragEndAction }>
+            <DragDropContext onDragEnd={ onDragEndAction } >
                 <Droppable droppableId="0">
                     { (provided) => (
                         <div
