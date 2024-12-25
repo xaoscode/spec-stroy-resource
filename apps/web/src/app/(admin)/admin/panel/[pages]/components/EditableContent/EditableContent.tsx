@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useTransition } from "react";
+import { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { GripVertical } from "lucide-react";
 import {
@@ -9,9 +9,8 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useOptimistic } from "react";  // Importing useOptimistic
 import { IContent } from "@repo/interfaces";
-import { uploadContentService } from "./UploadContentForm/_uploda_content_action/uplod-content-service";
+import { swapContentAction, uploadContentService } from "./UploadContentForm/_uploda_content_action/content-service";
 
 
 interface Item extends IContent {
@@ -21,16 +20,34 @@ interface Item extends IContent {
 const contentTypes = ["Текст", "Картинки с текстом", "Список", "Предупреждение"];
 
 export function EditableContent({ contents, sectionId }: { contents: Item[], sectionId: string }) {
-    // const [items, setItems] = useState<Item[]>([]);
-    const [, startTransition] = useTransition(); // For wrapping async operations
+    const [optimisticItems, setOptimisticItems] = useState(contents);
 
-    // Using useOptimistic for optimistic state updates
-    const [optimisticItems, addOptimisticItem] = useOptimistic(
-        contents || [],
-        (state, newItem: Item) => [...state, newItem]
-    );
+    const swapItems = (sourceSectionId: string, destinationSectionId: string) => {
+        const sourceIndex = optimisticItems.findIndex((section) => section.id === sourceSectionId);
+        const destinationIndex = optimisticItems.findIndex((section) => section.id === destinationSectionId);
 
-    // Function to handle item addition
+        if (sourceIndex === -1 || destinationIndex === -1) return;
+
+        const newItems = [...optimisticItems];
+        const temp = newItems[sourceIndex];
+        newItems[sourceIndex] = newItems[destinationIndex];
+        newItems[destinationIndex] = temp;
+
+        setOptimisticItems(newItems);
+    };
+
+
+    const onDragEndAction = async (result: any) => {
+        if (!result.destination || contents.length === 0) return;
+
+        const sourceContentId = result.draggableId;
+        const destinationContentd = contents[result.destination.index]?.id;
+        swapItems(sourceContentId, destinationContentd);
+        swapContentAction(sourceContentId, destinationContentd)
+
+    };
+
+
     const addNewItem = async (type: string) => {
         const newItem: Item = {
             contentType: type,
@@ -39,39 +56,16 @@ export function EditableContent({ contents, sectionId }: { contents: Item[], sec
             orderNumber: contents.length + 1
         };
 
-        // Use startTransition to wrap the optimistic update
-        // startTransition(() => {
-        //     addOptimisticItem(newItem); // Optimistic state update
-        // });
 
 
-        // Simulate server request
+
         await uploadContentService(newItem, sectionId)
     };
 
-    // Handle reordering items optimistically
-    const onDragEnd = async (result: any) => {
-        const { source, destination } = result;
-        if (!destination || source.index === destination.index) return;
 
-        // Reordering items optimistically
-        const reorderedItems = [...optimisticItems];
-        const [removed] = reorderedItems.splice(source.index, 1);
-        reorderedItems.splice(destination.index, 0, removed);
-
-        startTransition(() => {
-            addOptimisticItem(reorderedItems); // Optimistic state update
-        });
-
-        // Simulate server request for reordering
-        await fetch("/api/items/reorder", {
-            method: "PUT",
-            body: JSON.stringify(reorderedItems),
-        });
-    };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+        <div className="flex flex-col items-center justify-center min-w-full bg-gray-100 p-4">
             <h1 className="text-2xl font-bold text-gray-800 mb-6">Draggable List</h1>
 
             <DropdownMenu>
@@ -87,13 +81,13 @@ export function EditableContent({ contents, sectionId }: { contents: Item[], sec
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            <DragDropContext onDragEnd={ onDragEnd }>
+            <DragDropContext onDragEnd={ onDragEndAction }>
                 <Droppable droppableId="0">
                     { (provided) => (
                         <div
                             ref={ provided.innerRef }
                             { ...provided.droppableProps }
-                            className="w-full max-w-md bg-white shadow-md rounded-lg p-4"
+                            className="w-full min-w-full bg-white shadow-md rounded-lg p-4"
                         >
                             { optimisticItems.map((item, index) => (
                                 <Draggable key={ index } draggableId={ item.id } index={ index }>
@@ -115,6 +109,16 @@ export function EditableContent({ contents, sectionId }: { contents: Item[], sec
                                                     { item.contentType } - { item.contentText }
                                                 </p>
                                                 <p className="text-sm text-gray-500">{ item.id }</p>
+                                            </div>
+                                            <div
+                                                { ...provided.dragHandleProps }
+                                                className="flex items-center p-4 border-l border-gray-600 cursor-grab text-gray-600 hover:text-gray-800"
+                                            >
+                                                <button
+                                                    className="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-1 px-3 rounded"
+                                                >
+                                                    Delete
+                                                </button>
                                             </div>
                                         </div>
                                     ) }

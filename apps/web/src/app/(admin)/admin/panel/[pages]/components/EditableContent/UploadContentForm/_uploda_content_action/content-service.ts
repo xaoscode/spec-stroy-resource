@@ -22,3 +22,18 @@ export async function uploadContentService(contentData: IContent, id: string) {
 		throw error;
 	}
 }
+export async function swapContentAction(sourceContentId: string, destinationContentId: string) {
+	try {
+		await fetch(`${API.pages}/swap-contents`, {
+			method: "PATCH",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ sourceContentId, destinationContentId }),
+			cache: "no-cache",
+		});
+	} catch (error) {
+		console.log("Swap service error", error);
+		throw error;
+	}
+}

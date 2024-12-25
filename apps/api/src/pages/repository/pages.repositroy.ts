@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import DatabaseService from 'src/database/database.service';
-import { ContentDto, PageDto, SectionDto } from '../dto/page.dto';
+import {
+  ContentDto,
+  PageDto,
+  SectionDto,
+  SwapContentDto,
+  SwapSectionDto,
+} from '../dto/page.dto';
 
 @Injectable()
 export default class PagesRepositroy {
@@ -83,7 +89,6 @@ export default class PagesRepositroy {
     }
 
     const page = response.rows[0];
-    console.log(page.id);
     // Получаем секции для этой страницы
     const sectionsResponse = await this.databaseService.runQuery(
       `
@@ -92,8 +97,9 @@ export default class PagesRepositroy {
       [page.id],
     );
 
-    const sections = sectionsResponse.rows;
-    console.log(sections);
+    const sections = sectionsResponse.rows.sort(
+      (a, b) => a.order_number - b.order_number,
+    );
 
     // Получаем контент для каждой секции
     for (const section of sections) {
@@ -104,7 +110,9 @@ export default class PagesRepositroy {
         [section.id],
       );
 
-      section.content = contentResponse.rows;
+      section.content = contentResponse.rows.sort(
+        (a, b) => a.order_number - b.order_number,
+      );
     }
     return { ...page, sections };
   }
@@ -200,12 +208,12 @@ export default class PagesRepositroy {
   }
 
   // Удаление секции
-  async deleteSection(id: string) {
+  async deleteSection(sectionId: string) {
     await this.databaseService.runQuery(
       `
         DELETE FROM sections WHERE id = $1
       `,
-      [id],
+      [sectionId],
     );
   }
 
@@ -216,6 +224,46 @@ export default class PagesRepositroy {
         DELETE FROM content WHERE id = $1
       `,
       [id],
+    );
+  }
+
+  async swapSections({
+    sourceSectionId,
+    destinationSectionId,
+  }: SwapSectionDto) {
+    await this.databaseService.runQuery(
+      `
+      UPDATE sections
+      SET "order_number" = CASE
+        WHEN id = $1 THEN (SELECT "order_number" FROM sections WHERE id = $2)
+        WHEN id = $2 THEN (SELECT "order_number" FROM sections WHERE id = $1)
+        ELSE "order_number"
+      END
+      WHERE id IN ($1, $2)
+      RETURNING *
+      ;
+      `,
+      [sourceSectionId, destinationSectionId],
+    );
+  }
+
+  async swapContents({
+    sourceContentId,
+    destinationContentId,
+  }: SwapContentDto) {
+    await this.databaseService.runQuery(
+      `
+      UPDATE content
+      SET "order_number" = CASE
+        WHEN id = $1 THEN (SELECT "order_number" FROM content WHERE id = $2)
+        WHEN id = $2 THEN (SELECT "order_number" FROM content WHERE id = $1)
+        ELSE "order_number"
+      END
+      WHERE id IN ($1, $2)
+      RETURNING *
+      ;
+      `,
+      [sourceContentId, destinationContentId],
     );
   }
 }

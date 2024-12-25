@@ -24,3 +24,12 @@ export class ContentDto implements IContent {
   contentText: string;
   sectionId: string;
 }
+
+export class SwapSectionDto {
+  sourceSectionId: string;
+  destinationSectionId: string;
+}
+export class SwapContentDto {
+  sourceContentId: string;
+  destinationContentId: string;
+}

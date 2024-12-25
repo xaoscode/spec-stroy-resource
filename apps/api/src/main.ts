@@ -9,7 +9,7 @@ async function bootstrap() {
   app.use('/images', express.static(join(process.cwd(), 'uploads/images')));
   app.enableCors({
     origin: 'http://localhost:3000',
-    methods: 'GET, POST, PUT, UPDATE, DELET, PATCH, HEAD',
+    methods: 'GET, POST, PUT, UPDATE, DELETE, PATCH, HEAD',
     credentials: true,
   });
   const globalPrefix = 'api';
