@@ -8,12 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import PagesService from './pages.service';
-import {
-  ContentDto,
-  SectionDto,
-  SwapContentDto,
-  SwapSectionDto,
-} from './dto/page.dto';
+import { ContentDto, ReorderDto, SectionDto } from './dto/page.dto';
 
 @Controller('pages')
 export default class PagesController {
@@ -34,14 +29,9 @@ export default class PagesController {
     return this.pageService.addContent(id, dto);
   }
 
-  @Patch('swap-sections')
-  async swapSections(@Body() dto: SwapSectionDto) {
-    return this.pageService.swapSections(dto);
-  }
-
-  @Patch('swap-contents')
-  async swapContents(@Body() dto: SwapContentDto) {
-    return this.pageService.swapContents(dto);
+  @Patch('reorder-items')
+  async reorderSections(@Body() dto: ReorderDto) {
+    return this.pageService.reorderSections(dto);
   }
 
   @Delete('delet-section')

@@ -1,22 +1,28 @@
-export interface IPage {
-    id?: string;
+export interface INewPage {
     slug: string;
     title: string;
-    description: string | null;
-    sections?: ISection[];
+    description: string;
 }
-export interface ISection {
-    id?: string;
+export interface INewSection {
     title: string;
-    orderNumber: number;
+    index: number;
     type: string;
     pageId: string;
-    content?: IContent[];
 }
-export interface IContent {
-    id?: string;
-    contentType: string;
-    contentText: string | null;
-    orderNumber: number;
+export interface INewContent {
+    type: string;
+    text: string;
+    index: number;
     sectionId: string;
+}
+export interface IPage extends INewPage {
+    id: string;
+    section: ISection[];
+}
+export interface ISection extends INewSection {
+    id: string;
+    content: IContent[];
+}
+export interface IContent extends INewContent {
+    id: string;
 }

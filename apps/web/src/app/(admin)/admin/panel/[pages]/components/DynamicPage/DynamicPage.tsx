@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import EditableSection from '../EditableSection/EditableSection';
+import EditableSection from '../Editable/EditableSection';
 import { usePageContext } from "../context/Page.context";
 
 export default function DynamicPage() {

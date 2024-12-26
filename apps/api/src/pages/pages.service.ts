@@ -1,11 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import PagesRepositroy from './repository/pages.repositroy';
-import {
-  ContentDto,
-  SectionDto,
-  SwapContentDto,
-  SwapSectionDto,
-} from './dto/page.dto';
+import { ContentDto, ReorderDto, SectionDto } from './dto/page.dto';
 
 @Injectable()
 export default class PagesService {
@@ -32,12 +27,8 @@ export default class PagesService {
     return content;
   }
 
-  async swapSections(dto: SwapSectionDto) {
-    await this.pageRepository.swapSections(dto);
-  }
-
-  async swapContents(dto: SwapContentDto) {
-    await this.pageRepository.swapContents(dto);
+  async reorderSections(dto: ReorderDto) {
+    await this.pageRepository.reorderItems(dto);
   }
 
   async deleteSection(sectionId: string) {

@@ -1,12 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import DatabaseService from 'src/database/database.service';
-import {
-  ContentDto,
-  PageDto,
-  SectionDto,
-  SwapContentDto,
-  SwapSectionDto,
-} from '../dto/page.dto';
+import { ContentDto, PageDto, ReorderDto, SectionDto } from '../dto/page.dto';
+import { plainToInstance } from 'class-transformer';
+import { ContentModel, PageModel, SectionModel } from './pages.model';
 
 @Injectable()
 export default class PagesRepositroy {
@@ -15,7 +11,7 @@ export default class PagesRepositroy {
   async addPage(dto: PageDto) {
     const response = await this.databaseService.runQuery(
       `
-        INSERT INTO pages (slug, title, description)
+        INSERT INTO page (slug, title, description)
         VALUES ($1, $2, $3)
         RETURNING id
       `,
@@ -25,13 +21,6 @@ export default class PagesRepositroy {
     // Получаем ID добавленной страницы
     const pageId = response.rows[0].id;
 
-    // Если есть секции, добавляем их
-    if (dto.sections && dto.sections.length > 0) {
-      for (const section of dto.sections) {
-        await this.addSection(section, pageId);
-      }
-    }
-
     return { id: pageId, ...dto };
   }
 
@@ -39,39 +28,27 @@ export default class PagesRepositroy {
   async addSection(section: SectionDto, pageId: string) {
     const response = await this.databaseService.runQuery(
       `
-        INSERT INTO sections (title, order_number, type, page_id)
+        INSERT INTO section (title, index, type, page_id)
         VALUES ($1, $2, $3, $4)
         RETURNING *
 
       `,
-      [section.title, section.orderNumber, section.type, pageId],
+      [section.title, section.index, section.type, pageId],
     );
 
-    const sectionId = response.rows[0].id;
-
-    // Если есть контент для секции, добавляем его
-    if (section.content && section.content.length > 0) {
-      for (const content of section.content) {
-        await this.addContent(content, sectionId);
-      }
-    }
     return response.rows[0];
   }
 
   // Добавление контента
   async addContent(content: ContentDto, sectionId: string) {
+    console.log(content);
     const res = await this.databaseService.runQuery(
       `
-        INSERT INTO content (content_type, content_text, section_id, order_number)
+        INSERT INTO content (type, text, section_id, index)
         VALUES ($1, $2, $3, $4)
         RETURNING *
       `,
-      [
-        content.contentType,
-        content.contentText,
-        sectionId,
-        content.orderNumber,
-      ],
+      [content.type, content.text, sectionId, content.index],
     );
     return res.rows[0];
   }
@@ -80,7 +57,7 @@ export default class PagesRepositroy {
   async getPage(slug: string) {
     const response = await this.databaseService.runQuery(
       `
-        SELECT * FROM pages WHERE slug = $1
+        SELECT * FROM page WHERE slug = $1
       `,
       [slug],
     );
@@ -88,34 +65,33 @@ export default class PagesRepositroy {
       throw new Error('Page not found');
     }
 
-    const page = response.rows[0];
+    const page = plainToInstance(PageModel, response.rows[0]);
     // Получаем секции для этой страницы
     const sectionsResponse = await this.databaseService.runQuery(
       `
-        SELECT * FROM sections WHERE page_id = $1
+        SELECT * FROM section WHERE page_id = $1
+        ORDER BY "index";
       `,
       [page.id],
     );
 
-    const sections = sectionsResponse.rows.sort(
-      (a, b) => a.order_number - b.order_number,
-    );
+    const section = plainToInstance(SectionModel, sectionsResponse.rows);
 
     // Получаем контент для каждой секции
-    for (const section of sections) {
+    for (const sect of section) {
       const contentResponse = await this.databaseService.runQuery(
         `
           SELECT * FROM content WHERE section_id = $1
+          ORDER BY "index";
         `,
-        [section.id],
+        [sect.id],
       );
 
-      section.content = contentResponse.rows.sort(
-        (a, b) => a.order_number - b.order_number,
-      );
+      sect.content = plainToInstance(ContentModel, contentResponse.rows);
     }
-    return { ...page, sections };
+    return { ...page, section };
   }
+
   // Обновление страницы
   async updatePage(id: string, dto: PageDto) {
     const updateFields: string[] = [];
@@ -136,7 +112,7 @@ export default class PagesRepositroy {
     }
 
     const query = `
-      UPDATE pages 
+      UPDATE page 
       SET ${updateFields.join(', ')}
       WHERE id = $${id}
     `;
@@ -154,9 +130,9 @@ export default class PagesRepositroy {
       updateValues.push(dto.title);
     }
 
-    if (dto.orderNumber !== undefined) {
-      updateFields.push(`order_number = $${updateFields.length + 1}`);
-      updateValues.push(dto.orderNumber);
+    if (dto.index !== undefined) {
+      updateFields.push(`index = $${updateFields.length + 1}`);
+      updateValues.push(dto.index);
     }
 
     if (dto.type !== undefined) {
@@ -165,7 +141,7 @@ export default class PagesRepositroy {
     }
 
     const query = `
-    UPDATE sections
+    UPDATE section
     SET ${updateFields.join(', ')}
     WHERE id = $${id}
     `;
@@ -178,14 +154,14 @@ export default class PagesRepositroy {
     const updateFields: string[] = [];
     const updateValues: any[] = [];
 
-    if (dto.contentType !== undefined) {
+    if (dto.type !== undefined) {
       updateFields.push(`content_type = $${updateFields.length + 1}`);
-      updateValues.push(dto.contentType);
+      updateValues.push(dto.type);
     }
 
-    if (dto.contentText !== undefined) {
-      updateFields.push(`order_number = $${updateFields.length + 1}`);
-      updateValues.push(dto.contentText);
+    if (dto.text !== undefined) {
+      updateFields.push(`index = $${updateFields.length + 1}`);
+      updateValues.push(dto.text);
     }
 
     const query = `
@@ -201,7 +177,7 @@ export default class PagesRepositroy {
   async deletePage(id: string) {
     await this.databaseService.runQuery(
       `
-        DELETE FROM pages WHERE id = $1
+        DELETE FROM page WHERE id = $1
       `,
       [id],
     );
@@ -209,12 +185,31 @@ export default class PagesRepositroy {
 
   // Удаление секции
   async deleteSection(sectionId: string) {
-    await this.databaseService.runQuery(
-      `
-        DELETE FROM sections WHERE id = $1
+    await this.databaseService.runTransaction(async (client) => {
+      const section = await client.query(
+        `
+        SELECT * FROM section
+        WHERE id = $1
+        `,
+        [sectionId],
+      );
+      await client.query(
+        `
+          UPDATE section
+          SET index = index - 1
+          WHERE page_id = $1
+            AND index > $2;
+          `,
+        [section.rows[0].page_id, section.rows[0].index],
+      );
+
+      await client.query(
+        `
+        DELETE FROM section WHERE id = $1
       `,
-      [sectionId],
-    );
+        [sectionId],
+      );
+    });
   }
 
   // Удаление контента
@@ -227,43 +222,71 @@ export default class PagesRepositroy {
     );
   }
 
-  async swapSections({
-    sourceSectionId,
-    destinationSectionId,
-  }: SwapSectionDto) {
-    await this.databaseService.runQuery(
-      `
-      UPDATE sections
-      SET "order_number" = CASE
-        WHEN id = $1 THEN (SELECT "order_number" FROM sections WHERE id = $2)
-        WHEN id = $2 THEN (SELECT "order_number" FROM sections WHERE id = $1)
-        ELSE "order_number"
-      END
-      WHERE id IN ($1, $2)
-      RETURNING *
-      ;
-      `,
-      [sourceSectionId, destinationSectionId],
-    );
-  }
+  async reorderItems({
+    pageId,
+    sourceItemId,
+    destinationPosition,
+    parentTable,
+    childTable,
+  }: ReorderDto) {
+    // Получаем элементы текущей страницы
 
-  async swapContents({
-    sourceContentId,
-    destinationContentId,
-  }: SwapContentDto) {
-    await this.databaseService.runQuery(
+    const page = await this.databaseService.runQuery(
       `
-      UPDATE content
-      SET "order_number" = CASE
-        WHEN id = $1 THEN (SELECT "order_number" FROM content WHERE id = $2)
-        WHEN id = $2 THEN (SELECT "order_number" FROM content WHERE id = $1)
-        ELSE "order_number"
-      END
-      WHERE id IN ($1, $2)
-      RETURNING *
-      ;
+      SELECT id, index
+      FROM ${childTable}
+      WHERE ${parentTable}_id = $1
+      ORDER BY index;
       `,
-      [sourceContentId, destinationContentId],
+      [pageId],
     );
+    const sourceItem = page.rows.find((item) => item.id === sourceItemId);
+
+    if (!sourceItem) {
+      throw new Error(
+        `Item with ID ${sourceItemId} not found in table ${childTable} on page ${pageId}`,
+      );
+    }
+
+    const { index: fromPosition } = sourceItem;
+
+    // Используем транзакцию
+    await this.databaseService.runTransaction(async (client) => {
+      if (fromPosition < destinationPosition) {
+        // Перемещение вниз: уменьшаем `index`
+        await client.query(
+          `
+          UPDATE ${childTable}
+          SET index = index - 1
+          WHERE ${parentTable}_id = $1
+            AND index > $2
+            AND index <= $3;
+          `,
+          [pageId, fromPosition, destinationPosition],
+        );
+      } else if (fromPosition > destinationPosition) {
+        // Перемещение вверх: увеличиваем `index`
+        await client.query(
+          `
+          UPDATE ${childTable}
+          SET index = index + 1
+          WHERE ${parentTable}_id = $1
+            AND index >= $2
+            AND index < $3;
+          `,
+          [pageId, destinationPosition, fromPosition],
+        );
+      }
+
+      // Обновляем позицию перемещаемого элемента
+      await client.query(
+        `
+        UPDATE ${childTable}
+        SET index = $1
+        WHERE id = $2;
+        `,
+        [destinationPosition, sourceItemId],
+      );
+    });
   }
 }

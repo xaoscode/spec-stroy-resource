@@ -1,14 +1,15 @@
 import { fetchPage } from "@/app/api/pages";
 
 import { IPage } from "@repo/interfaces";
-import { EditableSection } from "./components/EditableSection/EditableSection";
-import { QuoteApp } from "./components/EditableSection/govno";
+import { EditableSection } from "./components/Editable/EditableSection";
 
 export default async function Page({ params }: { params: { pages: string } }) {
     const { pages } = await params;
 
-    // Запрос данных страницы по slug
+
+
     const pageData: IPage = await fetchPage(pages);
+
     console.log('получаю данные')
     if (!pageData) {
         return <div>Страница не найдена</div>;
@@ -16,10 +17,8 @@ export default async function Page({ params }: { params: { pages: string } }) {
 
     return (
         <div className="container mx-auto p-4 min-w-full">
-            {/* <QuoteApp></QuoteApp> */ }
-            <EditableSection sections={ pageData.sections } pageId={ pageData.id } />
-
-
+            <h1>{ pageData.title }</h1>
+            <EditableSection sections={ pageData.section } pageId={ pageData.id } />
         </div>
     );
 }

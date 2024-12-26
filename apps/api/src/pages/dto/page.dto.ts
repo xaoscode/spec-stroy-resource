@@ -1,35 +1,29 @@
-import { IContent, IPage, ISection } from '@repo/interfaces';
+import { INewContent, INewPage, INewSection } from '@repo/interfaces';
 
-export class PageDto implements IPage {
-  id?: string;
+export class PageDto implements INewPage {
   slug: string;
   title: string;
   description: string;
-  sections?: ISection[];
 }
 
-export class SectionDto implements ISection {
-  id?: string;
+export class SectionDto implements INewSection {
   title: string;
-  orderNumber: number;
+  index: number;
   type: string;
   pageId: string;
-  content?: IContent[];
 }
 
-export class ContentDto implements IContent {
-  id?: string;
-  orderNumber: number;
-  contentType: string;
-  contentText: string;
+export class ContentDto implements INewContent {
+  type: string;
+  text: string;
+  index: number;
   sectionId: string;
 }
 
-export class SwapSectionDto {
-  sourceSectionId: string;
-  destinationSectionId: string;
-}
-export class SwapContentDto {
-  sourceContentId: string;
-  destinationContentId: string;
+export class ReorderDto {
+  pageId: number;
+  sourceItemId: number;
+  destinationPosition: number;
+  parentTable;
+  childTable: string;
 }
