@@ -7,6 +7,7 @@ import HomeMap from "./components/HomeMap/HomeMap";
 import ServiceBlock from "@/components/ServiceBlock/ServiceBlock";
 import { Button } from "@/components/Button/Button";
 import { fetchFilteredProjects, fetchProjectsCout } from "./api/Projects";
+import Link from "next/link";
 
 export const metadata: Metadata = { title: "Главная" };
 const count = await fetchProjectsCout();
@@ -31,7 +32,9 @@ export default function Home() {
         <div className={ styles.header }>НАШИ ПРОЕКТЫ</div>
         <OurProjects projects={ projects } />
         <Button size="lg" variant="filled">
-          Все проекты
+          <Link href={ "/projects" }>
+            Все проекты
+          </Link>
         </Button>
       </InfoBlock>
     </div>

@@ -8,7 +8,13 @@ import {
   Post,
 } from '@nestjs/common';
 import PagesService from './pages.service';
-import { ContentDto, ReorderDto, SectionDto } from './dto/page.dto';
+import {
+  ContentDto,
+  DeleteDto,
+  ReorderDto,
+  SectionDto,
+  UpdateBlockDto,
+} from './dto/page.dto';
 
 @Controller('pages')
 export default class PagesController {
@@ -29,13 +35,19 @@ export default class PagesController {
     return this.pageService.addContent(id, dto);
   }
 
+  @Patch('update-block')
+  async updateContent(@Body() dto: UpdateBlockDto) {
+    console.log(dto);
+    return this.pageService.updateBlock(dto);
+  }
+
   @Patch('reorder-items')
   async reorderSections(@Body() dto: ReorderDto) {
     return this.pageService.reorderSections(dto);
   }
 
-  @Delete('delet-section')
-  async deleteSection(@Body() { sectionId }: { sectionId: string }) {
-    return this.pageService.deleteSection(sectionId);
+  @Delete('delet-item')
+  async deleteSection(@Body() dto: DeleteDto) {
+    return this.pageService.deleteItem(dto);
   }
 }

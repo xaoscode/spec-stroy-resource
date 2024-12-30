@@ -1,8 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import DatabaseService from 'src/database/database.service';
-import { ContentDto, PageDto, ReorderDto, SectionDto } from '../dto/page.dto';
+import {
+  BlockDto,
+  ContentDto,
+  DeleteDto,
+  PageDto,
+  ReorderDto,
+  SectionDto,
+  UpdateBlockDto,
+} from '../dto/page.dto';
 import { plainToInstance } from 'class-transformer';
-import { ContentModel, PageModel, SectionModel } from './pages.model';
+import { ContentModel, PageModel, SectionModel } from './page.model';
 
 @Injectable()
 export default class PagesRepositroy {
@@ -18,13 +26,11 @@ export default class PagesRepositroy {
       [dto.slug, dto.title, dto.description],
     );
 
-    // Получаем ID добавленной страницы
     const pageId = response.rows[0].id;
 
     return { id: pageId, ...dto };
   }
 
-  // Добавление секции
   async addSection(section: SectionDto, pageId: string) {
     const response = await this.databaseService.runQuery(
       `
@@ -39,21 +45,37 @@ export default class PagesRepositroy {
     return response.rows[0];
   }
 
-  // Добавление контента
   async addContent(content: ContentDto, sectionId: string) {
-    console.log(content);
     const res = await this.databaseService.runQuery(
       `
-        INSERT INTO content (type, text, section_id, index)
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO content (type, text, header, images, section_id, index)
+        VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING *
       `,
-      [content.type, content.text, sectionId, content.index],
+      [
+        content.type,
+        content.text,
+        content.header,
+        content.images,
+        sectionId,
+        content.index,
+      ],
     );
     return res.rows[0];
   }
 
-  // Получение страницы по slug
+  async addBlock(dto: BlockDto) {
+    const res = await this.databaseService.runQuery(
+      `
+      INSERT INTO block (header, text, image, content_id)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *
+      `,
+      [dto.header, dto.text, dto.images, dto.contentId],
+    );
+    return res.rows[0];
+  }
+
   async getPage(slug: string) {
     const response = await this.databaseService.runQuery(
       `
@@ -66,7 +88,6 @@ export default class PagesRepositroy {
     }
 
     const page = plainToInstance(PageModel, response.rows[0]);
-    // Получаем секции для этой страницы
     const sectionsResponse = await this.databaseService.runQuery(
       `
         SELECT * FROM section WHERE page_id = $1
@@ -77,7 +98,6 @@ export default class PagesRepositroy {
 
     const section = plainToInstance(SectionModel, sectionsResponse.rows);
 
-    // Получаем контент для каждой секции
     for (const sect of section) {
       const contentResponse = await this.databaseService.runQuery(
         `
@@ -92,7 +112,6 @@ export default class PagesRepositroy {
     return { ...page, section };
   }
 
-  // Обновление страницы
   async updatePage(id: string, dto: PageDto) {
     const updateFields: string[] = [];
     const updateValues: any[] = [];
@@ -120,7 +139,6 @@ export default class PagesRepositroy {
     await this.databaseService.runQuery(query, updateValues);
   }
 
-  // Обновление секции
   async updateSection(id: string, dto: SectionDto) {
     const updateFields: string[] = [];
     const updateValues: any[] = [];
@@ -149,31 +167,34 @@ export default class PagesRepositroy {
     await this.databaseService.runQuery(query, updateValues);
   }
 
-  // Обновление контента
-  async updateContent(id: string, dto: ContentDto) {
+  async updateBlock(dto: UpdateBlockDto) {
     const updateFields: string[] = [];
     const updateValues: any[] = [];
 
-    if (dto.type !== undefined) {
-      updateFields.push(`content_type = $${updateFields.length + 1}`);
-      updateValues.push(dto.type);
+    if (dto.header !== undefined) {
+      updateFields.push(`header = $${updateFields.length + 1}`);
+      updateValues.push(dto.header);
     }
 
     if (dto.text !== undefined) {
-      updateFields.push(`index = $${updateFields.length + 1}`);
+      updateFields.push(`text = $${updateFields.length + 1}`);
       updateValues.push(dto.text);
     }
 
-    const query = `
-    UPDATE content 
-    SET ${updateFields.join(', ')}
-    WHERE id = $${id}
-    `;
+    if (dto.images !== undefined) {
+      updateFields.push(`images = $${updateFields.length + 1}`);
+      updateValues.push(dto.images);
+    }
+    updateValues.push(dto.id);
 
+    const query = `
+    UPDATE block 
+    SET ${updateFields.join(', ')}
+    WHERE id = $${updateFields.length + 1}
+    `;
     await this.databaseService.runQuery(query, updateValues);
   }
 
-  // Удаление страницы
   async deletePage(id: string) {
     await this.databaseService.runQuery(
       `
@@ -183,36 +204,34 @@ export default class PagesRepositroy {
     );
   }
 
-  // Удаление секции
-  async deleteSection(sectionId: string) {
+  async deleteItem({ id, parentTable, childTable, parentId }: DeleteDto) {
     await this.databaseService.runTransaction(async (client) => {
-      const section = await client.query(
+      const item = await client.query(
         `
-        SELECT * FROM section
+        SELECT * FROM ${childTable}
         WHERE id = $1
         `,
-        [sectionId],
+        [id],
       );
       await client.query(
         `
-          UPDATE section
+          UPDATE ${childTable}
           SET index = index - 1
-          WHERE page_id = $1
+          WHERE ${parentTable}_id = $1
             AND index > $2;
           `,
-        [section.rows[0].page_id, section.rows[0].index],
+        [parentId, item.rows[0].index],
       );
 
       await client.query(
         `
-        DELETE FROM section WHERE id = $1
+        DELETE FROM ${childTable} WHERE id = $1
       `,
-        [sectionId],
+        [id],
       );
     });
   }
 
-  // Удаление контента
   async deleteContent(id: string) {
     await this.databaseService.runQuery(
       `
@@ -229,8 +248,6 @@ export default class PagesRepositroy {
     parentTable,
     childTable,
   }: ReorderDto) {
-    // Получаем элементы текущей страницы
-
     const page = await this.databaseService.runQuery(
       `
       SELECT id, index
@@ -250,10 +267,8 @@ export default class PagesRepositroy {
 
     const { index: fromPosition } = sourceItem;
 
-    // Используем транзакцию
     await this.databaseService.runTransaction(async (client) => {
       if (fromPosition < destinationPosition) {
-        // Перемещение вниз: уменьшаем `index`
         await client.query(
           `
           UPDATE ${childTable}
@@ -265,7 +280,6 @@ export default class PagesRepositroy {
           [pageId, fromPosition, destinationPosition],
         );
       } else if (fromPosition > destinationPosition) {
-        // Перемещение вверх: увеличиваем `index`
         await client.query(
           `
           UPDATE ${childTable}
@@ -278,7 +292,6 @@ export default class PagesRepositroy {
         );
       }
 
-      // Обновляем позицию перемещаемого элемента
       await client.query(
         `
         UPDATE ${childTable}

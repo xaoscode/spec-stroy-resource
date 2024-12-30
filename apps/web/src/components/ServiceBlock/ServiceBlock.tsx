@@ -7,27 +7,22 @@ export default function ServiceBlock({
   ...props
 }: ServiceBlockProps) {
   return (
-    <div className={cn(className, styles.block)} {...props}>
+    <div className={ cn(className, styles.block) } { ...props }>
       <ServiceComponent
-        header={"Строительно-техническая экспертиза жилья"}
-        image={"/inspection.webp"}
-      ></ServiceComponent>
+        header={ "Строительно-техническая экспертиза жилья" }
+        image={ "/inspection.webp" } link={ "services/stroitelno_tekhnicheskaya_ekspertiza_zhilya" }      ></ServiceComponent>
       <ServiceComponent
-        header={"Инструментально техническое обследование объектов"}
-        image={"/instrumental.webp"}
-      ></ServiceComponent>
+        header={ "Инструментально техническое обследование объектов" }
+        image={ "/instrumental.webp" } link={ "" }      ></ServiceComponent>
       <ServiceComponent
-        header={"BIM проектирование"}
-        image={"/inspection.webp"}
-      ></ServiceComponent>
+        header={ "BIM проектирование" }
+        image={ "/inspection.webp" } link={ "" }      ></ServiceComponent>
       <ServiceComponent
-        header={"Комплексное проектирование"}
-        image={"/instrumental.webp"}
-      ></ServiceComponent>{" "}
+        header={ "Комплексное проектирование" }
+        image={ "/instrumental.webp" } link={ "" }      ></ServiceComponent>{ " " }
       <ServiceComponent
-        header={"Проектирование инженерных систем и сетей"}
-        image={"/instrumental.webp"}
-      ></ServiceComponent>
+        header={ "Проектирование инженерных систем и сетей" }
+        image={ "/instrumental.webp" } link={ "" }      ></ServiceComponent>
     </div>
   );
 }

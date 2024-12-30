@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import { GripVertical } from "lucide-react";
 import { INewSection, ISection } from "@repo/interfaces";
-import { Button } from "@/components/ui/button";
 import { EditableContent } from "./EditableContent";
 import { addSectionAction, deleteAction, reorderAction } from "./_lib/content-service";
+import { AdminButton } from "../../../components/AdminButton/AdminButton";
 
 
 export function EditableSection({ sections = [], pageId = "" }: { sections?: ISection[], pageId?: string }) {
@@ -47,7 +47,7 @@ export function EditableSection({ sections = [], pageId = "" }: { sections?: ISe
         setOptimisticItems((prevItems) => prevItems.filter(item => item.id !== sectionId));
 
         try {
-            await deleteAction(sectionId, "section");
+            await deleteAction(sectionId, "section", "page", pageId);
 
         } catch (error) {
             setOptimisticItems(prevState);
@@ -56,9 +56,9 @@ export function EditableSection({ sections = [], pageId = "" }: { sections?: ISe
     };
 
     return (
-        <div className="flex flex-col gap-5 items-center justify-center min-w-full bg-gray-100 p-4">
+        <div className="flex flex-col gap-5  min-w-full">
 
-            <Button onClick={ async () => addNewItem('секция') }>Добавить секцию</Button>
+            <AdminButton className="w-[300px]" variant="save" onClick={ async () => addNewItem('секция') }>Добавить секцию</AdminButton>
 
             <DragDropContext onDragEnd={ onDragEndAction } >
                 <Droppable droppableId="0">
@@ -78,26 +78,24 @@ export function EditableSection({ sections = [], pageId = "" }: { sections?: ISe
                                         >
                                             <div
                                                 { ...provided.dragHandleProps }
-                                                className="flex items-center pr-4 border-r border-gray-600 cursor-grab text-gray-600 hover:text-gray-800"
+                                                className="flex items-center pr-4  border-gray-600 cursor-grab text-gray-600 hover:text-gray-800"
                                             >
                                                 <GripVertical />
                                             </div>
-                                            <div className="flex-1 ml-4">
-                                                { item.id }
-                                                <div className="text-red-600">
-                                                    { item.index }
+                                            <div className="flex-1">
+                                                <div className="flex flex-row justify-between">
+                                                    <h1>Секция: { item.index }</h1>
+                                                    <AdminButton
+                                                        onClick={ () => deleteSection(item.id) }
+                                                        variant="remove"
+                                                    >
+                                                        Удалить секцию
+                                                    </AdminButton>
                                                 </div>
-
                                                 <EditableContent contents={ item.content } sectionId={ item.id } pageId={ pageId } />
+                                                <p className="text-sm text-gray-500">id: { item.id }</p>
                                             </div>
-                                            <div className="flex items-center pl-4 border-l border-gray-600 cursor-grab text-gray-600 hover:text-gray-800">
-                                                <button
-                                                    onClick={ () => deleteSection(item.id) }
-                                                    className="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-1 px-3 rounded"
-                                                >
-                                                    Удалить блок
-                                                </button>
-                                            </div>
+
                                         </div>
                                     ) }
                                 </Draggable>

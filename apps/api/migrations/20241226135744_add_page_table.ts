@@ -29,9 +29,21 @@ export async function up(knex: Knex): Promise<void> {
           id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
           type VARCHAR(50) NOT NULL,
           index INTEGER NOT NULL,
-          text TEXT,
+          header TEXT[],
+          text TEXT[],
+          images TEXT[],
           section_id UUID REFERENCES section(id) ON DELETE CASCADE
       );
+    `);
+  await knex.raw(`
+        CREATE TABLE block (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        header TEXT,
+        text TEXT,
+        image TEXT,
+        content_id UUID REFERENCES content(id) ON DELETE CASCADE
+
+      )
     `);
 
   await knex.raw(`
@@ -48,6 +60,7 @@ export async function up(knex: Knex): Promise<void> {
 
 export async function down(knex: Knex): Promise<void> {
   // Удаляем таблицы в обратном порядке
+  await knex.raw(`DROP TABLE IF EXISTS block;`);
   await knex.raw(`DROP TABLE IF EXISTS content;`);
   await knex.raw(`DROP TABLE IF EXISTS section;`);
   await knex.raw(`DROP TABLE IF EXISTS page;`);

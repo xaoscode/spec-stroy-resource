@@ -1,4 +1,4 @@
-import { IContent, IPage, ISection } from '@repo/interfaces';
+import { IBlock, IContent, IPage, ISection } from '@repo/interfaces';
 import { Expose } from 'class-transformer';
 
 export class PageModel implements IPage {
@@ -22,8 +22,11 @@ export class SectionModel implements ISection {
 export class ContentModel implements IContent {
   id: string;
   type: string;
-  text: string;
   index: number;
+  header?: string[];
+  text?: string[];
+  images?: string[];
+  block: IBlock[];
   @Expose({ name: 'section_id' })
   sectionId: string;
 }

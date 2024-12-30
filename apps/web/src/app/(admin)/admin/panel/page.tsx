@@ -1,10 +1,8 @@
-import EditableText from "./components/EditableText/EditableText";
 
-export default function Panel() {
+export default function AdminPanel() {
   return (
     <div>
-      <h1>Редактируемый текст:</h1>
-      <EditableText initialText="Дважды кликните для редактирования" />
+      <h1>Панель администратора</h1>
     </div>
   );
 }

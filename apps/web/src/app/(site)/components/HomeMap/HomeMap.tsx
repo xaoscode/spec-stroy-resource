@@ -27,28 +27,38 @@ export default function HomeMap({
       className: styles["item-1"],
       text: "Административные здания.",
       image: "/zdan.svg",
+      url: "/projects?page=1&sector=administrative_buildings"
     },
     {
       className: styles["item-2"],
       text: "Многоквартирные жилые дома",
       image: "/apart.svg",
+      url: "/projects?page=1&sector=administrative_buildings"
     },
     {
       className: styles["item-3"],
       text: "Промышленные объекты: заводы и фабрики.",
       image: "/factory.svg",
+      url: "/projects?page=1&sector=administrative_buildings"
     },
     {
       className: styles["item-4"],
       text: "Образовательные учреждения",
       image: "/school.svg",
+      url: "/projects?page=1&sector=administrative_buildings"
+
     },
     {
       className: styles["item-5"],
       text: "Логистические центры и склады.",
       image: "/storage.svg",
+      url: "/projects?page=1&sector=administrative_buildings"
     },
-    { className: styles["item-6"], text: "Реконструкция", image: "/rec.svg" },
+    {
+      className: styles["item-6"], text: "Реконструкция", image: "/rec.svg",
+      url: "/projects?page=1&sector=administrative_buildings"
+
+    },
   ];
 
   const handleMouseEnter = () => {
@@ -56,26 +66,26 @@ export default function HomeMap({
   };
 
   return (
-    <div className={cn(styles.map__container, className)} {...props}>
-      <div className={styles.octagon}></div>
-      {items.map((item, index) => (
+    <div className={ cn(styles.map__container, className) } { ...props }>
+      <div className={ styles.octagon }></div>
+      { items.map((item, index) => (
         <Link
-          key={index}
-          className={cn(item.className, styles.item, {
+          key={ index }
+          className={ cn(item.className, styles.item, {
             [styles.active]: index === activeIndex,
-          })}
-          onMouseEnter={handleMouseEnter}
-          href={"/"}
+          }) }
+          onMouseEnter={ handleMouseEnter }
+          href={ item.url }
         >
-          <span>{item.text}</span>
+          <span>{ item.text }</span>
           <Image
-            src={item.image}
-            alt={`Векторное изображение ${item.text.toLowerCase()}`}
-            width={1}
-            height={1}
+            src={ item.image }
+            alt={ `Векторное изображение ${item.text.toLowerCase()}` }
+            width={ 1 }
+            height={ 1 }
           />
         </Link>
-      ))}
+      )) }
     </div>
   );
 }

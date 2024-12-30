@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { IContent, INewContent } from "@repo/interfaces";
 import { addContentAction, deleteAction, reorderAction } from "./_lib/content-service";
+import { RenderContentBlock } from "./Contents/Contents";
+import { AdminButton } from "../../../components/AdminButton/AdminButton";
 
-const contentTypes = ["Текст", "Картинки с текстом", "Список", "Предупреждение"];
+const contentTypes = ["Текст", "Картинки с текстом", "Список", "Предупреждение", "Прайс-лист"];
 
 export function EditableContent({ contents = [], sectionId = "" }: { contents?: IContent[], sectionId?: string, pageId?: string }) {
     const [optimisticItems, setOptimisticItems] = useState(contents);
@@ -39,17 +41,17 @@ export function EditableContent({ contents = [], sectionId = "" }: { contents?: 
     const addNewItem = async (type: string) => {
         const newItem: INewContent = {
             type: type,
-            text: "sdfsf",
             index: contents.length + 1,
-            sectionId: sectionId
+            sectionId: sectionId,
+
         };
 
         await addContentAction(newItem, sectionId);
     };
 
-    const deleteContent = async (sectionId: string) => {
+    const deleteContent = async (contentId: string) => {
 
-        await deleteAction(sectionId, "content");
+        await deleteAction(contentId, "content", "section", sectionId);
 
 
     };
@@ -57,12 +59,11 @@ export function EditableContent({ contents = [], sectionId = "" }: { contents?: 
 
 
     return (
-        <div className="flex flex-col items-center justify-center min-w-full bg-gray-100 p-4">
-            <h1 className="text-2xl font-bold text-gray-800 mb-6">Блок</h1>
+        <div className="flex flex-col min-w-full">
 
             <DropdownMenu>
-                <DropdownMenuTrigger className="mb-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded shadow">
-                    Выбор варианта контента
+                <DropdownMenuTrigger className="mb-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded shadow w-[300px]">
+                    Добавить контент
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                     { contentTypes.map((type, i) => (
@@ -90,29 +91,30 @@ export function EditableContent({ contents = [], sectionId = "" }: { contents?: 
                                             className={ `flex items-center p-4 mb-2 bg-gray-200 rounded-lg shadow-sm ${snapshot.isDragging ? "bg-green-300" : ""
                                                 }` }
                                         >
-                                            <div
-                                                { ...provided.dragHandleProps }
-                                                className="flex items-center pr-4 border-r border-gray-600 cursor-grab text-gray-600 hover:text-gray-800"
-                                            >
-                                                <GripVertical />
-                                            </div>
+
                                             <div className="flex-1 ml-4">
-                                                <p className="text-lg font-semibold text-gray-700">
-                                                    { item.type } - { item.text }
-                                                </p>
+                                                <div className="flex flex-row justify-between">
+                                                    <h3 >
+                                                        { item.type }
+                                                    </h3>
+                                                    <AdminButton
+                                                        onClick={ () => deleteContent(item.id) }
+                                                        variant="remove"
+                                                    >
+                                                        Удалить контент
+                                                    </AdminButton>
+                                                </div>
+
+                                                <RenderContentBlock content={ item } />
                                                 <p className="text-sm text-gray-500">{ item.id }</p>
                                             </div>
                                             <div
                                                 { ...provided.dragHandleProps }
-                                                className="flex items-center p-4 border-l border-gray-600 cursor-grab text-gray-600 hover:text-gray-800"
+                                                className="flex items-center pl-4  border-gray-600 cursor-grab text-gray-600 hover:text-gray-800"
                                             >
-                                                <button
-                                                    onClick={ async () => { deleteContent(item.id) } }
-                                                    className="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-1 px-3 rounded"
-                                                >
-                                                    Удалить контент
-                                                </button>
+                                                <GripVertical />
                                             </div>
+
                                         </div>
                                     ) }
                                 </Draggable>

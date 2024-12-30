@@ -1,13 +1,14 @@
 {
-    "sqltools.connections": [
-        {
-            "previewLimit": 50,
-            "server": "localhost",
-            "port": 5433,
-            "driver": "PostgreSQL",
-            "name": "govno",
-            "database": "nestjs2",
-            "username": "admin"
-        }
-    ]
+	"sqltools.connections": [
+		{
+			"previewLimit": 50,
+			"server": "localhost",
+			"port": 5433,
+			"askForPassword": true,
+			"driver": "PostgreSQL",
+			"name": "govno",
+			"database": "nestjs2",
+			"username": "admin"
+		}
+	]
 }

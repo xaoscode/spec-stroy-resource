@@ -1,44 +1,36 @@
 .component {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 150px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	width: 150px;
 }
 
 .service__name {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 150px;
-  width: 100%;
-  background-color: rgb(var(--primary-color));
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 200px;
+	width: 200px;
+	background-color: rgb(var(--primary-color));
+	padding: 20px;
 }
 
 .link {
-  text-wrap: wrap;
-  text-align: center;
-  line-height: 20px;
+	text-wrap: wrap;
+	text-align: center;
+	line-height: 20px;
 }
 
 .image {
-  width: 100%;
-  height: 200px;
+	width: 100%;
+	height: 200px;
 }
 
-.description {
-  display: flex;
-  align-items: center;
-  padding: 10px 0 10px;
-  align-items: center;
-  text-align: justify;
-  color: black;
-  height: 100px;
-}
 @media (max-width: 768px) {
-  .component {
-    width: 100%;
-    padding: 0 20px 0;
-  }
+	.component {
+		width: 100%;
+		padding: 0 20px 0;
+	}
 }

@@ -1,4 +1,11 @@
-import { INewContent, INewPage, INewSection } from '@repo/interfaces';
+import {
+  IBlock,
+  IContent,
+  INewBlock,
+  INewContent,
+  INewPage,
+  INewSection,
+} from '@repo/interfaces';
 
 export class PageDto implements INewPage {
   slug: string;
@@ -15,15 +22,38 @@ export class SectionDto implements INewSection {
 
 export class ContentDto implements INewContent {
   type: string;
-  text: string;
   index: number;
+  header?: string[];
+  text?: string[];
+  images?: string[];
   sectionId: string;
+}
+export class BlockDto implements INewBlock {
+  text: string;
+  header: string;
+  images: string;
+  contentId: string;
+}
+
+export class UpdateBlockDto implements IBlock {
+  id: string;
+  text: string;
+  header: string;
+  images: string;
+  contentId: string;
 }
 
 export class ReorderDto {
   pageId: number;
   sourceItemId: number;
   destinationPosition: number;
-  parentTable;
+  parentTable: string;
+  childTable: string;
+}
+
+export class DeleteDto {
+  id: string;
+  parentId: string;
+  parentTable: string;
   childTable: string;
 }

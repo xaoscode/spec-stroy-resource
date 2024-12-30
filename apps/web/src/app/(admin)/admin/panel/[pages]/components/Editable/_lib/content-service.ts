@@ -61,19 +61,41 @@ export async function reorderAction(pageId: string, sourceItemId: string, destin
 	}
 }
 
-export async function deleteAction(sectionId: string, tableName: string) {
+export async function deleteAction(id: string, childTable: string, parentTable: string, parentId: string) {
 	try {
-		await fetch(`${API.pages}/delet-section`, {
+		await fetch(`${API.pages}/delet-item`, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ sectionId, tableName }),
+			body: JSON.stringify({ id, parentTable, childTable, parentId }),
 			cache: "no-cache",
 		});
 		revalidatePath("/");
 	} catch (error) {
 		console.log("Delete section error", error);
 		throw error;
+	}
+}
+
+export async function updateBlock(content: INewContent) {
+	try {
+		const response = await fetch(`${API.pages}/update-content`, {
+			method: "PATCH",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ ...content }),
+			cache: "no-cache",
+		});
+		revalidatePath("/");
+		if (!response.ok) {
+			return { success: false, error: "Failed to save content" };
+		}
+
+		return { success: true };
+	} catch (error) {
+		console.log("Update content error", error);
+		return { success: false, error: error.message };
 	}
 }

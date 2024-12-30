@@ -16,7 +16,7 @@ export default async function Page({ params }: { params: { pages: string } }) {
     }
 
     return (
-        <div className="container mx-auto p-4 min-w-full">
+        <div className="container mx-auto min-w-full p-5">
             <h1>{ pageData.title }</h1>
             <EditableSection sections={ pageData.section } pageId={ pageData.id } />
         </div>

@@ -13,9 +13,18 @@ export interface INewSection {
 
 export interface INewContent {
 	type: string;
-	text: string;
 	index: number;
+	header?: string[];
+	text?: string[];
+	images?: string[];
 	sectionId: string;
+}
+
+export interface INewBlock {
+	text: string;
+	header: string;
+	images: string;
+	contentId: string;
 }
 
 export interface IPage extends INewPage {
@@ -29,5 +38,10 @@ export interface ISection extends INewSection {
 }
 
 export interface IContent extends INewContent {
+	id: string;
+	block: IBlock[];
+}
+
+export interface IBlock extends INewBlock {
 	id: string;
 }
