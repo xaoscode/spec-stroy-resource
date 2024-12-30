@@ -1,86 +1,55 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import Image from "next/image";
-import { IContent } from "@repo/interfaces";
+import { IBlock, INewBlock } from "@repo/interfaces";
 import { AdminButton } from "../../../../components/AdminButton/AdminButton";
-import { updateBlock } from "../_lib/content-service";
+import { addBlockAction, updateBlock } from "../_lib/content-service";
 
-export function ImageTextBlock({ initialContent }: { initialContent: IContent }) {
-    const [content, setContent] = useState({
-        ...initialContent,
-        header: initialContent.header || [],
-        text: initialContent.text || [],
-        images: initialContent.images || [],
-    });
-    const [, setIsEditing] = useState(false);
-    const [isChanged, setIsChanged] = useState(false);
+export function ImageTextBlock({ initialContent = [], contentId }: { initialContent?: IBlock[], contentId: string }) {
+    const [blocks, setBlocks] = useState(initialContent);
 
-    const handleHeaderChange = (index: number, value: string) => {
-        setContent((prev) => {
-            const updatedHeaders = [...prev.header];
-            updatedHeaders[index] = value;
-            setIsChanged(true);
-            return { ...prev, header: updatedHeaders };
-        });
-    };
+    const [isSaving, setIsSaving] = useState(false);
 
-    const handleTextChange = (index: number, value: string) => {
-        setContent((prev) => {
-            const updatedTexts = [...prev.text];
-            updatedTexts[index] = value;
-            setIsChanged(true);
-            return { ...prev, text: updatedTexts };
-        });
-    };
+    // useEffect(() => {
+    //     setBlocks(initialContent)
+    // }, [initialContent])
 
-    const handleImageChange = (index: number, file: File) => {
-        const imageUrl = URL.createObjectURL(file);
-        setContent((prev) => {
-            const updatedImages = [...prev.images];
-            updatedImages[index] = imageUrl;
-            setIsChanged(true);
-            return { ...prev, images: updatedImages };
-        });
-    };
-
-    const handleAddBlock = () => {
-        if (content.header.length < 3) {
-            setContent((prev) => ({
-                ...prev,
-                header: [...prev.header, ""],
-                text: [...prev.text, ""],
-                images: [...prev.images, ""],
-            }));
-            setIsChanged(true);
-        }
-    };
-
-    const handleRemoveBlock = (index: number) => {
-        setContent((prev) => ({
-            ...prev,
-            header: prev.header.filter((_, i) => i !== index),
-            text: prev.text.filter((_, i) => i !== index),
-            images: prev.images.filter((_, i) => i !== index),
-        }));
-
-        setIsChanged(true);
-    };
-
-    const handleSave = async () => {
+    const saveContent = async (block: IBlock) => {
         try {
-            const result = await updateBlock(content);
+            setIsSaving(true);
+            const result = await updateBlock(block);
 
             if (result.success) {
-                console.log("Saving content:", content);
-                setIsEditing(false);
-                setIsChanged(false);
+                console.log("Autosave successful:", block);
             } else {
-                console.error("Save failed:", result.error);
+                console.error("Autosave failed:", result.error);
             }
         } catch (error) {
             console.error("Error saving content:", error);
+        } finally {
+            setIsSaving(false);
         }
+    };
+
+    // Используем useDebouncedCallback для вызова сохранения с задержкой
+    const debouncedSave = useDebouncedCallback(saveContent, 1000); // Задержка в 1 секунду
+
+
+
+    const handleAddBlock = async () => {
+        const newBlock: INewBlock = {
+            header: "",
+            text: "",
+            images: "",
+            contentId: contentId
+        }
+        await addBlockAction(newBlock)
+    };
+
+    const handleRemoveBlock = () => {
+
     };
 
     const triggerFileInput = (index: number) => {
@@ -92,21 +61,22 @@ export function ImageTextBlock({ initialContent }: { initialContent: IContent })
 
     return (
         <div className="p-6 bg-gray-50 rounded-lg shadow-md">
-
             <div className="flex flex-col lg:flex-row justify-between gap-6">
-                { content.header.map((_, index) => (
+                { blocks.map((block, index) => (
                     <div key={ index } className="flex-1 text-center space-y-3 relative">
                         <div className="flex flex-col gap-5 justify-center items-center">
                             <AdminButton
-                                onClick={ () => handleRemoveBlock(index) }
+                                onClick={ () => handleRemoveBlock() }
                                 variant="remove"
                             >
                                 Удалить
                             </AdminButton>
                             <input
                                 type="text"
-                                value={ content.header[index] || "" }
-                                onChange={ (e) => handleHeaderChange(index, e.target.value) }
+                                value={ block.header }
+                                onChange={ (e) =>
+                                    debouncedSave({ ...block, header: e.target.value })
+                                }
                                 placeholder="Введите заголовок"
                                 className="w-full text-center font-semibold text-lg p-2 border rounded"
                             />
@@ -114,12 +84,12 @@ export function ImageTextBlock({ initialContent }: { initialContent: IContent })
                                 onClick={ () => triggerFileInput(index) }
                                 className="cursor-pointer border rounded-md shadow p-2 w-64 h-64 flex items-center justify-center bg-gray-100"
                             >
-                                { content.images[index] ? (
+                                { block.images ? (
                                     <Image
                                         src={
-                                            content.images[index].startsWith("blob:")
-                                                ? content.images[index]
-                                                : `http://localhost:3002/images/${content.images[index]}`
+                                            block.images.startsWith("blob:")
+                                                ? block.images
+                                                : `http://localhost:3002/images/${block.images}`
                                         }
                                         alt={ `Изображение ${index + 1}` }
                                         width={ 300 }
@@ -137,12 +107,16 @@ export function ImageTextBlock({ initialContent }: { initialContent: IContent })
                                 className="hidden"
                                 onChange={ (e) =>
                                     e.target.files &&
-                                    handleImageChange(index, e.target.files[0])
+                                    debouncedSave({ ...block, images: e.target.value })
+
                                 }
                             />
                             <textarea
-                                value={ content.text[index] || "" }
-                                onChange={ (e) => handleTextChange(index, e.target.value) }
+                                value={ block.text }
+                                onChange={ (e) =>
+                                    debouncedSave({ ...block, text: e.target.value })
+
+                                }
                                 placeholder="Введите описание"
                                 className="w-full text-center p-2 border rounded outline outline-1"
                             />
@@ -152,21 +126,13 @@ export function ImageTextBlock({ initialContent }: { initialContent: IContent })
             </div>
 
             <div className="flex flex-col items-center mt-4 space-y-4">
-                { content.header.length < 3 && (
-                    <AdminButton
-                        onClick={ handleAddBlock }
-                        variant="add"
-                    >
+                { blocks.length < 3 && (
+                    <AdminButton onClick={ handleAddBlock } variant="add">
                         Добавить блок
                     </AdminButton>
                 ) }
-                { isChanged && (
-                    <AdminButton
-                        onClick={ handleSave }
-                        variant="save"
-                    >
-                        Сохранить изменения
-                    </AdminButton>
+                { isSaving && (
+                    <p className="text-gray-500 text-sm">Сохранение...</p>
                 ) }
             </div>
         </div>

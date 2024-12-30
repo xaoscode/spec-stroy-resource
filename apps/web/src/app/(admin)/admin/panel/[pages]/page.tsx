@@ -4,13 +4,13 @@ import { IPage } from "@repo/interfaces";
 import { EditableSection } from "./components/Editable/EditableSection";
 
 export default async function Page({ params }: { params: { pages: string } }) {
-    const { pages } = await params;
+    const pages = (await params).pages;
 
 
 
     const pageData: IPage = await fetchPage(pages);
 
-    console.log('получаю данные')
+    console.log('получаю данные', pageData)
     if (!pageData) {
         return <div>Страница не найдена</div>;
     }

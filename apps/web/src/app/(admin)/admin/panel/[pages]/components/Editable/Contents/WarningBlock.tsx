@@ -2,7 +2,6 @@
 
 import { IContent } from "@repo/interfaces";
 import { useState } from "react";
-import { updateContent } from "../_lib/content-service";
 import { AdminButton } from "../../../../components/AdminButton/AdminButton";
 
 export function WarningBlock({ initialContent }: { initialContent: IContent }) {
@@ -76,3 +75,7 @@ export function WarningBlock({ initialContent }: { initialContent: IContent }) {
         </div>
     )
 };
+
+function updateContent(content: { header: string[]; text: string[]; id: string; block: import("@repo/interfaces").IBlock[]; type: string; index: number; images?: string[]; sectionId: string; }) {
+    throw new Error("Function not implemented.");
+}

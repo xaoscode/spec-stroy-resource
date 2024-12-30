@@ -10,7 +10,12 @@ import {
   UpdateBlockDto,
 } from '../dto/page.dto';
 import { plainToInstance } from 'class-transformer';
-import { ContentModel, PageModel, SectionModel } from './page.model';
+import {
+  BlockModel,
+  ContentModel,
+  PageModel,
+  SectionModel,
+} from './page.model';
 
 @Injectable()
 export default class PagesRepositroy {
@@ -65,9 +70,10 @@ export default class PagesRepositroy {
   }
 
   async addBlock(dto: BlockDto) {
+    console.log(dto);
     const res = await this.databaseService.runQuery(
       `
-      INSERT INTO block (header, text, image, content_id)
+      INSERT INTO block (header, text, images, content_id)
       VALUES ($1, $2, $3, $4)
       RETURNING *
       `,
@@ -76,7 +82,7 @@ export default class PagesRepositroy {
     return res.rows[0];
   }
 
-  async getPage(slug: string) {
+  async getPagse(slug: string) {
     const response = await this.databaseService.runQuery(
       `
         SELECT * FROM page WHERE slug = $1
@@ -88,6 +94,7 @@ export default class PagesRepositroy {
     }
 
     const page = plainToInstance(PageModel, response.rows[0]);
+
     const sectionsResponse = await this.databaseService.runQuery(
       `
         SELECT * FROM section WHERE page_id = $1
@@ -112,6 +119,57 @@ export default class PagesRepositroy {
     return { ...page, section };
   }
 
+  async getPage(slug: string) {
+    const response = await this.databaseService.runQuery(
+      `
+        SELECT * FROM page WHERE slug = $1
+      `,
+      [slug],
+    );
+
+    if (response.rows.length === 0) {
+      throw new Error('Page not found');
+    }
+
+    const page = plainToInstance(PageModel, response.rows[0]);
+
+    const sectionsResponse = await this.databaseService.runQuery(
+      `
+        SELECT * FROM section WHERE page_id = $1
+        ORDER BY "index";
+      `,
+      [page.id],
+    );
+
+    const section = plainToInstance(SectionModel, sectionsResponse.rows);
+
+    for (const sectio of section) {
+      const contentResponse = await this.databaseService.runQuery(
+        `
+          SELECT * FROM content WHERE section_id = $1
+          ORDER BY "index";
+        `,
+        [sectio.id],
+      );
+
+      const contents = plainToInstance(ContentModel, contentResponse.rows);
+
+      for (const content of contents) {
+        const blocksResponse = await this.databaseService.runQuery(
+          `
+            SELECT * FROM block WHERE content_id = $1
+          `,
+          [content.id],
+        );
+
+        content.block = plainToInstance(BlockModel, blocksResponse.rows);
+      }
+
+      sectio.content = contents;
+    }
+
+    return { ...page, section };
+  }
   async updatePage(id: string, dto: PageDto) {
     const updateFields: string[] = [];
     const updateValues: any[] = [];

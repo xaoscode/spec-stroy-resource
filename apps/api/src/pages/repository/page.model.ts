@@ -26,7 +26,16 @@ export class ContentModel implements IContent {
   header?: string[];
   text?: string[];
   images?: string[];
-  block: IBlock[];
+  block: BlockModel[];
   @Expose({ name: 'section_id' })
   sectionId: string;
+}
+
+export class BlockModel implements IBlock {
+  id: string;
+  text: string;
+  header: string;
+  images: string;
+  @Expose({ name: 'content_id' })
+  contentId: string;
 }

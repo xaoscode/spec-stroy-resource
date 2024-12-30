@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import PagesService from './pages.service';
 import {
+  BlockDto,
   ContentDto,
   DeleteDto,
   ReorderDto,
@@ -33,6 +34,11 @@ export default class PagesController {
   @Post('create-content/:id')
   async addContent(@Param('id') id: string, @Body() dto: ContentDto) {
     return this.pageService.addContent(id, dto);
+  }
+
+  @Post('create-block')
+  async addBlock(@Body() dto: BlockDto) {
+    return this.pageService.addBlock(dto);
   }
 
   @Patch('update-block')

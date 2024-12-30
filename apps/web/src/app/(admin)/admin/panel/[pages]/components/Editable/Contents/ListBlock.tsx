@@ -1,7 +1,7 @@
 import { IContent } from "@repo/interfaces";
 import { useState } from "react";
 import { AdminButton } from "../../../../components/AdminButton/AdminButton";
-import { updateContent } from "../_lib/content-service";
+import { updateBlock } from "../_lib/content-service";
 
 export function ListBlock({ initialContent }: { initialContent: IContent }) {
     const [content, setContent] = useState({
@@ -51,7 +51,7 @@ export function ListBlock({ initialContent }: { initialContent: IContent }) {
 
     const handleSave = async () => {
         try {
-            const result = await updateContent(content);
+            const result = await updateBlock(content);
 
             if (result.success) {
                 console.log("Saving content:", content);

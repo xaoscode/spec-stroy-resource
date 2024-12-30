@@ -1,7 +1,7 @@
 "use server";
 
 import { API } from "@/app/api";
-import { INewContent, INewSection } from "@repo/interfaces";
+import { IBlock, INewBlock, INewContent, INewSection } from "@repo/interfaces";
 import { revalidatePath } from "next/cache";
 
 // import { auth, signOut } from "@/auth";
@@ -17,8 +17,6 @@ export async function addSectionAction(contentData: INewSection, id: string) {
 			cache: "no-cache",
 		});
 		revalidatePath("/");
-
-		// return response.json();
 	} catch (error) {
 		console.error("Upload section Error:", error);
 		throw error;
@@ -36,8 +34,6 @@ export async function addContentAction(contentData: INewContent, id: string) {
 			cache: "no-cache",
 		});
 		revalidatePath("/");
-
-		// return response.json();
 	} catch (error) {
 		console.error("Upload section Error:", error);
 		throw error;
@@ -78,7 +74,24 @@ export async function deleteAction(id: string, childTable: string, parentTable: 
 	}
 }
 
-export async function updateBlock(content: INewContent) {
+export async function addBlockAction(contentData: INewBlock) {
+	try {
+		await fetch(`${API.pages}/create-block`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ ...contentData }),
+			cache: "no-cache",
+		});
+		revalidatePath("/");
+	} catch (error) {
+		console.error("Upload section Error:", error);
+		throw error;
+	}
+}
+
+export async function updateBlock(content: IBlock) {
 	try {
 		const response = await fetch(`${API.pages}/update-content`, {
 			method: "PATCH",

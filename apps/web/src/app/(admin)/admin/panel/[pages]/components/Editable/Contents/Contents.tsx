@@ -17,7 +17,7 @@ export function RenderContentBlock({ content }: { content: IContent }) {
         case "Текст":
             return <TextBlock initialContent={ content } />;
         case "Картинки с текстом":
-            return <ImageTextBlock initialContent={ content.block } />;
+            return <ImageTextBlock initialContent={ content.block } contentId={ content.id } />;
         case "Список":
             return <ListBlock initialContent={ content } />;
         case "Предупреждение":

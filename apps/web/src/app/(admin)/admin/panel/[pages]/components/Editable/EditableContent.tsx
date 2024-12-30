@@ -11,18 +11,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { IContent, INewContent } from "@repo/interfaces";
 import { addContentAction, deleteAction, reorderAction } from "./_lib/content-service";
-import { RenderContentBlock } from "./Contents/Contents";
 import { AdminButton } from "../../../components/AdminButton/AdminButton";
+import { RenderContentBlock } from "./Contents/Contents";
 
 const contentTypes = ["Текст", "Картинки с текстом", "Список", "Предупреждение", "Прайс-лист"];
 
 export function EditableContent({ contents = [], sectionId = "" }: { contents?: IContent[], sectionId?: string, pageId?: string }) {
     const [optimisticItems, setOptimisticItems] = useState(contents);
+
     useEffect(() => {
         setOptimisticItems(contents)
         console.log(optimisticItems)
     }, [contents, optimisticItems])
-
 
 
     const onDragEndAction = async (result: DropResult) => {
