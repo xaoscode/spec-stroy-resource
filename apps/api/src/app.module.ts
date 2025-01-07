@@ -7,6 +7,8 @@ import { ConfigModule } from './config/config.module';
 import { CommunicationModule } from './communication/communication.module';
 import ProjectsModule from './projects/projects.module';
 import PagesModule from './pages/pages.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import PagesModule from './pages/pages.module';
     ConfigModule,
     ProjectsModule,
     PagesModule,
+    UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

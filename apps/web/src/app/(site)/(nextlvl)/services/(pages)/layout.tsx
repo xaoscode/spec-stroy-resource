@@ -11,8 +11,6 @@ export default async function ServicesLayout({
   return (
     <div className="grid grid-cols-1 gap-5">
       <div>{ children }</div>
-
-
     </div>
   );
 }

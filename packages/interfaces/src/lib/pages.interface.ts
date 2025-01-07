@@ -14,17 +14,18 @@ export interface INewSection {
 export interface INewContent {
 	type: string;
 	index: number;
-	header?: string[];
-	text?: string[];
-	images?: string[];
+	header?: string;
+	text?: string;
+	image?: string;
 	sectionId: string;
 }
 
 export interface INewBlock {
 	text: string;
 	header: string;
-	images: string;
+	image: string;
 	contentId: string;
+	index: number;
 }
 
 export interface IPage extends INewPage {

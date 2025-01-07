@@ -12,15 +12,12 @@ export default function Search({ placeholder }: { placeholder: string }) {
     const handleSearch = useDebouncedCallback((term: string) => {
         const params = new URLSearchParams(searchParams);
         params.set('page', '1');
-        // Если строка поиска не пуста, добавляем параметр search
         if (term) {
             params.set('search', term);
         } else {
-            // Если строка поиска пуста, удаляем параметр search
             params.delete('search');
         }
 
-        // Заменяем URL с обновленными параметрами
         replace(`${pathname}?${params.toString()}`);
     }, 300);
 

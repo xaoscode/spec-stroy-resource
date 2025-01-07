@@ -18,4 +18,5 @@ __exportStar(require("./lib/commessage.interface"), exports);
 __exportStar(require("./lib/project.interface"), exports);
 __exportStar(require("./lib/projectFilters.interface"), exports);
 __exportStar(require("./lib/pages.interface"), exports);
+__exportStar(require("./lib/user.interface"), exports);
 //# sourceMappingURL=index.js.map

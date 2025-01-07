@@ -8,6 +8,8 @@ import {
   ReorderDto,
   SectionDto,
   UpdateBlockDto,
+  UpdateContentDto,
+  UpdateSectionDto,
 } from '../dto/page.dto';
 import { plainToInstance } from 'class-transformer';
 import {
@@ -53,7 +55,7 @@ export default class PagesRepositroy {
   async addContent(content: ContentDto, sectionId: string) {
     const res = await this.databaseService.runQuery(
       `
-        INSERT INTO content (type, text, header, images, section_id, index)
+        INSERT INTO content (type, text, header, image, section_id, index)
         VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING *
       `,
@@ -61,7 +63,7 @@ export default class PagesRepositroy {
         content.type,
         content.text,
         content.header,
-        content.images,
+        content.image,
         sectionId,
         content.index,
       ],
@@ -70,53 +72,15 @@ export default class PagesRepositroy {
   }
 
   async addBlock(dto: BlockDto) {
-    console.log(dto);
     const res = await this.databaseService.runQuery(
       `
-      INSERT INTO block (header, text, images, content_id)
-      VALUES ($1, $2, $3, $4)
-      RETURNING *
+      INSERT INTO block (header, text, image, index, content_id)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *;
       `,
-      [dto.header, dto.text, dto.images, dto.contentId],
+      [dto.header, dto.text, dto.image, dto.index, dto.contentId],
     );
     return res.rows[0];
-  }
-
-  async getPagse(slug: string) {
-    const response = await this.databaseService.runQuery(
-      `
-        SELECT * FROM page WHERE slug = $1
-      `,
-      [slug],
-    );
-    if (response.rows.length === 0) {
-      throw new Error('Page not found');
-    }
-
-    const page = plainToInstance(PageModel, response.rows[0]);
-
-    const sectionsResponse = await this.databaseService.runQuery(
-      `
-        SELECT * FROM section WHERE page_id = $1
-        ORDER BY "index";
-      `,
-      [page.id],
-    );
-
-    const section = plainToInstance(SectionModel, sectionsResponse.rows);
-
-    for (const sect of section) {
-      const contentResponse = await this.databaseService.runQuery(
-        `
-          SELECT * FROM content WHERE section_id = $1
-          ORDER BY "index";
-        `,
-        [sect.id],
-      );
-
-      sect.content = plainToInstance(ContentModel, contentResponse.rows);
-    }
-    return { ...page, section };
   }
 
   async getPage(slug: string) {
@@ -158,6 +122,7 @@ export default class PagesRepositroy {
         const blocksResponse = await this.databaseService.runQuery(
           `
             SELECT * FROM block WHERE content_id = $1
+            ORDER BY "index";
           `,
           [content.id],
         );
@@ -197,7 +162,7 @@ export default class PagesRepositroy {
     await this.databaseService.runQuery(query, updateValues);
   }
 
-  async updateSection(id: string, dto: SectionDto) {
+  async updateSection(dto: UpdateSectionDto) {
     const updateFields: string[] = [];
     const updateValues: any[] = [];
 
@@ -215,16 +180,44 @@ export default class PagesRepositroy {
       updateFields.push(`type = $${updateFields.length + 1}`);
       updateValues.push(dto.type);
     }
+    updateValues.push(dto.id);
 
     const query = `
     UPDATE section
     SET ${updateFields.join(', ')}
-    WHERE id = $${id}
+    WHERE id = $${updateFields.length + 1}
     `;
 
     await this.databaseService.runQuery(query, updateValues);
   }
 
+  async updateContent(dto: UpdateContentDto) {
+    const updateFields: string[] = [];
+    const updateValues: any[] = [];
+
+    if (dto.header !== undefined) {
+      updateFields.push(`header = $${updateFields.length + 1}`);
+      updateValues.push(dto.header);
+    }
+
+    if (dto.text !== undefined) {
+      updateFields.push(`text = $${updateFields.length + 1}`);
+      updateValues.push(dto.text);
+    }
+
+    if (dto.image !== undefined) {
+      updateFields.push(`image = $${updateFields.length + 1}`);
+      updateValues.push(dto.image);
+    }
+    updateValues.push(dto.id);
+
+    const query = `
+    UPDATE content 
+    SET ${updateFields.join(', ')}
+    WHERE id = $${updateFields.length + 1}
+    `;
+    await this.databaseService.runQuery(query, updateValues);
+  }
   async updateBlock(dto: UpdateBlockDto) {
     const updateFields: string[] = [];
     const updateValues: any[] = [];
@@ -239,9 +232,9 @@ export default class PagesRepositroy {
       updateValues.push(dto.text);
     }
 
-    if (dto.images !== undefined) {
-      updateFields.push(`images = $${updateFields.length + 1}`);
-      updateValues.push(dto.images);
+    if (dto.image !== undefined) {
+      updateFields.push(`image = $${updateFields.length + 1}`);
+      updateValues.push(dto.image);
     }
     updateValues.push(dto.id);
 

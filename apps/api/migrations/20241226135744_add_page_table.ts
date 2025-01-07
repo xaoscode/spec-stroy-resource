@@ -1,4 +1,5 @@
 import type { Knex } from 'knex';
+import { hash } from 'bcrypt';
 
 export async function up(knex: Knex): Promise<void> {
   await knex.raw(`
@@ -29,15 +30,16 @@ export async function up(knex: Knex): Promise<void> {
           id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
           type VARCHAR(50) NOT NULL,
           index INTEGER NOT NULL,
-          header TEXT[],
-          text TEXT[],
-          images TEXT[],
+          header TEXT,
+          text TEXT,
+          image TEXT,
           section_id UUID REFERENCES section(id) ON DELETE CASCADE
       );
     `);
   await knex.raw(`
         CREATE TABLE block (
         id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        index INTEGER NOT NULL,
         header TEXT,
         text TEXT,
         image TEXT,
@@ -54,12 +56,35 @@ export async function up(knex: Knex): Promise<void> {
         ('instrumental', 'Инструментальное обследование объектов', 'Страница с информацией о Инструментальном обследовании объектов'),
         ('bim', 'BIM проектирование', 'Страница с информацией о BIM проектировании'),
         ('complex', 'Комплексное проектирование', 'Страница с информацией о комплексном проектировании'),
-        ('project', 'Проектирование инженерных систем и сетей', 'Страница с информацией о проектировании инженерных систем и сетей');
+        ('project', 'Проектирование инженерных систем и сетей', 'Страница с информацией о проектировании инженерных систем и сетей'),
+        ('about', 'О компании Спец Строй Ресурс', 'Страница с информацией компании Спец Строй Ресурс'),
+        ('dopusk', 'Допуски', 'Страница с информацией о допусках');
     `);
+
+  await knex.raw(`
+      CREATE TABLE users (
+          id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+          email VARCHAR(255) NOT NULL UNIQUE,
+          password_hash VARCHAR(255) NOT NULL,
+          current_hashed_refresh_token TEXT
+      )
+  `);
+
+  const password = 'fdas5KGFvvbnnf';
+  const saltRounds = 10;
+  const hashedPassword = await hash(password, saltRounds);
+
+  await knex.raw(
+    `
+      INSERT INTO users (email, password_hash)
+      VALUES (?, ?)
+      `,
+    ['admin_a87hjf3ol1@gmail.com', hashedPassword],
+  );
 }
 
 export async function down(knex: Knex): Promise<void> {
-  // Удаляем таблицы в обратном порядке
+  await knex.raw(`DROP TABLE IF EXISTS users;`);
   await knex.raw(`DROP TABLE IF EXISTS block;`);
   await knex.raw(`DROP TABLE IF EXISTS content;`);
   await knex.raw(`DROP TABLE IF EXISTS section;`);

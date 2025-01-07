@@ -40,15 +40,15 @@ import {
 interface DialogProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   variant?:
-    | "default"
-    | "destructive"
-    | "outline"
-    | "secondary"
-    | "filled"
-    | "ghost"
-    | "link";
+  | "default"
+  | "destructive"
+  | "outline"
+  | "secondary"
+  | "filled"
+  | "ghost"
+  | "link";
   size?: "default" | "sm" | "lg" | "icon";
-  text: string;
+  text?: string;
 }
 const formSchema = z.object({
   name: z.string(),
@@ -65,10 +65,10 @@ export function DialogWin({
   const isDesktop = useMediaQuery("(min-width: 768px)");
   if (isDesktop) {
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={ open } onOpenChange={ setOpen }>
         <DialogTrigger asChild>
-          <Button variant={variant} size={size}>
-            {text}
+          <Button variant={ variant } size={ size }>
+            { text }
           </Button>
         </DialogTrigger>
         <DialogContent className=" bg-primary sm:max-w-[425px]">
@@ -80,16 +80,16 @@ export function DialogWin({
               Заполните форму и мы Вам позвоним
             </DialogDescription>
           </DialogHeader>
-          <CommunicationForm setState={setOpen} />
+          <CommunicationForm setState={ setOpen } />
         </DialogContent>
       </Dialog>
     );
   }
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
+    <Drawer open={ open } onOpenChange={ setOpen }>
       <DrawerTrigger asChild>
-        <Button variant={variant} size={size}>
-          {text}
+        <Button variant={ variant } size={ size }>
+          { text }
         </Button>
       </DrawerTrigger>
       <DrawerContent className="bg-primary">
@@ -102,7 +102,7 @@ export function DialogWin({
           </DrawerDescription>
         </DrawerHeader>
         <DrawerFooter className="text-white">
-          <CommunicationForm setState={setOpen} />
+          <CommunicationForm setState={ setOpen } />
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
@@ -126,14 +126,14 @@ function CommunicationForm({ setState }: CommunicationFormProps) {
     setState(false);
   }
   return (
-    <Form {...form}>
+    <Form { ...form }>
       <form
         className="grid grid-cols-1 gap-5"
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={ form.handleSubmit(onSubmit) }
       >
         <FormField
-          name={"name"}
-          render={function ({
+          name={ "name" }
+          render={ function ({
             field,
           }: {
             field: ControllerRenderProps<FieldValues, string>;
@@ -142,15 +142,15 @@ function CommunicationForm({ setState }: CommunicationFormProps) {
               <FormItem>
                 <FormLabel>Имя</FormLabel>
                 <FormControl>
-                  <Input {...field}></Input>
+                  <Input { ...field }></Input>
                 </FormControl>
               </FormItem>
             );
-          }}
+          } }
         />
         <FormField
-          name={"phone"}
-          render={function ({
+          name={ "phone" }
+          render={ function ({
             field,
           }: {
             field: ControllerRenderProps<FieldValues, string>;
@@ -159,15 +159,15 @@ function CommunicationForm({ setState }: CommunicationFormProps) {
               <FormItem>
                 <FormLabel>Номер</FormLabel>
                 <FormControl>
-                  <PhoneInp {...field}></PhoneInp>
+                  <PhoneInp { ...field }></PhoneInp>
                 </FormControl>
               </FormItem>
             );
-          }}
+          } }
         />
         <FormField
-          name={"email"}
-          render={function ({
+          name={ "email" }
+          render={ function ({
             field,
           }: {
             field: ControllerRenderProps<FieldValues, string>;
@@ -176,11 +176,11 @@ function CommunicationForm({ setState }: CommunicationFormProps) {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input {...field}></Input>
+                  <Input { ...field }></Input>
                 </FormControl>
               </FormItem>
             );
-          }}
+          } }
         />
 
         <Button type="submit" variant="default" size="lg">

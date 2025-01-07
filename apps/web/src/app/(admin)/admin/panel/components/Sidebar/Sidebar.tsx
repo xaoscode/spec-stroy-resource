@@ -1,7 +1,8 @@
-import { Home, Inbox } from "lucide-react";
+import { Home, Inbox, Mail, PowerIcon } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -17,6 +18,9 @@ import {
   CollapsibleTrigger,
 } from "@radix-ui/react-collapsible";
 import Link from "next/link";
+import { logoutAction } from "./lib/logout-action";
+import { signOut } from "@/app/auth";
+import { redirect } from "next/navigation";
 
 // Menu items.
 const items = [
@@ -46,21 +50,39 @@ const items = [
     url: "#",
     icon: Inbox,
     subItems: [
-      { title: "Все проекты", url: "#messages" },
-      { title: "Добавить проект", url: "#notifications" },
+      { title: "Все проекты", url: "projects" },
+      { title: "Добавить проект", url: "addproject" },
     ],
   },
   {
     title: "Связь с клиентами",
     url: "#",
-    icon: Inbox,
+    icon: Mail,
     subItems: [
-      { title: "Звонок", url: "#messages" },
+      { title: "Звонок", url: "messages" },
     ],
   },
 ];
 
 export function AppSidebar() {
+
+
+  const logouta = async () => {
+    "use server";
+
+    const res = await logoutAction();
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || "Logout failed");
+    }
+
+    await signOut();
+
+
+    // redirect(signOutResult.redirect);
+
+  }
   return (
     <Sidebar>
       <SidebarContent>
@@ -123,9 +145,19 @@ export function AppSidebar() {
                 </Collapsible>
               )) }
             </SidebarMenu>
+
           </SidebarGroupContent>
+
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <form action={ logouta }>
+          <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
+            <PowerIcon className="w-6" />
+            <div className="hidden md:block">Выход</div>
+          </button>
+        </form>
+      </SidebarFooter>
     </Sidebar>
   );
 }

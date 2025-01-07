@@ -10,18 +10,17 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { IContent, INewContent } from "@repo/interfaces";
-import { addContentAction, deleteAction, reorderAction } from "./_lib/content-service";
+import { addContentAction, deleteAction, reorderAction } from "./lib/content-service";
 import { AdminButton } from "../../../components/AdminButton/AdminButton";
 import { RenderContentBlock } from "./Contents/Contents";
 
-const contentTypes = ["Текст", "Картинки с текстом", "Список", "Предупреждение", "Прайс-лист"];
+const contentTypes = ["Текст", "Картинки с текстом", "Список", "Предупреждение", "Прайс-лист", "Кнопка связи"];
 
 export function EditableContent({ contents = [], sectionId = "" }: { contents?: IContent[], sectionId?: string, pageId?: string }) {
     const [optimisticItems, setOptimisticItems] = useState(contents);
 
     useEffect(() => {
         setOptimisticItems(contents)
-        console.log(optimisticItems)
     }, [contents, optimisticItems])
 
 
@@ -51,7 +50,7 @@ export function EditableContent({ contents = [], sectionId = "" }: { contents?: 
 
     const deleteContent = async (contentId: string) => {
 
-        await deleteAction(contentId, "content", "section", sectionId);
+        await deleteAction({ id: contentId, childTable: "content", parentTable: "section", parentId: sectionId });
 
 
     };
@@ -59,20 +58,9 @@ export function EditableContent({ contents = [], sectionId = "" }: { contents?: 
 
 
     return (
-        <div className="flex flex-col min-w-full">
+        <div className="flex flex-col min-w-full  gap-5">
 
-            <DropdownMenu>
-                <DropdownMenuTrigger className="mb-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded shadow w-[300px]">
-                    Добавить контент
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                    { contentTypes.map((type, i) => (
-                        <DropdownMenuItem key={ i } onClick={ () => addNewItem(type) }>
-                            { type }
-                        </DropdownMenuItem>
-                    )) }
-                </DropdownMenuContent>
-            </DropdownMenu>
+
 
             <DragDropContext onDragEnd={ onDragEndAction }>
                 <Droppable droppableId="0">
@@ -124,6 +112,18 @@ export function EditableContent({ contents = [], sectionId = "" }: { contents?: 
                     ) }
                 </Droppable>
             </DragDropContext>
+            <DropdownMenu>
+                <DropdownMenuTrigger className="mb-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded shadow w-[300px]">
+                    Добавить контент
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                    { contentTypes.map((type, i) => (
+                        <DropdownMenuItem key={ i } onClick={ () => addNewItem(type) }>
+                            { type }
+                        </DropdownMenuItem>
+                    )) }
+                </DropdownMenuContent>
+            </DropdownMenu>
         </div>
     );
 }

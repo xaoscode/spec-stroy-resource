@@ -1,72 +1,55 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import { useDebouncedCallback } from "use-debounce";
+
 import { IContent } from "@repo/interfaces";
-import { updateContent } from "../../_lib/content-service";
+import { updateBlock, updateContent } from "../../lib/content-service";
+
 
 export function useContentManager(initialContent: IContent) {
-    const [content, setContent] = useState({
-        ...initialContent,
-        header: initialContent.header || [],
-        text: initialContent.text || [],
-        images: initialContent.images || [],
-    });
-    const [isChanged, setIsChanged] = useState(false);
+    const [content, setContent] = useState<IContent>(initialContent);
+    const [isSaving, setIsSaving] = useState(false);
 
-    const handleFieldChange = (field: keyof IContent, index: number, value: string | File) => {
-        setContent((prev) => {
-            const fieldData = prev[field];
-            if (Array.isArray(fieldData)) {
-                const updatedField = [...fieldData];
-                if (field === "images" && value instanceof File) {
-                    updatedField[index] = URL.createObjectURL(value);
-                } else if (typeof value === "string") {
-                    updatedField[index] = value;
-                }
-                return { ...prev, [field]: updatedField };
-            }
-            return prev; // Если поле не массив, возвращаем предыдущее состояние
-        });
-    };
+    useEffect(() => {
+        setContent(initialContent);
+    }, [initialContent]);
 
-    const handleAddBlock = () => {
-        setContent((prev) => ({
-            ...prev,
-            header: [...prev.header, ""],
-            text: [...prev.text, ""],
-            images: prev.images ? [...prev.images, ""] : [],
-        }));
-        setIsChanged(true);
-    };
-
-    const handleRemoveBlock = (index: number) => {
-        setContent((prev) => ({
-            ...prev,
-            header: prev.header.filter((_, i) => i !== index),
-            text: prev.text.filter((_, i) => i !== index),
-            images: prev.images?.filter((_, i) => i !== index) || [],
-        }));
-        setIsChanged(true);
-    };
-
-    const handleSave = async () => {
+    const handleAction = async (action: (params: any) => Promise<any>, params: any) => {
         try {
-            const result = await updateContent(content);
+            setIsSaving(true);
+            const result = await action(params);
+
             if (result.success) {
-                console.log("Saving content:", content);
-                setIsChanged(false);
+                console.log("Action successful:", params);
+                toast.success("Изменения сохранены!");
             } else {
-                console.error("Save failed:", result.error);
+                toast.error("Не удалось выполнить действие");
             }
         } catch (error) {
-            console.error("Error saving content:", error);
+            console.error("Error during action:", error);
+            toast.error("Произошла ошибка");
+        } finally {
+            setIsSaving(false);
         }
-    };
+    }
+
+
+    const saveContent = useDebouncedCallback((updatedContent) => {
+        handleAction(updateContent, updatedContent);
+    }, 1000);
+
+    const saveBlock = useDebouncedCallback((updatedBlock) => {
+        handleAction(updateBlock, updatedBlock);
+    }, 1000);
+
+
 
     return {
+        handleAction,
         content,
-        isChanged,
-        handleFieldChange,
-        handleAddBlock,
-        handleRemoveBlock,
-        handleSave,
+        isSaving,
+        setContent,
+        saveContent,
+        saveBlock,
     };
 }

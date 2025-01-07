@@ -10,8 +10,8 @@ export class PageModel implements IPage {
 }
 
 export class SectionModel implements ISection {
+  content: IContent[];
   id: string;
-  content: ContentModel[];
   title: string;
   index: number;
   type: string;
@@ -23,9 +23,9 @@ export class ContentModel implements IContent {
   id: string;
   type: string;
   index: number;
-  header?: string[];
-  text?: string[];
-  images?: string[];
+  header?: string;
+  text?: string;
+  image?: string;
   block: BlockModel[];
   @Expose({ name: 'section_id' })
   sectionId: string;
@@ -35,7 +35,8 @@ export class BlockModel implements IBlock {
   id: string;
   text: string;
   header: string;
-  images: string;
+  image: string;
+  index: number;
   @Expose({ name: 'content_id' })
   contentId: string;
 }

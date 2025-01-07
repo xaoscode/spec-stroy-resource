@@ -7,6 +7,8 @@ import {
   ReorderDto,
   SectionDto,
   UpdateBlockDto,
+  UpdateContentDto,
+  UpdateSectionDto,
 } from './dto/page.dto';
 
 @Injectable()
@@ -36,6 +38,16 @@ export default class PagesService {
 
   async addBlock(dto: BlockDto) {
     const content = await this.pageRepository.addBlock(dto);
+    return content;
+  }
+
+  async updateSection(dto: UpdateSectionDto) {
+    const content = await this.pageRepository.updateSection(dto);
+    return content;
+  }
+
+  async updateContent(dto: UpdateContentDto) {
+    const content = await this.pageRepository.updateContent(dto);
     return content;
   }
 

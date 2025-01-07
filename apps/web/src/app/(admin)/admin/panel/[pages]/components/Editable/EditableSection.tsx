@@ -4,8 +4,9 @@ import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea
 import { GripVertical } from "lucide-react";
 import { INewSection, ISection } from "@repo/interfaces";
 import { EditableContent } from "./EditableContent";
-import { addSectionAction, deleteAction, reorderAction } from "./_lib/content-service";
+import { addSectionAction, deleteAction, reorderAction, updateSection } from "./lib/content-service";
 import { AdminButton } from "../../../components/AdminButton/AdminButton";
+import { useDebouncedCallback } from "use-debounce";
 
 
 export function EditableSection({ sections = [], pageId = "" }: { sections?: ISection[], pageId?: string }) {
@@ -32,7 +33,7 @@ export function EditableSection({ sections = [], pageId = "" }: { sections?: ISe
 
     const addNewItem = async (type: string) => {
         const newItem: INewSection = {
-            title: 'новая секция',
+            title: '',
             pageId: pageId,
             type: type,
             index: sections.length + 1
@@ -47,14 +48,16 @@ export function EditableSection({ sections = [], pageId = "" }: { sections?: ISe
         setOptimisticItems((prevItems) => prevItems.filter(item => item.id !== sectionId));
 
         try {
-            await deleteAction(sectionId, "section", "page", pageId);
+            await deleteAction({ id: sectionId, childTable: "section", parentTable: "page", parentId: pageId });
 
         } catch (error) {
             setOptimisticItems(prevState);
             console.error("Ошибка на сервере, откатываем изменения:", error);
         }
     };
-
+    const saveSection = useDebouncedCallback((section) => {
+        updateSection(section);
+    }, 1000);
     return (
         <div className="flex flex-col gap-5  min-w-full">
 
@@ -85,6 +88,7 @@ export function EditableSection({ sections = [], pageId = "" }: { sections?: ISe
                                             <div className="flex-1">
                                                 <div className="flex flex-row justify-between">
                                                     <h1>Секция: { item.index }</h1>
+
                                                     <AdminButton
                                                         onClick={ () => deleteSection(item.id) }
                                                         variant="remove"
@@ -92,6 +96,15 @@ export function EditableSection({ sections = [], pageId = "" }: { sections?: ISe
                                                         Удалить секцию
                                                     </AdminButton>
                                                 </div>
+                                                <input
+                                                    type="text"
+                                                    defaultValue={ item.title }
+                                                    onChange={ (e) =>
+                                                        saveSection({ ...item, title: e.target.value })
+                                                    }
+                                                    placeholder="Введите заголовок"
+                                                    className="w-full text-center font-semibold text-lg p-2 border rounded mb-5"
+                                                />
                                                 <EditableContent contents={ item.content } sectionId={ item.id } pageId={ pageId } />
                                                 <p className="text-sm text-gray-500">id: { item.id }</p>
                                             </div>

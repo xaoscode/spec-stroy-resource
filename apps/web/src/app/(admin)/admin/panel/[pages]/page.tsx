@@ -10,7 +10,6 @@ export default async function Page({ params }: { params: { pages: string } }) {
 
     const pageData: IPage = await fetchPage(pages);
 
-    console.log('получаю данные', pageData)
     if (!pageData) {
         return <div>Страница не найдена</div>;
     }
