@@ -18,20 +18,17 @@ export function Project({ index, project, className, ...props }: ProjectProps) {
       className={ cn(
         "flex flex-col lg:flex-row gap-8",
         {
-          "lg:flex-row-reverse": isReversed, // Кастомизация ширины колонок
+          "lg:flex-row-reverse": isReversed,
         },
         className,
       ) }
       { ...props }
     >
-      {/* Галерея */ }
       <div className={ cn({}) }>
         <EmblaCarousel slides={ project.images } />
       </div>
 
-      {/* Информация */ }
       <div className="flex flex-col gap-6 lg:w-2/3 justify-between">
-        {/* Название и описание */ }
         <div className="flex flex-col gap-4 ">
           <Link
             className="text-2xl  sm:text-3xl text-primary font-medium hover:underline"
@@ -44,7 +41,6 @@ export function Project({ index, project, className, ...props }: ProjectProps) {
           </p>
         </div>
 
-        {/* Площадь и стоимость */ }
         <div className={ cn("flex flex-col", { "ml-auto": !isReversed }) }>
           <span className="text-base sm:text-lg text-gray-800">
             Стоимость проектирования:

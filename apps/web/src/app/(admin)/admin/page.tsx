@@ -1,5 +1,5 @@
 
-export default function Admin() {
+export default function Projects() {
     return (
         <div>
             <h1>Добро пожаловать</h1>

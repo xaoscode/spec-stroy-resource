@@ -13,9 +13,6 @@ export async function getProjects(page: number, limit: number) {
 	return data;
 }
 
-// Универсальная Функция для получения как всех так и отфильтрованных проектов с пагинацией
-// и ревалидацией данных для ISG страниц
-// Если фильтры не передаются, то с бэка придут все проекты
 export async function fetchFilteredProjects(page: number, limit: number, filters?: IProjectFilters) {
 	const params = new URLSearchParams({
 		page: page.toString(),
@@ -27,7 +24,7 @@ export async function fetchFilteredProjects(page: number, limit: number, filters
 
 	const url = `${API.projects}/filter?${params.toString()}`;
 
-	const response = await fetch(url, { next: { tags: ["projects"] } });
+	const response = await fetch(url, { cache: "no-cache" });
 
 	if (!response.ok) {
 		throw new Error(`Ошибка загрузки проектов: ${response.statusText}`);
@@ -59,7 +56,7 @@ export async function fetchProjectsCout(filters?: IProjectFilters) {
 export async function addProject(newProject: IProject) {
 	await fetch(`${API.projects}`, {
 		method: "POST",
-		headers: { "Content-Type": "application/json" },
+		headers: {},
 		body: JSON.stringify(newProject),
 	});
 }

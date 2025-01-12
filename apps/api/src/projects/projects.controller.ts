@@ -7,16 +7,28 @@ import {
   Param,
   Body,
   ParseIntPipe,
+  Patch,
+  UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  UploadedFiles,
 } from '@nestjs/common';
 import ProjectsService from './projects.service';
-import ProjectDto from './dto/project.dto';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import JwtAuthenticationGuard from 'src/auth/jwt-auth.guard';
+import { ConfigService } from '@nestjs/config';
+import { multerConfigProjects } from './mutler.config';
 
 @Controller('projects')
 export default class ProjectsController {
-  constructor(private readonly projectsService: ProjectsService) {}
+  constructor(
+    private readonly projectsService: ProjectsService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @Get('get/:id')
   async getProjectById(@Param('id', ParseIntPipe) id: number) {
+    console.log('get');
     return this.projectsService.getProjectById(id);
   }
 
@@ -52,7 +64,6 @@ export default class ProjectsController {
     @Query('service') service?: string,
     @Query('search') search?: string,
   ) {
-    console.log('filter');
     console.log(sector, service);
 
     return this.projectsService.getTotalProjectsCount({
@@ -62,9 +73,27 @@ export default class ProjectsController {
     });
   }
 
+  @UseGuards(JwtAuthenticationGuard)
   @Post('add')
-  async createProject(@Body() dto: ProjectDto) {
-    return this.projectsService.addProject(dto);
+  @UseInterceptors(FilesInterceptor('images', 10, multerConfigProjects))
+  async createProject(
+    @UploadedFiles() file: Express.Multer.File,
+    @Body('content') contentString: string,
+  ) {
+    console.log(file);
+    const content = JSON.parse(contentString);
+    return this.projectsService.addProject(content);
+  }
+
+  @UseGuards(JwtAuthenticationGuard)
+  @Patch('update-project')
+  @UseInterceptors(FileInterceptor('images', multerConfigProjects))
+  async updateProject(
+    @UploadedFile() file: Express.Multer.File,
+    @Body('content') contentString: string,
+  ) {
+    const content = JSON.parse(contentString);
+    return this.projectsService.updateProject(content);
   }
 
   @Delete('delete/:id')

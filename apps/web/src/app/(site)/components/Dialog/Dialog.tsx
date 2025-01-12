@@ -108,9 +108,11 @@ export function DialogWin({
     </Drawer>
   );
 }
+
 interface CommunicationFormProps {
   setState: (state: boolean) => void;
 }
+
 function CommunicationForm({ setState }: CommunicationFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -140,7 +142,7 @@ function CommunicationForm({ setState }: CommunicationFormProps) {
           }): ReactElement {
             return (
               <FormItem>
-                <FormLabel>Имя</FormLabel>
+                <FormLabel className="text-white">Имя</FormLabel>
                 <FormControl>
                   <Input { ...field }></Input>
                 </FormControl>
@@ -157,7 +159,7 @@ function CommunicationForm({ setState }: CommunicationFormProps) {
           }): ReactElement {
             return (
               <FormItem>
-                <FormLabel>Номер</FormLabel>
+                <FormLabel className="text-white">Номер</FormLabel>
                 <FormControl>
                   <PhoneInp { ...field }></PhoneInp>
                 </FormControl>
@@ -174,7 +176,7 @@ function CommunicationForm({ setState }: CommunicationFormProps) {
           }): ReactElement {
             return (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel className="text-white">Email</FormLabel>
                 <FormControl>
                   <Input { ...field }></Input>
                 </FormControl>

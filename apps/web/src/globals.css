@@ -86,22 +86,9 @@ input {
 	display: block;
 }
 
-button,
-textarea {
-	font: inherit;
-	color: inherit;
-	border: none;
-	outline: none;
-	background: none;
-}
-
 button {
 	cursor: pointer;
 }
-
-/* ::-webkit-scrollbar { */
-/*   width: 5px; */
-/* } */
 
 @layer base {
 	:root {

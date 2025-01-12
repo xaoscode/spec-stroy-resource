@@ -2,6 +2,7 @@ import "@/globals.css";
 import styles from "./layout.module.css";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "./components/Sidebar/Sidebar";
+import { ToastContainer } from "react-toastify";
 
 export default function PanelLayout({
   children,
@@ -11,10 +12,11 @@ export default function PanelLayout({
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className={styles.wrapper}>
+      <main className={ styles.wrapper }>
         <SidebarTrigger />
-        <div className={styles.body}>{children}</div>
+        <div className={ styles.body }>{ children }</div>
       </main>
+      <ToastContainer />
     </SidebarProvider>
   );
 }

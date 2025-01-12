@@ -1,6 +1,5 @@
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { diskStorage } from 'multer';
-import { join } from 'path';
 
 export const multerConfig: MulterOptions = {
   storage: diskStorage({

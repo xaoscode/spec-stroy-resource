@@ -1,5 +1,4 @@
-export interface IProject {
-    id: number;
+export interface INewProject {
     name: string;
     description: string;
     client: string;
@@ -7,5 +6,16 @@ export interface IProject {
     price: number;
     sector: string;
     service: string;
-    images: string[];
+}
+export interface IProject extends INewProject {
+    id: number;
+    images: IImage[];
+}
+export interface INewImage {
+    name: string;
+    url: string;
+}
+export interface IImage extends INewImage {
+    id: string;
+    createdAt: Date;
 }

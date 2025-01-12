@@ -22,7 +22,7 @@ export async function generateMetadata(
 
   // fetch data
   const product: IProject = await fetch(
-    `http://localhost:3002/api/projects/${id}`,
+    `http://localhost:3002/api/projects/get/${id}`,
   ).then((res) => res.json());
 
   // optionally access and extend (rather than replace) parent metadata
@@ -39,11 +39,12 @@ export async function generateMetadata(
 export default async function ProjectDetails({
   params,
 }: {
-  params: Promise<{ id: string }>
+  params: Promise<{ projectName: string }>
 }) {
+  const param = (await params).projectName
   const data = await fetchFilteredProjects(1, 1)
   if (!data) {
     notFound();
   }
-  return <div>{ }</div>;
+  return <div>{ param }</div>;
 }

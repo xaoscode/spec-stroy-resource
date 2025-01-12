@@ -6,13 +6,14 @@ import Link from "next/link";
 export default async function ProjectsTable({
     filters,
     currentPage,
+    currentPath
 }: {
     filters: IProjectFilters;
     currentPage: number;
+    currentPath: string
 }) {
     try {
         const projects = await fetchFilteredProjects(currentPage, 9, filters);
-        // Если массив проектов пуст, показываем сообщение
         if (!projects || projects.length === 0) {
             return (
                 <div className="text-center py-10">
@@ -21,7 +22,6 @@ export default async function ProjectsTable({
             );
         }
 
-        // Рендерим таблицу проектов
         return (
 
             <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -31,17 +31,20 @@ export default async function ProjectsTable({
                         className="flex flex-col space-y-6 p-6 bg-gray-50 rounded shadow-md hover:shadow-primary"
                     >
                         <div className="relative group">
-                            <Image
-                                className=""
-                                src={ project.images[0] }
-                                alt={ `Изображение ${project.name}` }
-                                width={ 300 }
-                                height={ 300 }
-                            />
+                            {
+                                project.images[0] && <Image
+                                    className=""
+                                    src={ project.images[0] }
+                                    alt={ `Изображение ${project.name}` }
+                                    width={ 300 }
+                                    height={ 300 }
+                                />
+                            }
+
                             <div className="absolute inset-0 items-center justify-center bg-black bg-opacity-50 group-hover:flex hidden">
                                 <Link
                                     className="text-white text-center text-xl hover:underline"
-                                    href={ `/projects/${project.id}` }
+                                    href={ `${currentPath}/${project.id}` }
                                 >
                                     { project.name }
                                 </Link>
@@ -51,7 +54,7 @@ export default async function ProjectsTable({
                         <div>
                             <Link
                                 className="text-primary font-bold text-justify text-xl hover:underline"
-                                href={ `/projects/${project.id}` }
+                                href={ `${currentPath}/${project.id}` }
                             >
                                 { project.name }
                             </Link>

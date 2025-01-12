@@ -1,6 +1,5 @@
 import { IContent } from "@repo/interfaces";
 import { AdminButton } from "../../../../components/AdminButton/AdminButton";
-import { ToastContainer } from "react-toastify";
 import { useContentManager } from "./hooks/use-Content-Manager";
 import { addBlockAction, deleteAction } from "../lib/content-service";
 import { X } from "lucide-react";
@@ -62,7 +61,7 @@ export function ListBlock({ initialContent }: { initialContent: IContent }) {
                 >
                     Добавить блок
                 </AdminButton>
-                <ToastContainer />
+
                 { isSaving && <p className="text-gray-500 text-sm">Сохранение...</p> }
             </div>
         </div>

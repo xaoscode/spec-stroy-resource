@@ -18,24 +18,24 @@ export const Thumb: React.FC<PropType> = ({
   selected,
   onClick,
 }) => {
+  console.log(image)
   return (
     <div
-      onMouseEnter={onMouseEnter}
-      className={`${styles.emblaThumbsSlide} ${
-        selected ? styles.emblaThumbsSlideSelected : ""
-      }`}
+      onMouseEnter={ onMouseEnter }
+      className={ `${styles.emblaThumbsSlide} ${selected ? styles.emblaThumbsSlideSelected : ""
+        }` }
     >
       <button
-        onClick={onClick}
+        onClick={ onClick }
         type="button"
-        className={styles.emblaThumbsSlideNumber}
+        className={ styles.emblaThumbsSlideNumber }
       >
         <Image
-          className={styles.image}
-          src={image}
-          alt={""}
-          width={300}
-          height={300}
+          className={ styles.image }
+          src={ image }
+          alt={ "" }
+          width={ 300 }
+          height={ 300 }
         />
       </button>
     </div>

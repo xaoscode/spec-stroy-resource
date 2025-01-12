@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import DatabaseService from 'src/database/database.service';
-import ProjectDto from '../dto/project.dto';
-import { IProjectFilters } from '@repo/interfaces';
+import { ProjectDto, UpdateProjectDto } from '../dto/project.dto';
+import { INewImage, IProjectFilters } from '@repo/interfaces';
+import { plainToInstance } from 'class-transformer';
+import ProjectModel from './project.model';
 export enum Sector {
   administrative_buildings = 'Административные здания',
   apartment_buildings = 'Многоквартирные жилые дома',
@@ -22,13 +24,13 @@ export enum Service {
 export default class ProjectsRepository {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  // Добавить новый проект
-  async addProject(dto: ProjectDto) {
+  async addProject(dto: ProjectDto, images?: INewImage[]) {
+    console.log(dto);
     const response = await this.databaseService.runQuery(
       `
       INSERT INTO projects 
-      (name, description, client, work_structure, price, sector, service, images) 
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      (name, description, client, work_structure, price, sector, service) 
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *;
       `,
       [
@@ -39,11 +41,20 @@ export default class ProjectsRepository {
         dto.price,
         dto.sector,
         dto.service,
-        dto.images,
       ],
     );
-
-    return response.rows[0];
+    if (images) {
+      for (const image of images) {
+        await this.databaseService.runQuery(
+          `
+          INSERT INTO images
+          (name, url, project_id)
+          VALUES ($1, $2, $3)
+          `,
+          [image.name, image.url, response.rows[0].id],
+        );
+      }
+    }
   }
 
   // Получить один проект по ID
@@ -55,14 +66,13 @@ export default class ProjectsRepository {
       [id],
     );
 
-    return response.rows[0];
+    return plainToInstance(ProjectModel, response.rows[0]);
   }
 
   // Получить проекты с пагинацией
   async getProjects(page: number, limit: number) {
     const offset = (page - 1) * limit;
 
-    // Выполняем два запроса одновременно: для получения данных и для подсчета общего количества проектов
     const response = await this.databaseService.runQuery(
       `
     SELECT * FROM projects
@@ -79,7 +89,7 @@ export default class ProjectsRepository {
     );
 
     return {
-      projects: response.rows,
+      projects: plainToInstance(ProjectModel, response.rows),
       total: parseInt(countResponse.rows[0].total, 10),
     };
   }
@@ -161,7 +171,7 @@ export default class ProjectsRepository {
 
     const response = await this.databaseService.runQuery(query, params);
 
-    return response.rows;
+    return plainToInstance(ProjectModel, response.rows);
   }
 
   // Удалить проект по ID
@@ -174,5 +184,53 @@ export default class ProjectsRepository {
     );
 
     return response.rows[0];
+  }
+
+  async updateProject(dto: UpdateProjectDto) {
+    const updateFields: string[] = [];
+    const updateValues: any[] = [];
+    console.log(dto);
+    Object.entries(dto).forEach(([key, value]) => {
+      if (value !== undefined && key !== 'id') {
+        switch (key) {
+          case 'images':
+            if (typeof value === 'string') {
+              value = [value]; // Преобразуем строку в массив
+            }
+            updateFields.push(`${key} = $${updateFields.length + 1}`);
+            updateValues.push(value);
+            break;
+          case 'name':
+          case 'description':
+          case 'client':
+          case 'price':
+          case 'sector':
+          case 'service':
+            updateFields.push(`${key} = $${updateFields.length + 1}`);
+            updateValues.push(value);
+            break;
+          case 'workStructure':
+            updateFields.push(`work_structure = $${updateFields.length + 1}`);
+            updateValues.push(value);
+            break;
+          default:
+            throw new Error(`Unknown field: ${key}`);
+        }
+      }
+    });
+
+    updateValues.push(dto.id);
+
+    if (updateFields.length === 0) {
+      throw new Error('No fields to update');
+    }
+
+    const query = `
+        UPDATE projects
+        SET ${updateFields.join(', ')}
+        WHERE id = $${updateFields.length + 1}
+    `;
+    console.log(query);
+    await this.databaseService.runQuery(query, updateValues);
   }
 }

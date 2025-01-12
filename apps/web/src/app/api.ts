@@ -5,4 +5,5 @@ export const API = {
 		priemPrices: process.env.NEXT_PUBLIC_DOMAIN + "/api/servies/priemPrices",
 	},
 	pages: process.env.NEXT_PUBLIC_DOMAIN + "/api/pages",
+	communication: process.env.NEXT_PUBLIC_DOMAIN + "/api/communication",
 };

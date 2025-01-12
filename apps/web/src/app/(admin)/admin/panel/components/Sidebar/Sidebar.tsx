@@ -20,9 +20,7 @@ import {
 import Link from "next/link";
 import { logoutAction } from "./lib/logout-action";
 import { signOut } from "@/app/auth";
-import { redirect } from "next/navigation";
 
-// Menu items.
 const items = [
   {
     title: "Редактирование страниц",
@@ -42,7 +40,6 @@ const items = [
       },
       { title: "О компании", url: "about" },
       { title: "Допуски", url: "dopusk" },
-      { title: "Контакты", url: "contacts" },
     ],
   },
   {
@@ -59,7 +56,7 @@ const items = [
     url: "#",
     icon: Mail,
     subItems: [
-      { title: "Звонок", url: "messages" },
+      { title: "Звонок", url: "communication" },
     ],
   },
 ];

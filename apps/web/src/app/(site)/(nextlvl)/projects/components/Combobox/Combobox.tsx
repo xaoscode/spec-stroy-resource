@@ -61,7 +61,7 @@ export function Combobox() {
     <Popover open={ open } onOpenChange={ setOpen }>
       <PopoverTrigger asChild>
         <Button
-          className="h-full truncate"
+          className="p-4 border-black rounded-none"
           variant="outline"
           role="combobox"
           aria-expanded={ open }

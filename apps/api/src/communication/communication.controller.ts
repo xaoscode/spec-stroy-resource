@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { MessageDto } from './dto/message.dto';
+import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
+import { MessageDto, UpdateMessageDto } from './dto/message.dto';
 import { CommunicationService } from './communication.service';
+import JwtAuthenticationGuard from 'src/auth/jwt-auth.guard';
 
 @Controller('communication')
 export class CommunicationController {
@@ -10,5 +11,18 @@ export class CommunicationController {
   async newMessage(@Body() dto: MessageDto) {
     console.log('message');
     this.communicationService.newMessage(dto);
+  }
+
+  @UseGuards(JwtAuthenticationGuard)
+  @Get('all')
+  async getAll() {
+    return this.communicationService.getALl();
+  }
+
+  @UseGuards(JwtAuthenticationGuard)
+  @Patch('update-message')
+  async updateMessage(@Body() dto: UpdateMessageDto) {
+    console.log(dto);
+    this.communicationService.updateMessage(dto);
   }
 }

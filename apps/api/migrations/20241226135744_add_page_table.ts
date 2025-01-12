@@ -3,10 +3,6 @@ import { hash } from 'bcrypt';
 
 export async function up(knex: Knex): Promise<void> {
   await knex.raw(`
-      CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-    `);
-
-  await knex.raw(`
       CREATE TABLE page (
           id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
           slug VARCHAR(255) UNIQUE NOT NULL,
