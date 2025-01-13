@@ -12,9 +12,7 @@ export default async function AdminProject({
     const id = (await params).project
 
     const data = await getProject(id)
-    console.log(data)
     return <div>
-
         <EditableProjectRender project={ data } />
     </div>
 }

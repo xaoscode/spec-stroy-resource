@@ -1,26 +1,108 @@
-import { IContent } from "@repo/interfaces";
+import { IBlock, IContent, INewBlock } from "@repo/interfaces";
 import { AdminButton } from "../../../../components/AdminButton/AdminButton";
-import { addBlockAction, deleteAction } from "../lib/content-service";
-import { useContentManager } from "./hooks/use-Content-Manager";
+import { addBlockAction, deleteAction, updateBlock, updateContent } from "../lib/content-service";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { useDebouncedCallback } from "use-debounce";
+import { content } from "../../../../../../../../../tailwind.config";
 
 export function TextBlock({ initialContent }: { initialContent: IContent }) {
-    const { content, isSaving, handleAction, saveBlock, saveContent } = useContentManager(initialContent);
+
+    const [isSaving, setIsSaving] = useState(false);
+
+    const updateContentHandle = useDebouncedCallback(async (content: IContent) => {
+        try {
+            setIsSaving(true);
+            const result = await updateContent(content);
+
+            if (result.success) {
+                console.log("Action successful:", content);
+                toast.success("Изменения сохранены!");
+            } else {
+                toast.error("Не удалось выполнить действие");
+            }
+        } catch (error) {
+            console.error("Error during action:", error);
+            toast.error("Произошла ошибка");
+        } finally {
+            setIsSaving(false);
+        }
+    }, 500)
+
+    const updateBlockHandle = useDebouncedCallback(async (data: { content: IBlock; file?: File }) => {
+        try {
+            setIsSaving(true);
+            const result = await updateBlock(data);
+
+            if (result.success) {
+                console.log("Action successful:", data);
+                toast.success("Изменения сохранены!");
+            } else {
+                toast.error("Не удалось выполнить действие");
+            }
+        } catch (error) {
+            console.error("Error during action:", error);
+            toast.error("Произошла ошибка");
+        } finally {
+            setIsSaving(false);
+        }
+    }, 500)
+
+
+    const addBlockHandle = async (data: INewBlock) => {
+        try {
+            setIsSaving(true);
+            const result = await addBlockAction(data);
+
+            if (result.success) {
+                console.log("Action successful:", data);
+                toast.success("Изменения сохранены!");
+            } else {
+                toast.error("Не удалось выполнить действие");
+            }
+        } catch (error) {
+            console.error("Error during action:", error);
+            toast.error("Произошла ошибка");
+        } finally {
+            setIsSaving(false);
+        }
+    }
+
+    const deleteHandle = async (data: { id: string; childTable: string; parentTable: string; parentId: string }) => {
+        try {
+            setIsSaving(true);
+            const result = await deleteAction(data);
+
+            if (result.success) {
+                console.log("Action successful:", content);
+                toast.success("Изменения сохранены!");
+            } else {
+                toast.error("Не удалось выполнить действие");
+            }
+        } catch (error) {
+            console.error("Error during action:", error);
+            toast.error("Произошла ошибка");
+        } finally {
+            setIsSaving(false);
+        }
+    }
+
 
     return (
         <div className="flex flex-col p-4 bg-white rounded shadow gap-6">
             <input
                 type="text"
-                defaultValue={ content.header }
+                defaultValue={ initialContent.header }
                 onChange={ (e) =>
-                    saveContent({ ...content, header: e.target.value })
+                    updateContentHandle({ ...initialContent, header: e.target.value })
                 }
                 placeholder="Введите заголовок"
                 className="w-full text-center font-semibold text-lg p-2 border rounded"
             />
-            { content.block.map((block) => (
+            { initialContent.block.map((block) => (
                 <div key={ block.id } className="flex flex-col gap-5">
                     <AdminButton
-                        onClick={ () => handleAction(deleteAction, { id: block.id, childTable: "block", parentTable: "content" }) }
+                        onClick={ () => deleteHandle({ id: block.id, childTable: "block", parentTable: "content", parentId: initialContent.id }) }
                         variant="remove"
                         className="self-end"
                     >Удалить
@@ -29,7 +111,7 @@ export function TextBlock({ initialContent }: { initialContent: IContent }) {
                         type="text"
                         defaultValue={ block.header }
                         onChange={ (e) =>
-                            saveBlock({ content: { ...block, header: e.target.value } })
+                            updateBlockHandle({ content: { ...block, header: e.target.value } })
                         }
                         placeholder="Введите заголовок"
                         className="w-full text-center font-semibold text-lg p-2 border rounded"
@@ -37,7 +119,7 @@ export function TextBlock({ initialContent }: { initialContent: IContent }) {
                     <textarea
                         defaultValue={ block.text }
                         onChange={ (e) =>
-                            saveBlock({ content: { ...block, text: e.target.value } })
+                            updateBlockHandle({ content: { ...block, text: e.target.value } })
                         }
                         placeholder="Введите описание"
                         className="w-full  p-2 border rounded outline outline-1"
@@ -47,12 +129,12 @@ export function TextBlock({ initialContent }: { initialContent: IContent }) {
             <div className="flex flex-col items-center mt-4 space-y-4">
 
                 <AdminButton onClick={ () =>
-                    handleAction(addBlockAction, {
+                    addBlockHandle({
                         header: "",
                         text: "",
                         image: "",
-                        index: content.block.length + 1,
-                        contentId: content.id,
+                        index: initialContent.block.length + 1,
+                        contentId: initialContent.id,
                     }) } variant="add">
                     Добавить блок
                 </AdminButton>

@@ -8,10 +8,14 @@ export interface INewProject {
 	service: string;
 }
 export interface IProject extends INewProject {
-	id: number;
+	id: string;
 	images: IImage[];
+	createdAt: Date;
 }
-
+export interface IUpdateProject extends INewProject {
+	id: string;
+	createdAt: Date;
+}
 export interface INewImage {
 	name: string;
 	url: string;

@@ -1,20 +1,82 @@
 "use client"
 
-import { IContent } from "@repo/interfaces";
+import { IBlock, IContent, INewBlock } from "@repo/interfaces";
 import { AdminButton } from "../../../../components/AdminButton/AdminButton";
-import { useContentManager } from "./hooks/use-Content-Manager";
-import { addBlockAction } from "../lib/content-service";
+import { addBlockAction, updateBlock, updateContent } from "../lib/content-service";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { useDebouncedCallback } from "use-debounce";
 
 export function WarningBlock({ initialContent }: { initialContent: IContent }) {
-    const { content, isSaving, handleAction, saveBlock, saveContent } = useContentManager(initialContent);
+    const [isSaving, setIsSaving] = useState(false);
+
+    const updateContentHandle = useDebouncedCallback(async (content: IContent) => {
+        try {
+            setIsSaving(true);
+            const result = await updateContent(content);
+
+            if (result.success) {
+                console.log("Action successful:", content);
+                toast.success("Изменения сохранены!");
+            } else {
+                toast.error("Не удалось выполнить действие");
+            }
+        } catch (error) {
+            console.error("Error during action:", error);
+            toast.error("Произошла ошибка");
+        } finally {
+            setIsSaving(false);
+        }
+    }, 500)
+
+    const updateBlockHandle = useDebouncedCallback(async (data: { content: IBlock; file?: File }) => {
+        try {
+            setIsSaving(true);
+            const result = await updateBlock(data);
+
+            if (result.success) {
+                console.log("Action successful:", data);
+                toast.success("Изменения сохранены!");
+            } else {
+                toast.error("Не удалось выполнить действие");
+            }
+        } catch (error) {
+            console.error("Error during action:", error);
+            toast.error("Произошла ошибка");
+        } finally {
+            setIsSaving(false);
+        }
+    }, 500)
+
+
+    const addBlockHandle = async (data: INewBlock) => {
+        try {
+            setIsSaving(true);
+            const result = await addBlockAction(data);
+
+            if (result.success) {
+                console.log("Action successful:", data);
+                toast.success("Изменения сохранены!");
+            } else {
+                toast.error("Не удалось выполнить действие");
+            }
+        } catch (error) {
+            console.error("Error during action:", error);
+            toast.error("Произошла ошибка");
+        } finally {
+            setIsSaving(false);
+        }
+    }
+
+
 
     return (
         <div className="flex flex-col p-4 gap-6 bg-yellow-100 border-l-4 border-yellow-500 rounded shadow">
             <input
                 type="text"
-                defaultValue={ content.header }
+                defaultValue={ initialContent.header }
                 onChange={ (e) =>
-                    saveContent({ ...content, header: e.target.value })
+                    updateContentHandle({ ...initialContent, header: e.target.value })
                 }
                 placeholder="Введите заголовок"
                 className="w-full text-center font-semibold text-lg p-2 border rounded"
@@ -25,7 +87,7 @@ export function WarningBlock({ initialContent }: { initialContent: IContent }) {
                         type="text"
                         defaultValue={ block.header }
                         onChange={ (e) =>
-                            saveBlock({ content: { ...block, header: e.target.value } })
+                            updateBlockHandle({ content: { ...block, header: e.target.value } })
                         }
                         placeholder="Введите заголовок"
                         className="w-full text-center font-semibold text-lg p-2 border rounded"
@@ -33,7 +95,7 @@ export function WarningBlock({ initialContent }: { initialContent: IContent }) {
                     <textarea
                         defaultValue={ block.text }
                         onChange={ (e) =>
-                            saveBlock({ content: { ...block, text: e.target.value } })
+                            updateBlockHandle({ content: { ...block, text: e.target.value } })
                         }
                         placeholder="Введите описание"
                         className="w-full  bg-white p-2 border rounded "
@@ -41,12 +103,12 @@ export function WarningBlock({ initialContent }: { initialContent: IContent }) {
                 </div>
             )) }
             <AdminButton onClick={ () =>
-                handleAction(addBlockAction, {
+                addBlockHandle({
                     header: "",
                     text: "",
                     image: "",
-                    index: content.block.length + 1,
-                    contentId: content.id,
+                    index: initialContent.block.length + 1,
+                    contentId: initialContent.id,
                 }) } variant="add">
                 Добавить блок
             </AdminButton>

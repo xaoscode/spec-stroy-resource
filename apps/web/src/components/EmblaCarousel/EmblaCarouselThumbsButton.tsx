@@ -18,7 +18,6 @@ export const Thumb: React.FC<PropType> = ({
   selected,
   onClick,
 }) => {
-  console.log(image)
   return (
     <div
       onMouseEnter={ onMouseEnter }

@@ -1,16 +1,95 @@
 "use client";
 
 import Image from "next/image";
-import { IContent } from "@repo/interfaces";
+import { IBlock, IContent, INewBlock } from "@repo/interfaces";
 import { AdminButton } from "../../../../components/AdminButton/AdminButton";
-import { addBlockAction, deleteAction, updateBlock } from "../lib/content-service";
-import { useContentManager } from "./hooks/use-Content-Manager";
+import { addBlockAction, deleteAction, updateBlock, updateContent } from "../lib/content-service";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { useDebouncedCallback } from "use-debounce";
+import { content } from "../../../../../../../../../tailwind.config";
 
 export function ImageTextBlock({ initialContent }: { initialContent: IContent }) {
-    const { content, isSaving, handleAction, saveBlock, saveContent } = useContentManager(initialContent);
 
 
+    const [isSaving, setIsSaving] = useState(false);
 
+    const updateContentHandle = useDebouncedCallback(async (content: IContent) => {
+        try {
+            setIsSaving(true);
+            const result = await updateContent(content);
+
+            if (result.success) {
+                console.log("Action successful:", content);
+                toast.success("Изменения сохранены!");
+            } else {
+                toast.error("Не удалось выполнить действие");
+            }
+        } catch (error) {
+            console.error("Error during action:", error);
+            toast.error("Произошла ошибка");
+        } finally {
+            setIsSaving(false);
+        }
+    }, 500)
+
+    const updateBlockHandle = useDebouncedCallback(async (data: { content: IBlock; file?: File }) => {
+        try {
+            setIsSaving(true);
+            const result = await updateBlock(data);
+
+            if (result.success) {
+                console.log("Action successful:", data);
+                toast.success("Изменения сохранены!");
+            } else {
+                toast.error("Не удалось выполнить действие");
+            }
+        } catch (error) {
+            console.error("Error during action:", error);
+            toast.error("Произошла ошибка");
+        } finally {
+            setIsSaving(false);
+        }
+    }, 500)
+
+
+    const addBlockHandle = async (data: INewBlock) => {
+        try {
+            setIsSaving(true);
+            const result = await addBlockAction(data);
+
+            if (result.success) {
+                console.log("Action successful:", data);
+                toast.success("Изменения сохранены!");
+            } else {
+                toast.error("Не удалось выполнить действие");
+            }
+        } catch (error) {
+            console.error("Error during action:", error);
+            toast.error("Произошла ошибка");
+        } finally {
+            setIsSaving(false);
+        }
+    }
+
+    const deleteHandle = async (data: { id: string; childTable: string; parentTable: string; parentId: string }) => {
+        try {
+            setIsSaving(true);
+            const result = await deleteAction(data);
+
+            if (result.success) {
+                console.log("Action successful:", content);
+                toast.success("Изменения сохранены!");
+            } else {
+                toast.error("Не удалось выполнить действие");
+            }
+        } catch (error) {
+            console.error("Error during action:", error);
+            toast.error("Произошла ошибка");
+        } finally {
+            setIsSaving(false);
+        }
+    }
 
     const triggerFileInput = (index: number) => {
         const fileInput = document.getElementById(`file-input-${index}`) as HTMLInputElement;
@@ -23,20 +102,20 @@ export function ImageTextBlock({ initialContent }: { initialContent: IContent })
         <div className="flex flex-col p-6 bg-gray-50 rounded-lg shadow-md gap-5">
             <input
                 type="text"
-                defaultValue={ content.header }
+                defaultValue={ initialContent.header }
                 onChange={ (e) =>
-                    saveContent({ ...content, header: e.target.value })
+                    updateContentHandle({ ...initialContent, header: e.target.value })
                 }
                 placeholder="Введите заголовок"
                 className="w-full text-center font-semibold text-lg p-2 border rounded"
             />
             <div className="flex flex-col lg:flex-row justify-between gap-6">
 
-                { content.block.map((block, index) => (
+                { initialContent.block.map((block, index) => (
                     <div key={ block.id } className="flex-1 text-center space-y-3 relative">
                         <div className="flex flex-col gap-5 justify-center items-center">
                             <AdminButton
-                                onClick={ () => handleAction(deleteAction, { id: block.id, childTable: "block", parentTable: "content" }) }
+                                onClick={ () => deleteHandle({ id: block.id, childTable: "block", parentTable: "content", parentId: initialContent.id }) }
                                 variant="remove"
                             >
                                 Удалить
@@ -45,7 +124,7 @@ export function ImageTextBlock({ initialContent }: { initialContent: IContent })
                                 type="text"
                                 defaultValue={ block.header }
                                 onChange={ (e) =>
-                                    saveBlock({ content: { ...block, header: e.target.value } })
+                                    updateBlockHandle({ content: { ...block, header: e.target.value } })
                                 }
                                 placeholder="Введите заголовок"
                                 className="w-full text-center font-semibold text-lg p-2 border rounded"
@@ -75,14 +154,14 @@ export function ImageTextBlock({ initialContent }: { initialContent: IContent })
                                     if (e.target.files) {
                                         const file = e.target.files[0];
 
-                                        handleAction(updateBlock, { content: { ...block, image: file.name }, file: file });
+                                        updateBlockHandle({ content: { ...block, image: file.name }, file: file });
                                     }
                                 } }
                             />
                             <textarea
                                 defaultValue={ block.text }
                                 onChange={ (e) =>
-                                    saveBlock({ content: { ...block, text: e.target.value } })
+                                    updateBlockHandle({ content: { ...block, text: e.target.value } })
                                 }
                                 placeholder="Введите описание"
                                 className="w-full text-center p-2 border rounded outline outline-1"
@@ -93,14 +172,14 @@ export function ImageTextBlock({ initialContent }: { initialContent: IContent })
             </div>
 
             <div className="flex flex-col items-center mt-4 space-y-4">
-                { content.block.length < 3 && (
+                { initialContent.block.length < 3 && (
                     <AdminButton onClick={ () =>
-                        handleAction(addBlockAction, {
+                        addBlockHandle({
                             header: "",
                             text: "",
                             image: "",
-                            index: content.block.length + 1,
-                            contentId: content.id,
+                            index: initialContent.block.length + 1,
+                            contentId: initialContent.id,
                         }) } variant="add">
                         Добавить блок
                     </AdminButton>

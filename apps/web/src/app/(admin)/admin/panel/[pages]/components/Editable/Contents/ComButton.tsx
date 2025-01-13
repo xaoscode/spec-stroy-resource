@@ -1,26 +1,47 @@
+"use client"
 import { IContent } from "@repo/interfaces";
 
-import { useContentManager } from "./hooks/use-Content-Manager";
+import { toast } from "react-toastify";
+import { useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
+import { updateContent } from "../lib/content-service";
 
 export function ComButton({ initialContent }: { initialContent: IContent }) {
-    const { content, isSaving, saveContent } = useContentManager(initialContent);
+    const [isSaving, setIsSaving] = useState(false);
+    const handleAction = useDebouncedCallback(async (content: IContent) => {
+        try {
+            setIsSaving(true);
+            const result = await updateContent(content);
 
+            if (result.success) {
+                console.log("Action successful:", content);
+                toast.success("Изменения сохранены!");
+            } else {
+                toast.error("Не удалось выполнить действие");
+            }
+        } catch (error) {
+            console.error("Error during action:", error);
+            toast.error("Произошла ошибка");
+        } finally {
+            setIsSaving(false);
+        }
+    }, 500)
     return (
         <div className="flex flex-col p-4 bg-white rounded shadow gap-6">
             <input
                 type="text"
-                defaultValue={ content.header }
+                defaultValue={ initialContent.header }
                 onChange={ (e) =>
-                    saveContent({ ...content, header: e.target.value })
+                    handleAction({ ...initialContent, header: e.target.value })
                 }
                 placeholder="Введите заголовок"
                 className="w-full text-center font-semibold text-lg p-2 border rounded"
             />
             <input
                 type="text"
-                defaultValue={ content.text }
+                defaultValue={ initialContent.text }
                 onChange={ (e) =>
-                    saveContent({ ...content, text: e.target.value })
+                    handleAction({ ...initialContent, text: e.target.value })
                 }
                 placeholder="Введите заголовок"
                 className="w-full text-center font-semibold text-lg p-2 border rounded"

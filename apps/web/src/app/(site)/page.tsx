@@ -6,20 +6,16 @@ import { Metadata } from "next";
 import HomeMap from "./components/HomeMap/HomeMap";
 import ServiceBlock from "@/components/ServiceBlock/ServiceBlock";
 import { Button } from "@/components/Button/Button";
-import { fetchFilteredProjects, fetchProjectsCout } from "./api/Projects";
+import { getFiveLatestProjects } from "./api/Projects";
 import Link from "next/link";
-import { IProject } from "@repo/interfaces";
 
 export const metadata: Metadata = { title: "Главная" };
 
 
 
 export default async function Home() {
-  let projects: IProject[] = [];
-  const count = await fetchProjectsCout();
-  if (count > 0) {
-    projects = await fetchFilteredProjects(Math.ceil(count / 5), 5);
-  }
+  const projects = await getFiveLatestProjects()
+
 
   return (
     <div className={ styles.wrapper }>
@@ -37,7 +33,9 @@ export default async function Home() {
       </div>
       <InfoBlock className={ styles.projects }>
         <div className={ styles.header }>НАШИ ПРОЕКТЫ</div>
+
         <OurProjects projects={ projects } />
+
         <Button size="lg" variant="filled">
           <Link href="/projects">Все проекты</Link>
         </Button>

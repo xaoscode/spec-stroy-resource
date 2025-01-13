@@ -12,7 +12,6 @@ interface ProjectProps
 
 export function Project({ index, project, className, ...props }: ProjectProps) {
   const isReversed = index % 2 !== 0;
-
   return (
     <div
       className={ cn(

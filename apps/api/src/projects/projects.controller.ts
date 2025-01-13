@@ -18,6 +18,9 @@ import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import JwtAuthenticationGuard from 'src/auth/jwt-auth.guard';
 import { ConfigService } from '@nestjs/config';
 import { multerConfigProjects } from './mutler.config';
+import { INewImage } from '@repo/interfaces';
+import { multerConfig } from 'src/pages/mutler.config';
+import { UpdateProjectDto } from './dto/project.dto';
 
 @Controller('projects')
 export default class ProjectsController {
@@ -27,9 +30,12 @@ export default class ProjectsController {
   ) {}
 
   @Get('get/:id')
-  async getProjectById(@Param('id', ParseIntPipe) id: number) {
-    console.log('get');
+  async getProjectById(@Param('id') id: string) {
     return this.projectsService.getProjectById(id);
+  }
+  @Get('five-latest')
+  async getFiveLatestProjects() {
+    return this.projectsService.getFiveLatestProjects();
   }
 
   @Get('all')
@@ -49,9 +55,6 @@ export default class ProjectsController {
     @Query('service') service?: string,
     @Query('search') search?: string,
   ) {
-    console.log('filter');
-    console.log(sector, service);
-
     return this.projectsService.getProjectsByFilters(page, limit, {
       sector,
       service,
@@ -77,27 +80,54 @@ export default class ProjectsController {
   @Post('add')
   @UseInterceptors(FilesInterceptor('images', 10, multerConfigProjects))
   async createProject(
-    @UploadedFiles() file: Express.Multer.File,
+    @UploadedFiles() files: Express.Multer.File[],
     @Body('content') contentString: string,
   ) {
-    console.log(file);
+    const images: INewImage[] = files.map((image) => ({
+      name: image.originalname,
+      url: `${this.configService.get('BASE_URL')}/${image.path}`,
+    }));
+
     const content = JSON.parse(contentString);
-    return this.projectsService.addProject(content);
+    return this.projectsService.addProject(content, images);
   }
 
   @UseGuards(JwtAuthenticationGuard)
   @Patch('update-project')
-  @UseInterceptors(FileInterceptor('images', multerConfigProjects))
-  async updateProject(
+  async updateProject(@Body() dto: UpdateProjectDto) {
+    return this.projectsService.updateProject(dto);
+  }
+
+  @UseGuards(JwtAuthenticationGuard)
+  @Delete('delete/:id')
+  async deleteProject(@Param('id') id: string) {
+    return this.projectsService.deleteProjectById(id);
+  }
+
+  @UseGuards(JwtAuthenticationGuard)
+  @Delete('delete-image/:id')
+  async deleteImage(@Param('id') id: string) {
+    return this.projectsService.deleteImageById(id);
+  }
+
+  @UseGuards(JwtAuthenticationGuard)
+  @Patch('update-image')
+  @UseInterceptors(FileInterceptor('file', multerConfig))
+  async updateImage(
     @UploadedFile() file: Express.Multer.File,
     @Body('content') contentString: string,
   ) {
     const content = JSON.parse(contentString);
-    return this.projectsService.updateProject(content);
+    console.log(file);
+    await this.projectsService.updateImage(content, {
+      name: file.filename,
+      url: `${this.configService.get('BASE_URL')}/${file.path}`,
+    });
   }
 
-  @Delete('delete/:id')
-  async deleteProject(@Param('id', ParseIntPipe) id: number) {
-    return this.projectsService.deleteProjectById(id);
+  @UseGuards(JwtAuthenticationGuard)
+  @Post('add-image/:id')
+  async addImage(@Param('id') id: string) {
+    await this.projectsService.addImage(id);
   }
 }

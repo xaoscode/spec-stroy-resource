@@ -33,30 +33,30 @@ export default function HomeMap({
       className: styles["item-2"],
       text: "Многоквартирные жилые дома",
       image: "/apart.svg",
-      url: "/projects?page=1&sector=administrative_buildings"
+      url: "/projects?page=1&sector=apartment_buildings"
     },
     {
       className: styles["item-3"],
       text: "Промышленные объекты: заводы и фабрики.",
       image: "/factory.svg",
-      url: "/projects?page=1&sector=administrative_buildings"
+      url: "/projects?page=1&sector=industrial_facilities"
     },
     {
       className: styles["item-4"],
       text: "Образовательные учреждения",
       image: "/school.svg",
-      url: "/projects?page=1&sector=administrative_buildings"
+      url: "/projects?page=1&sector=educational_institutions"
 
     },
     {
       className: styles["item-5"],
       text: "Логистические центры и склады.",
       image: "/storage.svg",
-      url: "/projects?page=1&sector=administrative_buildings"
+      url: "/projects?page=1&sector=logistics_centers"
     },
     {
       className: styles["item-6"], text: "Реконструкция", image: "/rec.svg",
-      url: "/projects?page=1&sector=administrative_buildings"
+      url: "/projects?page=1&sector=reconstruction"
 
     },
   ];

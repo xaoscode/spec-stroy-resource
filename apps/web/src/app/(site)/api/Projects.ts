@@ -13,6 +13,12 @@ export async function getProjects(page: number, limit: number) {
 	return data;
 }
 
+export async function getFiveLatestProjects() {
+	const response = await fetch(`${API.projects}/five-latest`);
+	const data: IProject[] = await response.json();
+	return data;
+}
+
 export async function fetchFilteredProjects(page: number, limit: number, filters?: IProjectFilters) {
 	const params = new URLSearchParams({
 		page: page.toString(),

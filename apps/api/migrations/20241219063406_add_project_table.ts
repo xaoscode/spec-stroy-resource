@@ -8,8 +8,9 @@ export async function up(knex: Knex): Promise<void> {
       description TEXT,
       client VARCHAR(255),
       work_structure TEXT,
-      price INT,
+      price BIGINT,
       sector VARCHAR(255),
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       service VARCHAR(255)
     );
 

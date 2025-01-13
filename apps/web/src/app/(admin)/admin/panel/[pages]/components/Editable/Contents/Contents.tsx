@@ -6,6 +6,7 @@ import { WarningBlock } from "./WarningBlock";
 import { ListBlock } from "./ListBlock";
 import { PriceListBlock } from "./PriceListBlock";
 import { ComButton } from "./ComButton";
+import { FileBlock } from "./FileBlock";
 
 
 
@@ -27,6 +28,8 @@ export function RenderContentBlock({ content }: { content: IContent }) {
             return <PriceListBlock initialContent={ content } />;
         case "Кнопка связи":
             return <ComButton initialContent={ content } />;
+        case "Файл":
+            return <FileBlock initialContent={ content } />;
         default:
             return <p>Неизвестный тип контента</p>;
     }

@@ -1,4 +1,4 @@
-import { IImage, INewProject, IProject } from '@repo/interfaces';
+import { IImage, INewProject, IUpdateProject } from '@repo/interfaces';
 
 export class ProjectDto implements INewProject {
   client: string;
@@ -6,18 +6,26 @@ export class ProjectDto implements INewProject {
   sector: string;
   service: string;
   name: string;
+  createdAt: Date;
   description: string;
   price: number;
 }
 
-export class UpdateProjectDto implements IProject {
-  id: number;
+export class UpdateProjectDto implements IUpdateProject {
+  id: string;
   name: string;
   description: string;
   client: string;
   workStructure: string;
   price: number;
   sector: string;
+  createdAt: Date;
   service: string;
-  images: IImage[];
+}
+
+export class UpdateImageDto implements IImage {
+  id: string;
+  createdAt: Date;
+  name: string;
+  url: string;
 }

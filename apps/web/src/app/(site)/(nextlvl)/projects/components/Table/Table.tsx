@@ -14,6 +14,7 @@ export default async function ProjectsTable({
 }) {
     try {
         const projects = await fetchFilteredProjects(currentPage, 9, filters);
+
         if (!projects || projects.length === 0) {
             return (
                 <div className="text-center py-10">
@@ -26,6 +27,7 @@ export default async function ProjectsTable({
 
             <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 { projects.map((project: IProject) => (
+
                     <div
                         key={ project.id }
                         className="flex flex-col space-y-6 p-6 bg-gray-50 rounded shadow-md hover:shadow-primary"
@@ -34,7 +36,7 @@ export default async function ProjectsTable({
                             {
                                 project.images[0] && <Image
                                     className=""
-                                    src={ project.images[0] }
+                                    src={ project.images[0].url }
                                     alt={ `Изображение ${project.name}` }
                                     width={ 300 }
                                     height={ 300 }
@@ -79,7 +81,6 @@ export default async function ProjectsTable({
 
         );
     } catch (error) {
-        // Обрабатываем ошибки API
         console.error("Ошибка загрузки проектов:", error);
         return (
             <div className="text-center py-10">

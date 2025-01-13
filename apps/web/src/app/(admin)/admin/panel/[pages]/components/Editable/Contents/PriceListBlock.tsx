@@ -1,31 +1,110 @@
-import { IContent } from "@repo/interfaces";
+import { IBlock, IContent, INewBlock } from "@repo/interfaces";
 import { AdminButton } from "../../../../components/AdminButton/AdminButton";
 import { X } from "lucide-react";
-import { useContentManager } from "./hooks/use-Content-Manager";
-import { addBlockAction, deleteAction } from "../lib/content-service";
+import { addBlockAction, deleteAction, updateBlock, updateContent } from "../lib/content-service";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { useDebouncedCallback } from "use-debounce";
+import { content } from "../../../../../../../../../tailwind.config";
 
 export function PriceListBlock({ initialContent }: { initialContent: IContent }) {
-    const { content, isSaving, handleAction, saveBlock, saveContent } = useContentManager(initialContent);
+    const [isSaving, setIsSaving] = useState(false);
 
+    const updateContentHandle = useDebouncedCallback(async (content: IContent) => {
+        try {
+            setIsSaving(true);
+            const result = await updateContent(content);
+
+            if (result.success) {
+                console.log("Action successful:", content);
+                toast.success("Изменения сохранены!");
+            } else {
+                toast.error("Не удалось выполнить действие");
+            }
+        } catch (error) {
+            console.error("Error during action:", error);
+            toast.error("Произошла ошибка");
+        } finally {
+            setIsSaving(false);
+        }
+    }, 500)
+
+    const updateBlockHandle = useDebouncedCallback(async (data: { content: IBlock; file?: File }) => {
+        try {
+            setIsSaving(true);
+            const result = await updateBlock(data);
+
+            if (result.success) {
+                console.log("Action successful:", data);
+                toast.success("Изменения сохранены!");
+            } else {
+                toast.error("Не удалось выполнить действие");
+            }
+        } catch (error) {
+            console.error("Error during action:", error);
+            toast.error("Произошла ошибка");
+        } finally {
+            setIsSaving(false);
+        }
+    }, 500)
+
+
+    const addBlockHandle = async (data: INewBlock) => {
+        try {
+            setIsSaving(true);
+            const result = await addBlockAction(data);
+
+            if (result.success) {
+                console.log("Action successful:", data);
+                toast.success("Изменения сохранены!");
+            } else {
+                toast.error("Не удалось выполнить действие");
+            }
+        } catch (error) {
+            console.error("Error during action:", error);
+            toast.error("Произошла ошибка");
+        } finally {
+            setIsSaving(false);
+        }
+    }
+
+    const deleteHandle = async (data: { id: string; childTable: string; parentTable: string; parentId: string }) => {
+        try {
+            setIsSaving(true);
+            const result = await deleteAction(data);
+
+            if (result.success) {
+                console.log("Action successful:", content);
+                toast.success("Изменения сохранены!");
+            } else {
+                toast.error("Не удалось выполнить действие");
+            }
+        } catch (error) {
+            console.error("Error during action:", error);
+            toast.error("Произошла ошибка");
+        } finally {
+            setIsSaving(false);
+        }
+    }
     return (
         <div className="flex flex-col gap-5 p-6 bg-gray-50 rounded-lg shadow-md">
             <input
                 type="text"
-                defaultValue={ content.header }
+                defaultValue={ initialContent.header }
                 onChange={ (e) =>
-                    saveContent({ ...content, header: e.target.value })
+                    updateContentHandle({ ...initialContent, header: e.target.value })
                 }
                 placeholder="Введите заголовок"
                 className="w-full text-center font-semibold text-lg p-2 border rounded"
             />
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                { content.block.map((block, index) => (
+                { initialContent.block.map((block, index) => (
                     <div
                         key={ index }
                         className="p-4 border rounded-md shadow-sm bg-white flex flex-col items-center space-y-4"
                     >
                         <AdminButton
-                            onClick={ () => handleAction(deleteAction, { id: block.id, childTable: "block", parentTable: "content" }) }
+                            onClick={ () => deleteHandle({ id: block.id, childTable: "block", parentTable: "content", parentId: initialContent.id }) }
                             variant="remove"
                             size="icon"
                             className="self-end"
@@ -36,7 +115,7 @@ export function PriceListBlock({ initialContent }: { initialContent: IContent })
                             type="text"
                             defaultValue={ block.header }
                             onChange={ (e) =>
-                                saveBlock({ content: { ...block, header: e.target.value } })
+                                updateBlockHandle({ content: { ...block, header: e.target.value } })
                             }
                             placeholder="Введите название услуги"
                             className="text-2xl font-bold text-primary w-full text-center border-b p-2 focus:outline-none"
@@ -46,7 +125,7 @@ export function PriceListBlock({ initialContent }: { initialContent: IContent })
                             defaultValue={ block.text }
 
                             onChange={ (e) =>
-                                saveBlock({ content: { ...block, text: e.target.value } })
+                                updateBlockHandle({ content: { ...block, text: e.target.value } })
                             }
                             placeholder="Введите цену"
                             className="text-2xl font-bold text-green-500 w-full text-center border rounded p-2 focus:outline-none"
@@ -58,12 +137,12 @@ export function PriceListBlock({ initialContent }: { initialContent: IContent })
 
             <div className="flex flex-col items-center mt-4 space-y-4">
                 <AdminButton onClick={ () =>
-                    handleAction(addBlockAction, {
+                    addBlockHandle({
                         header: "",
                         text: "",
                         image: "",
-                        index: content.block.length + 1,
-                        contentId: content.id,
+                        index: initialContent.block.length + 1,
+                        contentId: initialContent.id,
                     }) } variant="add">
                     Добавить блок
                 </AdminButton>

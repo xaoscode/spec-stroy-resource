@@ -132,12 +132,12 @@ export default function AdminAddProject() {
                 </div>
 
                 <div>
-                    <label htmlFor="work_structure" className="block text-sm font-medium">
+                    <label htmlFor="workStructure" className="block text-sm font-medium">
                         Структура работы
                     </label>
                     <textarea
-                        id="work_structure"
-                        name="work_structure"
+                        id="workStructure"
+                        name="workStructure"
                         value={ projectData.workStructure }
                         onChange={ handleInputChange }
                         className="mt-1 block w-full bg-white rounded-md"

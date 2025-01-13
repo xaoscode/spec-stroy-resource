@@ -135,6 +135,7 @@ export default class PagesRepositroy {
 
     return { ...page, section };
   }
+
   async updatePage(id: string, dto: PageDto) {
     const updateFields: string[] = [];
     const updateValues: any[] = [];
@@ -218,6 +219,7 @@ export default class PagesRepositroy {
     `;
     await this.databaseService.runQuery(query, updateValues);
   }
+
   async updateBlock(dto: UpdateBlockDto) {
     const updateFields: string[] = [];
     const updateValues: any[] = [];

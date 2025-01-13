@@ -14,7 +14,7 @@ import { addContentAction, deleteAction, reorderAction } from "./lib/content-ser
 import { AdminButton } from "../../../components/AdminButton/AdminButton";
 import { RenderContentBlock } from "./Contents/Contents";
 
-const contentTypes = ["Текст", "Картинки с текстом", "Список", "Предупреждение", "Прайс-лист", "Кнопка связи"];
+const contentTypes = ["Текст", "Картинки с текстом", "Список", "Предупреждение", "Прайс-лист", "Кнопка связи", "Файл"];
 
 export function EditableContent({ contents = [], sectionId = "" }: { contents?: IContent[], sectionId?: string, pageId?: string }) {
     const [optimisticItems, setOptimisticItems] = useState(contents);

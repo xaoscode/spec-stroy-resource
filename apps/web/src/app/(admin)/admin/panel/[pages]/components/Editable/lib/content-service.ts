@@ -91,7 +91,6 @@ export async function deleteAction(data: { id: string; childTable: string; paren
 export async function addBlockAction(contentData: INewBlock) {
 	try {
 		const session = await auth();
-		// console.log(session?.backendTokens);
 		const response = await fetch(`${API.pages}/create-block`, {
 			method: "POST",
 			headers: {

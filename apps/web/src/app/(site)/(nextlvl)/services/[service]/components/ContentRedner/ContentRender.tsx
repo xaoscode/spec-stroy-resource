@@ -6,6 +6,7 @@ import { PriceList } from "./PriceList";
 import { Warning } from "./Warning";
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 import { CommBut } from "./CommBut";
+import { Fileb } from "./Fileb";
 
 interface ContentRednerProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     customContent: IContent
@@ -27,6 +28,8 @@ export async function ContentRender({ customContent, ...props }: ContentRednerPr
             return <PriceList initialContent={ customContent } { ...props } />
         case "Кнопка связи":
             return <CommBut initialContent={ customContent } { ...props } />
+        case "Файл":
+            return <Fileb initialContent={ customContent } { ...props } />
         default:
             return <p>Неизвестный тип контента</p>;
     }

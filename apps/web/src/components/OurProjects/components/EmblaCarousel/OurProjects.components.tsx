@@ -6,9 +6,10 @@ import useEmblaCarousel from "embla-carousel-react";
 import { Thumb } from "./EmblaCarouselThumbsButton";
 import styles from "./OurProjects.components.module.css";
 import Image from "next/image";
+import { IImage } from "@repo/interfaces";
 
 type PropType = {
-  slides: string[];
+  slides: IImage[];
   options?: EmblaOptionsType;
 };
 
@@ -43,7 +44,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
 
     emblaMainApi.on("select", onSelect).on("reInit", onSelect);
   }, [emblaMainApi, onSelect]);
-  console.log(slides)
+
 
   return (
     <div className={ styles.embla }>
@@ -54,7 +55,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
               <div className={ styles.embla__slide__number }>
                 <Image
                   className={ styles.image }
-                  src={ index }
+                  src={ index.url }
                   alt={ "" }
                   width={ 150 }
                   height={ 100 }
@@ -77,7 +78,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
                 selected={ element === selectedIndex }
                 hover={ element === hoverIndex }
                 index={ element }
-                image={ index }
+                image={ index.url }
               />
             )) }
           </div>

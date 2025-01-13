@@ -10,7 +10,7 @@ export default async function ProjectDetails({
     params: Promise<{ service: string }>
 }) {
     const id = (await params).service;
-
+    console.log(id)
     const data: IPage = await fetchPage(id)
     const projects = await fetchFilteredProjects(1, 5, { service: "stroitelno_tekhnicheskaya_ekspertiza_zhilya" })
 
