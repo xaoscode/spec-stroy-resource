@@ -39,7 +39,7 @@ jobs:
               uses: docker/build-push-action@v6
               with:
                   context: ./
-                  fiel: ./docker/Dockerfile.api
+                  file: ./docker/Dockerfile.api
                   push: true
                   tags: ${{ steps.meta-api.outputs.tags }}
                   labels: ${{ steps.meta-api.outputs.labels }}
@@ -58,7 +58,7 @@ jobs:
               uses: docker/build-push-action@v6
               with:
                   context: ./
-                  fiel: ./docker/Dockerfile.web
+                  file: ./docker/Dockerfile.web
                   push: true
                   tags: ${{ steps.meta-web.outputs.tags }}
                   labels: ${{ steps.meta-web.outputs.labels }}
