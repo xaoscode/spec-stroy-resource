@@ -3,10 +3,9 @@ name: Create and publish a Docker image
 on: [workflow_dispatch]
 
 env:
-    # Use docker.io for Docker Hub if empty
     REGISTRY: ghcr.io
-    # github.repository as <account>/<repo>
-    IMAGE_NAME: ${{ github.repository }}
+    API_IMAGE_NAME: ${{ github.repository }}-api
+    WEB_IMAGE_NAME: ${{ github.repository }}-web
 
 jobs:
     build:
@@ -14,9 +13,6 @@ jobs:
         permissions:
             contents: read
             packages: write
-            # This is used to complete the identity challenge
-            # with sigstore/fulcio when running outside of PRs.
-            id-token: write
 
         steps:
             - name: Checkout repository
@@ -27,14 +23,14 @@ jobs:
               with:
                   registry: ${{ env.REGISTRY }}
                   username: ${{ github.actor }}
-                  password: ${{ secrets.GH_TOKEN }}
+                  password: ${{ secrets.GH_PAT }}
 
             # Build and push API image
             - name: Extract metadata (tags, labels) for Docker
-              id: meta
+              id: meta-api
               uses: docker/metadata-action@v5
               with:
-                  images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+                  images: ${{ env.REGISTRY }}/${{ env.API_IMAGE_NAME }}
                   tags: |
                       type=ref,event=branch
                       type=sha
@@ -44,8 +40,8 @@ jobs:
               with:
                   context: ./apps/api
                   push: true
-                  tags: ${{ steps.meta.outputs.tags }}
-                  labels: ${{ steps.meta.outputs.labels }}
+                  tags: ${{ steps.meta-api.outputs.tags }}
+                  labels: ${{ steps.meta-api.outputs.labels }}
 
             # Build and push Web image
             - name: Extract metadata for Web
