@@ -27,7 +27,7 @@ jobs:
               with:
                   registry: ${{ env.REGISTRY }}
                   username: ${{ github.actor }}
-                  password: ${{ secrets.GH_PAT }}
+                  password: ${{ secrets.GH_TOKEN }}
 
             # Build and push API image
             - name: Extract metadata (tags, labels) for Docker
