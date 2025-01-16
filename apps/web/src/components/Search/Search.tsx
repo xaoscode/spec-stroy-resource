@@ -25,7 +25,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
     return (
         <div className="relative flex w-full">
             <Input
-                className="focus-visible:outline-none focus-visible:border-transparent block border border-black py-1 px-10 text-xl placeholder:text-black rounded-none "
+                className="focus-visible:outline-none focus-visible:border-transparent block border border-black py-1 px-10 text-xl placeholder:text-black rounded-none h-full"
                 placeholder={ placeholder }
                 onChange={ (e) => {
                     handleSearch(e.target.value);

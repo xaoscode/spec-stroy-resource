@@ -4,6 +4,12 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import { addProject } from "../projects/lib/project-service";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenuLabel } from "@radix-ui/react-dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Sector, Service } from "../lib/constants";
+
+
 
 export default function AdminAddProject() {
     const [projectData, setProjectData] = useState({
@@ -164,28 +170,44 @@ export default function AdminAddProject() {
                     <label htmlFor="sector" className="block text-sm font-medium">
                         Сектор
                     </label>
-                    <input
-                        type="text"
-                        id="sector"
-                        name="sector"
-                        value={ projectData.sector }
-                        onChange={ handleInputChange }
-                        className="mt-1 block w-full border-gray-300 rounded-md"
-                    />
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" className="mt-1 block w-full border-gray-300 rounded-md py-2 text-left">
+                                { projectData.sector || "Выберите сектор" }
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start">
+                            <DropdownMenuLabel>Выберите сектор</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            { Object.values(Sector).map((sector, index) => (
+                                <DropdownMenuItem key={ index } onClick={ () => setProjectData({ ...projectData, sector }) }>
+                                    { sector }
+                                </DropdownMenuItem>
+                            )) }
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
 
                 <div>
                     <label htmlFor="service" className="block text-sm font-medium">
                         Услуга
                     </label>
-                    <input
-                        type="text"
-                        id="service"
-                        name="service"
-                        value={ projectData.service }
-                        onChange={ handleInputChange }
-                        className="mt-1 block w-full border-gray-300 rounded-md"
-                    />
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" className="mt-1 block w-full border-gray-300 rounded-md py-2 text-left">
+                                { projectData.service || "Выберите услугу" }
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start">
+                            <DropdownMenuLabel>Выберите услугу</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            { Object.values(Service).map((service, index) => (
+                                <DropdownMenuItem key={ index } onClick={ () => setProjectData({ ...projectData, service }) }>
+                                    { service }
+                                </DropdownMenuItem>
+                            )) }
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
 
                 <div>

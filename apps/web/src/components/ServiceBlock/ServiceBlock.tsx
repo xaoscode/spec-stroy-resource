@@ -1,28 +1,33 @@
 import { ServiceBlockProps } from "./ServiceBlock.props";
 import cn from "classnames";
-import styles from "./ServiceBlock.module.css";
-import ServiceComponent from "./components/ServiceComponent/ServiceComponent";
+import { services } from "@/app/(site)/(nextlvl)/lib/services.urls";
+import Link from "next/link";
+
 export default function ServiceBlock({
   className,
   ...props
 }: ServiceBlockProps) {
   return (
-    <div className={ cn(className, styles.block) } { ...props }>
-      <ServiceComponent
-        header={ "Строительно-техническая экспертиза жилья" }
-        image={ "/inspection.webp" } link={ "services/stroitelno_tekhnicheskaya_ekspertiza_zhilya" }      ></ServiceComponent>
-      <ServiceComponent
-        header={ "Инструментально техническое обследование объектов" }
-        image={ "/instrumental.webp" } link={ "" }      ></ServiceComponent>
-      <ServiceComponent
-        header={ "BIM проектирование" }
-        image={ "/inspection.webp" } link={ "" }      ></ServiceComponent>
-      <ServiceComponent
-        header={ "Комплексное проектирование" }
-        image={ "/instrumental.webp" } link={ "" }      ></ServiceComponent>{ " " }
-      <ServiceComponent
-        header={ "Проектирование инженерных систем и сетей" }
-        image={ "/instrumental.webp" } link={ "" }      ></ServiceComponent>
+    <div
+      className={ cn(
+        "flex space-x-5 justify-between",
+        className
+      ) }
+      { ...props }
+    >
+      { services.map((service, index) => (
+        <div
+          key={ index }
+          className="bg-primary border shadow-md hover:shadow-lg transition-shadow duration-300 flex-none h-64 w-64 flex items-center justify-center p-3"
+        >
+          <Link
+            href={ service.url }
+            className="text-white text-xl font-semibold hover:underline text-center"
+          >
+            { service.header }
+          </Link>
+        </div>
+      )) }
     </div>
   );
 }

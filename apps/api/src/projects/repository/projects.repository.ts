@@ -4,22 +4,24 @@ import { ProjectDto, UpdateProjectDto } from '../dto/project.dto';
 import { INewImage, IProjectFilters } from '@repo/interfaces';
 import { plainToInstance } from 'class-transformer';
 import { ImageModel, ProjectModel } from './project.model';
+
 export enum Sector {
-  administrative_buildings = 'Административные здания',
-  apartment_buildings = 'Многоквартирные жилые дома',
-  industrial_facilities = 'Промышленные объекты',
-  educational_institutions = 'Образовательные учреждения',
-  logistics_centers = 'Логистические центры и склады',
+  administrative = 'Административные здания',
+  apartment = 'Многоквартирные жилые дома',
+  industrial = 'Промышленные объекты',
+  educational = 'Образовательные учреждения',
+  logistics = 'Логистические центры и склады',
   reconstruction = 'Реконструкция',
 }
 
 export enum Service {
-  stroitelno_tekhnicheskaya_ekspertiza_zhilya = 'Строительно-техническая экспертиза жилья',
-  instrumentalno_tekhnicheskoe_obsledovanie = 'Инструментальное обследование объектов',
-  bim_design = 'BIM проектирование',
-  comprehensive_design = 'Комплексное проектирование',
-  engineering_systems_design = 'Проектирование инженерных систем и сетей',
+  stroy = 'Строительно-техническая экспертиза жилья',
+  instrumental = 'Инструментальное обследование объектов',
+  bim = 'BIM проектирование',
+  complex = 'Комплексное проектирование',
+  engineering = 'Проектирование инженерных систем и сетей',
 }
+
 @Injectable()
 export default class ProjectsRepository {
   constructor(private readonly databaseService: DatabaseService) {}
@@ -189,6 +191,7 @@ export default class ProjectsRepository {
     }
 
     if (filters?.service) {
+      console.log(filters.service);
       filterConditions.push(`service = $${filterConditions.length + 1}`);
       params.push(Service[filters.service]);
     }

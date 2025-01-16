@@ -4,7 +4,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { Fragment } from "react";
 import styles from "./Breadcrumb.module.css";
 import { breadcrumbTranslations } from "./lib/breadcrumbTranslations";
-import cyrillicToTranslit from "cyrillic-to-translit-js";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -13,7 +12,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { MoveLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 export function BreadcrumbModule() {
   const pathname = usePathname();
@@ -23,51 +21,48 @@ export function BreadcrumbModule() {
     router.back();
   };
   return (
-    <div className={styles.navigation__component}>
-      <Breadcrumb className={styles.breadcrumb}>
-        <BreadcrumbList className={styles.list}>
+    <div className={ styles.navigation__component }>
+      <Breadcrumb className={ styles.breadcrumb }>
+        <BreadcrumbList className={ styles.list }>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href={"/"}>Главная</Link>
+              <Link href={ "/" }>Главная</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
-          {pathParts.map((part, index) => {
+          { pathParts.map((part, index) => {
             const isLast = index === pathParts.length - 1;
             const href = "/" + pathParts.slice(0, index + 1).join("/");
             const name =
-              breadcrumbTranslations[part] ||
-              cyrillicToTranslit().reverse(part).split("-").join(" ");
+              breadcrumbTranslations[part] || part
             return (
-              <Fragment key={index}>
-                {isLast ? (
+              <Fragment key={ index }>
+                { isLast ? (
                   <BreadcrumbItem>
-                    <span>{name}</span>
+                    <span>{ name }</span>
                   </BreadcrumbItem>
                 ) : (
                   <>
                     <BreadcrumbItem>
                       <BreadcrumbLink asChild>
-                        <Link href={href}>{name}</Link>
+                        <Link href={ href }>{ name }</Link>
                       </BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                   </>
-                )}
+                ) }
               </Fragment>
             );
-          })}
+          }) }
         </BreadcrumbList>
       </Breadcrumb>
-      <Button
-        onClick={handleBackClick}
-        variant="link"
-        size="sm"
-        className={styles.butt}
+      <button
+        onClick={ handleBackClick }
+        className="flex flex-row gap-3 text-xl items-center text-white font-normal hover:text-black hover:no-underline"
       >
-        <MoveLeft className="text-white" />
-        <span className="text-white">Назад</span>
-      </Button>
+        <MoveLeft />
+        <span >Назад</span>
+      </button>
     </div>
   );
 }

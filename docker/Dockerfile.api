@@ -1,0 +1,25 @@
+# Строим приложение на базе Node.js
+FROM node:20.3.1-alpine AS base
+
+WORKDIR /app
+COPY ./apps/api/*.json /app/apps/api/
+COPY ./tsconfig.json /app/tsconfig.json
+RUN ls -la /app/apps/api
+
+WORKDIR /app/apps/api
+RUN npm install -g pnpm
+RUN pnpm install
+ADD ./apps/api .
+RUN pnpm build
+
+# Финальный этап сборки
+FROM node:20.3.1-alpine AS build
+
+WORKDIR /app
+
+# Копируем только скомпилированные файлы и необходимые зависимости
+COPY --from=base /app/apps/api/dist /app/dist
+COPY --from=base /app/apps/api/node_modules /app/node_modules
+COPY --from=base /app/apps/api/package.json /app/package.json
+
+CMD ["node", "./dist/main.js"]

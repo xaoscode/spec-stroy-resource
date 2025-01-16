@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/Button/Button";
-import { Input, PhoneInp } from "@/components/inputs/PhoneInput/PhoneInput";
 import {
   Drawer,
   DrawerContent,
@@ -10,24 +9,15 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
+
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   DetailedHTMLProps,
   HTMLAttributes,
-  ReactElement,
+
   useState,
 } from "react";
-import { ControllerRenderProps, FieldValues, useForm } from "react-hook-form";
-import { z } from "zod";
-import { newMessage } from "../../api/Communication";
+
 import {
   Dialog,
   DialogContent,
@@ -36,6 +26,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import CallForm from "@/components/CallForm/CallForm";
 
 interface DialogProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -50,11 +41,7 @@ interface DialogProps
   size?: "default" | "sm" | "lg" | "icon";
   text?: string;
 }
-const formSchema = z.object({
-  name: z.string(),
-  email: z.string().email("Кажется, такой почты не существует"),
-  phone: z.string(),
-});
+
 
 export function DialogWin({
   text,
@@ -80,7 +67,7 @@ export function DialogWin({
               Заполните форму и мы Вам позвоним
             </DialogDescription>
           </DialogHeader>
-          <CommunicationForm setState={ setOpen } />
+          <CallForm className="grid grid-cols-1 gap-6 w-full" setState={ setOpen } />
         </DialogContent>
       </Dialog>
     );
@@ -102,93 +89,11 @@ export function DialogWin({
           </DrawerDescription>
         </DrawerHeader>
         <DrawerFooter className="text-white">
-          <CommunicationForm setState={ setOpen } />
+          <CallForm className="grid grid-cols-1 gap-6 w-full" setState={ setOpen } />
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );
 }
 
-interface CommunicationFormProps {
-  setState: (state: boolean) => void;
-}
 
-function CommunicationForm({ setState }: CommunicationFormProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-    },
-  });
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    newMessage(values);
-    setState(false);
-  }
-  return (
-    <Form { ...form }>
-      <form
-        className="grid grid-cols-1 gap-5"
-        onSubmit={ form.handleSubmit(onSubmit) }
-      >
-        <FormField
-          name={ "name" }
-          render={ function ({
-            field,
-          }: {
-            field: ControllerRenderProps<FieldValues, string>;
-          }): ReactElement {
-            return (
-              <FormItem>
-                <FormLabel className="text-white">Имя</FormLabel>
-                <FormControl>
-                  <Input { ...field }></Input>
-                </FormControl>
-              </FormItem>
-            );
-          } }
-        />
-        <FormField
-          name={ "phone" }
-          render={ function ({
-            field,
-          }: {
-            field: ControllerRenderProps<FieldValues, string>;
-          }): ReactElement {
-            return (
-              <FormItem>
-                <FormLabel className="text-white">Номер</FormLabel>
-                <FormControl>
-                  <PhoneInp { ...field }></PhoneInp>
-                </FormControl>
-              </FormItem>
-            );
-          } }
-        />
-        <FormField
-          name={ "email" }
-          render={ function ({
-            field,
-          }: {
-            field: ControllerRenderProps<FieldValues, string>;
-          }): ReactElement {
-            return (
-              <FormItem>
-                <FormLabel className="text-white">Email</FormLabel>
-                <FormControl>
-                  <Input { ...field }></Input>
-                </FormControl>
-              </FormItem>
-            );
-          } }
-        />
-
-        <Button type="submit" variant="default" size="lg">
-          Оставить заявку
-        </Button>
-      </form>
-    </Form>
-  );
-}

@@ -36,7 +36,7 @@ export default async function Home() {
 
         <OurProjects projects={ projects } />
 
-        <Button size="lg" variant="filled">
+        <Button size="lg" variant="filled" className="mx-5">
           <Link href="/projects">Все проекты</Link>
         </Button>
       </InfoBlock>

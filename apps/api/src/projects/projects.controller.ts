@@ -31,8 +31,9 @@ export default class ProjectsController {
 
   @Get('get/:id')
   async getProjectById(@Param('id') id: string) {
-    return this.projectsService.getProjectById(id);
+    return await this.projectsService.getProjectById(id);
   }
+
   @Get('five-latest')
   async getFiveLatestProjects() {
     return this.projectsService.getFiveLatestProjects();
@@ -61,6 +62,7 @@ export default class ProjectsController {
       search,
     });
   }
+
   @Get('count')
   async getTotalProjectsCount(
     @Query('sector') sector?: string,

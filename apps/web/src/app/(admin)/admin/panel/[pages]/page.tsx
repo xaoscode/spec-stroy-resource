@@ -3,7 +3,7 @@ import { fetchPage } from "@/app/api/pages";
 import { IPage } from "@repo/interfaces";
 import { EditableSection } from "./components/Editable/EditableSection";
 
-export default async function Page({ params }: { params: { pages: string } }) {
+export default async function Page({ params }: { params: Promise<{ pages: string }> }) {
     const pages = (await params).pages;
 
 

@@ -10,11 +10,11 @@ export default async function ProjectDetails({
     params: Promise<{ service: string }>
 }) {
     const id = (await params).service;
-    console.log(id)
     const data: IPage = await fetchPage(id)
-    const projects = await fetchFilteredProjects(1, 5, { service: "stroitelno_tekhnicheskaya_ekspertiza_zhilya" })
 
-    console.log(data)
+    const projects = await fetchFilteredProjects(1, 5, { service: id })
+
+    console.log(projects)
     return <div className="flex flex-col gap-8">
 
         { data.section.map((section) => (

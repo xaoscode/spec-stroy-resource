@@ -9,4 +9,5 @@ export const breadcrumbTranslations: Record<string, string> = {
 	bim: "BIM проектирование",
 	complex: "Комплексное проектирование",
 	project: "Проектирование инженерных систем и сетей",
+	"politika-konfidencialnosti": "Политика конфиденциальности",
 };

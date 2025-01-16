@@ -36,9 +36,9 @@
 html {
 	font-size: 16px;
 }
-body {
+/* body {
 	font-size: clamp(0.875rem, 0.8362rem + 0.1724vw, 1rem);
-}
+} */
 h1,
 h2,
 h3,
@@ -59,11 +59,6 @@ h3 {
 }
 p {
 	@apply text-sm sm:text-base md:text-lg text-gray-700;
-}
-
-ul,
-ol {
-	list-style: none;
 }
 
 a {
@@ -90,6 +85,9 @@ button {
 	cursor: pointer;
 }
 
+strong {
+	@apply text-primary;
+}
 @layer base {
 	:root {
 		--radius: 0.5rem;

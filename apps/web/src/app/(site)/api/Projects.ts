@@ -1,10 +1,12 @@
 import { API } from "@/app/api";
 import { IProject, IProjectFilters } from "@repo/interfaces";
 
-export async function getProject(id: number) {
-	const response = await fetch(`${API.projects}/${id}`);
-	const data = await response.json();
-	return data;
+export async function getProject(id: string) {
+	const response = await fetch(`${API.projects}/get/${id}`, { method: "GET" });
+	if (!response.ok) {
+		throw new Error(`Error ${response.status}: ${response.statusText}`);
+	}
+	return await response.json();
 }
 
 export async function getProjects(page: number, limit: number) {

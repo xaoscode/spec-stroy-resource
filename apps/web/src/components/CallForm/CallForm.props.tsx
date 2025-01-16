@@ -1,6 +1,8 @@
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 
-export type CallFormProps = DetailedHTMLProps<
+export interface CallFormProps extends DetailedHTMLProps<
   HTMLAttributes<HTMLFormElement>,
   HTMLFormElement
->;
+> {
+  setState?: (state: boolean) => void;
+}

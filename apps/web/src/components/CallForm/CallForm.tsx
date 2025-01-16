@@ -1,104 +1,68 @@
 "use client";
-import { zodResolver } from "@hookform/resolvers/zod";
 import cn from "classnames";
-import { ReactElement } from "react";
-import { z } from "zod";
-import { Input, PhoneInp } from "../inputs/PhoneInput/PhoneInput";
-import styles from "./CallForm.module.css";
+import { PhoneInp } from "../inputs/PhoneInput/PhoneInput";
 import { CallFormProps } from "./CallForm.props";
-import { newMessage } from "@/app/(site)/api/Communication";
-import { useForm, ControllerRenderProps, FieldValues } from "react-hook-form";
-import { FormField, FormItem, FormLabel, FormControl, Form } from "../ui/form";
 import { Button } from "../Button/Button";
+import { NewMessageAction } from "@/components/CallForm/lib/call-action";
+import { useFormStatus } from "react-dom";
+import { Input } from "../ui/input";
+import { useActionState } from "react";
 
-const formSchema = z.object({
-  name: z.string(),
-  email: z.string().email("Кажется, такой почты не существует"),
-  phone: z.string(),
-});
+const initialState = {
+  message: "",
+};
 
-export default function CallForm({ className, ...props }: CallFormProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-    },
-  });
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    newMessage(values);
-  }
+function SubmitButton() {
+  const { pending } = useFormStatus();
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className={cn(styles.form, className)}
-        {...props}
+    <Button
+      className="text-lg mt-5"
+      type="submit"
+      variant="default"
+      size="lg"
+      aria-disabled={ pending }
+    >
+      Оставить заявку
+    </Button>
+  );
+}
+
+export default function CallForm({ setState, className, ...props }: CallFormProps) {
+  const [, formAction] = useActionState(NewMessageAction, initialState);
+
+  return (
+    <form
+      action={ formAction }
+      className={ cn("flex flex-col gap-4 items-center") }
+      onSubmit={ () => setState && setState(false) }
+      { ...props }
+    >
+
+
+      <div
+        className={ cn(
+          className,
+          "gap-5"
+        ) }
       >
-        <div className={styles.header__text}>
-          Воспользуйтесь консультацией от специалиста
-        </div>
-        <div className={styles.inputs}>
-          <FormField
-            name={"name"}
-            render={function ({
-              field,
-            }: {
-              field: ControllerRenderProps<FieldValues, string>;
-            }): ReactElement {
-              return (
-                <FormItem>
-                  <FormLabel>Имя</FormLabel>
-                  <FormControl>
-                    <Input {...field}></Input>
-                  </FormControl>
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            name={"phone"}
-            render={function ({
-              field,
-            }: {
-              field: ControllerRenderProps<FieldValues, string>;
-            }): ReactElement {
-              return (
-                <FormItem>
-                  <FormLabel>Номер</FormLabel>
-                  <FormControl>
-                    <PhoneInp {...field}></PhoneInp>
-                  </FormControl>
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            name={"email"}
-            render={function ({
-              field,
-            }: {
-              field: ControllerRenderProps<FieldValues, string>;
-            }): ReactElement {
-              return (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input {...field}></Input>
-                  </FormControl>
-                </FormItem>
-              );
-            }}
-          />
+        <div className="flex flex-col">
+          <label htmlFor="name" className="mb-1 font-medium text-white">Имя</label>
+          <Input id="name" name="name" className="rounded-none text-black" />
         </div>
 
-        <Button type="submit" variant="default" size="lg">
-          Оставить заявку
-        </Button>
-      </form>
-    </Form>
+        <div className="flex flex-col">
+          <label htmlFor="phone" className="mb-1 font-medium text-white">Телефон</label>
+          <PhoneInp name="phone" className="rounded-none text-black" />
+        </div>
+
+        <div className="flex flex-col">
+          <label htmlFor="email" className="mb-1 font-medium text-white">Почта</label>
+          <Input id="email" name="email" className="rounded-none text-black" />
+        </div>
+      </div>
+
+      <SubmitButton />
+    </form>
   );
 }
