@@ -3,8 +3,8 @@ FROM node:20.3.1-alpine AS base
 
 WORKDIR /app
 COPY ./apps/api/*.json /app/apps/api/
-RUN ls -la /app/apps/api
-COPY ./tsconfig.json /app/tsconfig.json
+# RUN ls -la /app/apps/api
+# COPY ./apps/api/tsconfig.json /app/tsconfig.json
 
 WORKDIR /app/apps/api
 RUN npm install -g pnpm
