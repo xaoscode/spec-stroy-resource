@@ -2,11 +2,16 @@
 import { API } from "../api";
 
 export async function fetchPage(slug: string) {
-	const response = await fetch(`${API.pages}/get/${slug}`, {
-		method: "GET",
-	});
-	if (!response.ok) {
-		throw new Error(`Ошибка загрузки проектов: ${response.statusText}`);
+	try {
+		const response = await fetch(`${API.pages}/get/${slug}`, {
+			method: "GET",
+		});
+		if (!response.ok) {
+			throw new Error(`Ошибка загрузки проектов: ${response.statusText}`);
+		}
+		return response.json();
+	} catch (error) {
+		console.log("Update content error", error);
+		return { success: false, error: error };
 	}
-	return response.json();
 }

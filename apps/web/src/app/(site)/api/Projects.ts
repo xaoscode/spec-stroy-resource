@@ -2,23 +2,48 @@ import { API } from "@/app/api";
 import { IProject, IProjectFilters } from "@repo/interfaces";
 
 export async function getProject(id: string) {
-	const response = await fetch(`${API.projects}/get/${id}`, { method: "GET" });
-	if (!response.ok) {
-		throw new Error(`Error ${response.status}: ${response.statusText}`);
+	try {
+		const response = await fetch(`${API.projects}/get/${id}`, { method: "GET" });
+		if (!response.ok) {
+			console.error(`Failed to fetch product data: ${response.statusText}`);
+			throw new Error("API responded with an error");
+		}
+		const project = await response.json();
+		return { ...project, success: true };
+	} catch (error) {
+		console.log("Update content error", error);
+		return { success: false, error: error };
 	}
-	return await response.json();
 }
 
 export async function getProjects(page: number, limit: number) {
-	const response = await fetch(`${API.projects}?page=${page}&limit=${limit}`);
-	const data = await response.json();
-	return data;
+	try {
+		const response = await fetch(`${API.projects}?page=${page}&limit=${limit}`);
+		if (!response.ok) {
+			console.error(`Failed to fetch product data: ${response.statusText}`);
+			throw new Error("API responded with an error");
+		}
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		console.log("Update content error", error);
+		return { success: false, error: error };
+	}
 }
 
 export async function getFiveLatestProjects() {
-	const response = await fetch(`${API.projects}/five-latest`);
-	const data: IProject[] = await response.json();
-	return data;
+	try {
+		const response = await fetch(`${API.projects}/five-latest`);
+		if (!response.ok) {
+			console.error(`Failed to fetch product data: ${response.statusText}`);
+			throw new Error("API responded with an error");
+		}
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		console.log("Update content error", error);
+		return { success: false, error: error };
+	}
 }
 
 export async function fetchFilteredProjects(page: number, limit: number, filters?: IProjectFilters) {
@@ -29,17 +54,19 @@ export async function fetchFilteredProjects(page: number, limit: number, filters
 		...(filters?.service && { service: filters.service }),
 		...(filters?.search && { search: filters.search }),
 	});
+	try {
+		const url = `${API.projects}/filter?${params.toString()}`;
 
-	const url = `${API.projects}/filter?${params.toString()}`;
-
-	const response = await fetch(url, { cache: "no-cache" });
-
-	if (!response.ok) {
-		throw new Error(`Ошибка загрузки проектов: ${response.statusText}`);
+		const response = await fetch(url, { cache: "no-cache" });
+		if (!response.ok) {
+			throw new Error(`Ошибка загрузки проектов: ${response.statusText}`);
+		}
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		console.log("Update content error", error);
+		return { success: false, error: error };
 	}
-
-	const data = await response.json();
-	return data;
 }
 
 export async function fetchProjectsCout(filters?: IProjectFilters) {
@@ -49,16 +76,19 @@ export async function fetchProjectsCout(filters?: IProjectFilters) {
 		...(filters?.search && { search: filters.search }),
 	});
 
-	const url = `${API.projects}/count?${params.toString()}`;
+	try {
+		const url = `${API.projects}/count?${params.toString()}`;
 
-	const response = await fetch(url);
-
-	if (!response.ok) {
-		throw new Error(`Ошибка загрузки проектов: ${response.statusText}`);
+		const response = await fetch(url);
+		if (!response.ok) {
+			throw new Error(`Ошибка загрузки проектов: ${response.statusText}`);
+		}
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		console.log("Update content error", error);
+		return { success: false, error: error };
 	}
-
-	const data = await response.json();
-	return data;
 }
 
 export async function addProject(newProject: IProject) {

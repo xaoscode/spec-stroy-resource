@@ -34,7 +34,11 @@ export default async function Home() {
       <InfoBlock className={ styles.projects }>
         <div className={ styles.header }>НАШИ ПРОЕКТЫ</div>
 
-        <OurProjects projects={ projects } />
+        {
+          projects.success === true &&
+          <OurProjects projects={ projects } />
+
+        }
 
         <Button size="lg" variant="filled" className="mx-5">
           <Link href="/projects">Все проекты</Link>

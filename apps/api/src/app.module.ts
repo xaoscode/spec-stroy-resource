@@ -9,7 +9,8 @@ import ProjectsModule from './projects/projects.module';
 import PagesModule from './pages/pages.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 @Module({
   imports: [
     DatabaseModule.forRootAsync({
@@ -21,6 +22,10 @@ import { AuthModule } from './auth/auth.module';
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
       }),
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'uploads'),
+      serveRoot: '/uploads',
     }),
     CommunicationModule,
     ConfigModule,

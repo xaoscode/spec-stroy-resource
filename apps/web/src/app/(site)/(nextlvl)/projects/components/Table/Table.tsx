@@ -15,7 +15,7 @@ export default async function ProjectsTable({
     try {
         const projects = await fetchFilteredProjects(currentPage, 9, filters);
 
-        if (!projects || projects.length === 0) {
+        if (projects.success === false) {
             return (
                 <div className="text-center py-10">
                     <p className="text-lg text-gray-600">Проекты не найдены</p>
