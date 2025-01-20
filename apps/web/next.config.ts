@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
 				},
 			},
 		},
+		serverActions: {
+			allowedOrigins: process.env.ALLOWED_ORIGINS?.split(",") || [],
+		},
 	},
 	images: {
 		domains: ["localhost"], // Добавьте сюда домены, с которых будут загружаться изображения
