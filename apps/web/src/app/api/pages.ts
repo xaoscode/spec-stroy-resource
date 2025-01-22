@@ -12,7 +12,6 @@ export async function fetchPage(slug: string) {
 		const data = await response.json();
 		return { ...data, success: true };
 	} catch (error) {
-		console.log("Update content error", error);
-		return { success: false };
+		return { success: false, error };
 	}
 }
