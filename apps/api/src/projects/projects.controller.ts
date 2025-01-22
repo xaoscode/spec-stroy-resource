@@ -101,8 +101,9 @@ export default class ProjectsController {
   }
 
   @UseGuards(JwtAuthenticationGuard)
-  @Delete('delete/:id')
+  @Delete('delete-project/:id')
   async deleteProject(@Param('id') id: string) {
+    console.log('delete');
     return this.projectsService.deleteProjectById(id);
   }
 

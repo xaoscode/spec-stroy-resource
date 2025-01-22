@@ -108,6 +108,28 @@ export async function updateImage(image: IImage, file: File) {
 	}
 }
 
+export async function deleteProject(id: string) {
+	try {
+		const session = await auth();
+
+		const response = await fetch(`${API.projects}/delete-project/${id}`, {
+			method: "DELETE",
+			headers: {
+				Authorization: `Bearer ${session?.backendTokens.accessToken}`,
+			},
+			cache: "no-cache",
+		});
+		if (!response.ok) {
+			return { success: false, error: "Failed to save content" };
+		}
+		revalidatePath("/");
+		return { success: true };
+	} catch (error) {
+		console.log("Update content error", error);
+		return { success: false, error: error };
+	}
+}
+
 export async function deleteImage(id: string) {
 	try {
 		const session = await auth();

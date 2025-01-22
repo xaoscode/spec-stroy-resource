@@ -3,12 +3,13 @@ import { IProject } from "@repo/interfaces";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import { AdminButton } from "../../../components/AdminButton/AdminButton";
-import { addImage, deleteImage, updateImage, updateProject } from "../../lib/project-service";
+import { addImage, deleteImage, deleteProject, updateImage, updateProject } from "../../lib/project-service";
 import { useDebouncedCallback } from "use-debounce";
+import { useRouter } from "next/navigation";
 
 export default function EditableProjectRender({ project }: { project: IProject }) {
 
-
+    const router = useRouter();
 
     const handleUpdateProject = useDebouncedCallback(async (project: IProject) => {
         try {
@@ -26,7 +27,22 @@ export default function EditableProjectRender({ project }: { project: IProject }
 
 
 
-
+    const handleDeleteProject = async () => {
+        if (confirm("Вы уверены, что хотите удалить этот проект?")) {
+            try {
+                const status = await deleteProject(project.id);
+                if (status.success) {
+                    toast.success("Проект успешно удален");
+                    router.back();
+                } else {
+                    toast.error("Ошибка при удалении проекта.");
+                }
+            } catch (error) {
+                console.error("Error during project deletion:", error);
+                toast.error("Произошла ошибка при удалении проекта.");
+            }
+        }
+    };
 
     const triggerFileInput = (index: number) => {
         const fileInput = document.getElementById(`file-input-${index}`) as HTMLInputElement;
@@ -170,7 +186,9 @@ export default function EditableProjectRender({ project }: { project: IProject }
 
             </div>
 
-
+            <AdminButton variant="remove" onClick={ handleDeleteProject }>
+                Удалить проект
+            </AdminButton>
 
         </div>
     );

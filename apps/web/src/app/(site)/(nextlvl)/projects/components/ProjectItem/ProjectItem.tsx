@@ -36,7 +36,7 @@ export function ProjectItem({
             className="object-contain"
           />
         </div>
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 group-hover:flex hidden">
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 group-hover:flex">
           <Link
             className="text-white text-center text-xl hover:underline"
             href={ `/projects/${project.id}` }
