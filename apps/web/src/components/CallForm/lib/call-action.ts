@@ -11,11 +11,15 @@ export async function NewMessageAction(
 ) {
 	const schema = z
 		.object({
-			name: z.string().min(1, { message: "Name is required." }),
-			email: z.string().email("This is not a valid email.").optional().or(z.literal("")),
-			phone: z.string().min(10, { message: "Must be a valid mobile number." }).max(20, { message: "Must be a valid mobile number." }).optional().or(z.literal("")),
+			name: z.string(),
+			email: z.string().email("Введите действительный адрес электронной почты.").optional().or(z.literal("")),
+			phone: z
+				.string()
+				.optional()
+				.or(z.literal(""))
+				.refine((phone) => !phone || phone.length === 18, { message: "Phone must be exactly 15 characters if provided." }),
 		})
-		.refine((data) => data.email || data.phone, { message: "Either email or phone must be provided." });
+		.refine((data) => data.email || data.phone, { message: "Необходимо указать либо электронную почту, либо телефон." });
 
 	const parse = schema.safeParse({
 		name: formData.get("name"),
@@ -26,22 +30,28 @@ export async function NewMessageAction(
 	if (!parse.success) {
 		console.log("error", parse.error.errors);
 
-		return { message: "Validation failed", errors: parse.error.errors };
+		return { message: parse.error.errors[0].message };
 	}
 
 	const data = parse.data;
 	try {
 		console.log(data);
 
-		await fetch(`${API.communication}/message`, {
+		const response = await fetch(`${API.communication}/message`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({ ...data }),
 		});
+		if (response.status === 429) {
+			return { message: "Превышено количество запросов. Попробуйте позже." };
+		}
 
-		return { message: `Added todo ${data}` };
+		if (!response.ok) {
+			return { message: "Не удалось обработать запрос." };
+		}
+		return { message: `` };
 	} catch (e) {
 		return { message: "Failed to create todo", e };
 	}

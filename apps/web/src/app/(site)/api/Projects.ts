@@ -62,10 +62,10 @@ export async function fetchFilteredProjects(page: number, limit: number, filters
 			throw new Error(`Ошибка загрузки проектов: ${response.statusText}`);
 		}
 		const data = await response.json();
-		return data;
+		return { data: data, success: true };
 	} catch (error) {
 		console.log("Update content error", error);
-		return { success: false, error: error };
+		return { success: false };
 	}
 }
 

@@ -29,8 +29,7 @@ function SubmitButton() {
 }
 
 export default function CallForm({ setState, className, ...props }: CallFormProps) {
-  const [, formAction] = useActionState(NewMessageAction, initialState);
-
+  const [state, formAction] = useActionState(NewMessageAction, initialState);
   return (
     <form
       action={ formAction }
@@ -63,6 +62,9 @@ export default function CallForm({ setState, className, ...props }: CallFormProp
       </div>
 
       <SubmitButton />
+      <p aria-live="polite" className="font-bold text-red-500" role="status">
+        { state?.message }
+      </p>
     </form>
   );
 }

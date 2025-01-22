@@ -10,7 +10,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { content } from "../../../../../../../../../tailwind.config";
 
 export function ImageTextBlock({ initialContent }: { initialContent: IContent }) {
-
+    console.log(initialContent)
 
     const [isSaving, setIsSaving] = useState(false);
 
@@ -91,8 +91,8 @@ export function ImageTextBlock({ initialContent }: { initialContent: IContent })
         }
     }
 
-    const triggerFileInput = (index: number) => {
-        const fileInput = document.getElementById(`file-input-${index}`) as HTMLInputElement;
+    const triggerFileInput = (id: string) => {
+        const fileInput = document.getElementById(`file-input-${id}`) as HTMLInputElement;
         if (fileInput) {
             fileInput.click();
         }
@@ -111,7 +111,7 @@ export function ImageTextBlock({ initialContent }: { initialContent: IContent })
             />
             <div className="flex flex-col lg:flex-row justify-between gap-6">
 
-                { initialContent.block.map((block, index) => (
+                { initialContent.block.map((block) => (
                     <div key={ block.id } className="flex-1 text-center space-y-3 relative">
                         <div className="flex flex-col gap-5 justify-center items-center">
                             <AdminButton
@@ -130,7 +130,7 @@ export function ImageTextBlock({ initialContent }: { initialContent: IContent })
                                 className="w-full text-center font-semibold text-lg p-2 border rounded"
                             />
                             <div
-                                onClick={ () => triggerFileInput(index) }
+                                onClick={ () => triggerFileInput(block.id) }
                                 className="cursor-pointer border rounded-md shadow p-2 w-64 h-64 flex items-center justify-center bg-gray-100"
                             >
                                 { block.image ? (
@@ -140,13 +140,14 @@ export function ImageTextBlock({ initialContent }: { initialContent: IContent })
                                         width={ 300 }
                                         height={ 300 }
                                         className="rounded-md object-contain max-w-full"
+                                        priority
                                     />
                                 ) : (
                                     <span className="text-gray-500">Нажмите, чтобы добавить изображение типов jpg, jpeg, png, gif, svg</span>
                                 ) }
                             </div>
                             <input
-                                id={ `file-input-${index}` }
+                                id={ `file-input-${block.id}` }
                                 type="file"
                                 accept="image/*"
                                 className="hidden"

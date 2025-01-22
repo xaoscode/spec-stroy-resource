@@ -9,13 +9,6 @@ import { useDebouncedCallback } from "use-debounce";
 export default function EditableProjectRender({ project }: { project: IProject }) {
 
 
-    console.log(project)
-    // const handleInputChange = (key: keyof IProject, value: any) => {
-    //     setEditableProject((prev) => ({
-    //         ...prev,
-    //         [key]: value,
-    //     }));
-    // };
 
     const handleUpdateProject = useDebouncedCallback(async (project: IProject) => {
         try {
@@ -33,38 +26,7 @@ export default function EditableProjectRender({ project }: { project: IProject }
 
 
 
-    // const handleSubmit = async () => {
-    //     try {
-    //         const renamedFiles = newImages.map(
-    //             (file) =>
-    //                 new File([file], `${Date.now()}-${file.name}`, {
-    //                     type: file.type,
-    //                     lastModified: file.lastModified,
-    //                 })
-    //         );
 
-    //         const updatedContent = {
-    //             ...editableProject,
-    //             images: [
-    //                 ...editableProject.images,
-    //                 ...renamedFiles.map((file) => `${process.env.NEXT_PUBLIC_DOMAIN}/uploads/images/${file.name}`),
-    //             ],
-    //         };
-
-    //         const response = await updateProject({ content: updatedContent, files: renamedFiles });
-
-    //         if (response.success) {
-    //             toast.success("Изменения сохранены!");
-    //             setEditableProject(updatedContent);
-    //             setNewImages([]);
-    //         } else {
-    //             toast.error("Ошибка при сохранении изменений.");
-    //         }
-    //     } catch (error) {
-    //         console.error("Error during action:", error);
-    //         toast.error("Произошла ошибка.");
-    //     }
-    // };
 
     const triggerFileInput = (index: number) => {
         const fileInput = document.getElementById(`file-input-${index}`) as HTMLInputElement;

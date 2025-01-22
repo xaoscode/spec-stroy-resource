@@ -93,7 +93,7 @@ export function EditableContent({ contents = [], sectionId = "" }: { contents?: 
                                                     </AdminButton>
                                                 </div>
 
-                                                <RenderContentBlock content={ item } />
+                                                <RenderContentBlock key={ index } content={ item } />
                                                 <p className="text-sm text-gray-500">{ item.id }</p>
                                             </div>
                                             <div

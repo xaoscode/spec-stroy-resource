@@ -56,9 +56,10 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
                 <Image
                   className={ styles.image }
                   src={ index.url }
-                  alt={ "" }
-                  width={ 150 }
-                  height={ 100 }
+                  alt={ `Изображение проекта ${index.name}` }
+                  width={ 1000 }
+                  height={ 1000 }
+                  priority
                 />
               </div>
             </div>

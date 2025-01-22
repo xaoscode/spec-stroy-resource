@@ -9,7 +9,6 @@ async function refreshToken(token: JWT): Promise<JWT | null> {
 			Authorization: `Bearer ${token.backendTokens.refreshToken}`,
 		},
 	});
-	console.log("refreshed");
 	if (res.statusText === "Unauthorized") {
 		return null;
 	}
@@ -44,11 +43,9 @@ export const authConfig = {
 
 		async jwt({ token, user }) {
 			if (user) {
-				console.log("User logged in:", user);
 				return { ...token, ...user };
 			}
 			const now = Date.now();
-			console.log(token.backendTokens.accessExp - now);
 			if (now < token.backendTokens.accessExp) {
 				return token;
 			}

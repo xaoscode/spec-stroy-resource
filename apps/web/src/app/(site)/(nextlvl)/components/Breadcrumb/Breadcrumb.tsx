@@ -1,8 +1,8 @@
 "use client";
+
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Fragment } from "react";
-import styles from "./Breadcrumb.module.css";
 import { breadcrumbTranslations } from "./lib/breadcrumbTranslations";
 import {
   Breadcrumb,
@@ -12,29 +12,32 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { MoveLeft } from "lucide-react";
+import cn from "classnames";
 
 export function BreadcrumbModule() {
   const pathname = usePathname();
   const pathParts = pathname.split("/").filter((part) => part);
   const router = useRouter();
+
   const handleBackClick = () => {
     router.back();
   };
+
   return (
-    <div className={ styles.navigation__component }>
-      <Breadcrumb className={ styles.breadcrumb }>
-        <BreadcrumbList className={ styles.list }>
+    <div className="flex lg:flex-row   gap-4 flex-col">
+      {/* Breadcrumb Section */ }
+      <Breadcrumb className="flex-grow">
+        <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href={ "/" }>Главная</Link>
+              <Link href="/">Главная</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           { pathParts.map((part, index) => {
             const isLast = index === pathParts.length - 1;
             const href = "/" + pathParts.slice(0, index + 1).join("/");
-            const name =
-              breadcrumbTranslations[part] || part
+            const name = breadcrumbTranslations[part] || part;
             return (
               <Fragment key={ index }>
                 { isLast ? (
@@ -56,12 +59,17 @@ export function BreadcrumbModule() {
           }) }
         </BreadcrumbList>
       </Breadcrumb>
+
+      {/* Back Button */ }
       <button
         onClick={ handleBackClick }
-        className="flex flex-row gap-3 text-xl items-center text-white font-normal hover:text-black hover:no-underline"
+        className={ cn(
+          "flex items-center gap-3 text-xl text-white font-normal hover:text-black",
+          "self-end "
+        ) }
       >
         <MoveLeft />
-        <span >Назад</span>
+        <span>Назад</span>
       </button>
     </div>
   );

@@ -2,11 +2,13 @@ import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
 import { MessageDto, UpdateMessageDto } from './dto/message.dto';
 import { CommunicationService } from './communication.service';
 import JwtAuthenticationGuard from 'src/auth/jwt-auth.guard';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('communication')
 export class CommunicationController {
   constructor(private readonly communicationService: CommunicationService) {}
 
+  @Throttle({ default: { limit: 2, ttl: 600000 } })
   @Post('message')
   async newMessage(@Body() dto: MessageDto) {
     console.log('message');

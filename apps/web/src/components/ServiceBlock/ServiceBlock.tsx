@@ -10,7 +10,7 @@ export default function ServiceBlock({
   return (
     <div
       className={ cn(
-        "flex space-x-5 justify-between",
+        "flex flex-col gap-5 justify-between lg:flex-row",
         className
       ) }
       { ...props }

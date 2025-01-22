@@ -24,7 +24,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from './mutler.config';
 import { ConfigService } from '@nestjs/config';
 import JwtAuthenticationGuard from 'src/auth/jwt-auth.guard';
+import { SkipThrottle } from '@nestjs/throttler';
 
+@SkipThrottle()
 @Controller('pages')
 export default class PagesController {
   constructor(

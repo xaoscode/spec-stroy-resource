@@ -14,7 +14,6 @@ export default async function ProjectsTable({
 }) {
     try {
         const projects = await fetchFilteredProjects(currentPage, 9, filters);
-
         if (projects.success === false) {
             return (
                 <div className="text-center py-10">
@@ -26,20 +25,21 @@ export default async function ProjectsTable({
         return (
 
             <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                { projects.map((project: IProject) => (
+                { projects.data.map((project: IProject) => (
 
                     <div
                         key={ project.id }
                         className="flex flex-col space-y-6 p-6 bg-gray-50 rounded shadow-md hover:shadow-primary"
                     >
-                        <div className="relative group">
+                        <div className="relative group flex justify-center items-center">
                             {
                                 project.images[0] && <Image
-                                    className=""
+                                    className="w-auto h-auto"
                                     src={ project.images[0].url }
                                     alt={ `Изображение ${project.name}` }
                                     width={ 300 }
                                     height={ 300 }
+                                    priority
                                 />
                             }
 

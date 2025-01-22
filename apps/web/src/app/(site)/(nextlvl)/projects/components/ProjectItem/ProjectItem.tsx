@@ -27,14 +27,16 @@ export function ProjectItem({
       { ...props }
     >
       <div className="relative group">
-        <Image
-          className={ styles.image }
-          src={ project.images[0].url }
-          alt={ `Изображение ${project.name}` }
-          width={ 300 }
-          height={ 300 }
-        />
-        <div className="absolute inset-0  items-center justify-center bg-black bg-opacity-50 group-hover:flex hidden">
+        <div className="flex items-center justify-center w-full h-[300px]">
+          <Image
+            src={ project.images[0].url }
+            alt={ `Изображение ${project.name}` }
+            width={ 300 }
+            height={ 300 }
+            className="object-contain"
+          />
+        </div>
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 group-hover:flex hidden">
           <Link
             className="text-white text-center text-xl hover:underline"
             href={ `/projects/${project.id}` }

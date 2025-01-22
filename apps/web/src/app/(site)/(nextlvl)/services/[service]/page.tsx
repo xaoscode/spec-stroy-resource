@@ -18,10 +18,10 @@ export default async function ProjectDetails({
 
     const projects = await fetchFilteredProjects(1, 5, { service: id })
 
-    return <div className="flex flex-col gap-8">
+    return <div className="flex flex-col">
 
-        { data.success ? data.section.map((section) => (
-            <div key={ section.id } className="space-y-6 p-6 bg-gray-50 rounded-lg shadow-md ">
+        { data ? data.section.map((section) => (
+            <div key={ section.id } className="flex flex-col space-y-6 p-6 bg-gray-50 rounded-lg shadow-md gap-5">
                 <h1 className=" text-center">{ section.title }</h1>
                 { section.content.map((content) => (
                     <ContentRender key={ content.id } customContent={ content } />
@@ -36,8 +36,8 @@ export default async function ProjectDetails({
                 Примеры
             </div>
             {
-                projects.success === true &&
-                <OurProjects projects={ projects } />
+                projects.success &&
+                <OurProjects projects={ projects.data } />
 
             }
         </div>

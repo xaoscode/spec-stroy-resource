@@ -16,7 +16,6 @@ export const metadata: Metadata = { title: "Главная" };
 export default async function Home() {
   const projects = await getFiveLatestProjects()
 
-
   return (
     <div className={ styles.wrapper }>
       <div className={ styles.home__header }>
@@ -35,7 +34,7 @@ export default async function Home() {
         <div className={ styles.header }>НАШИ ПРОЕКТЫ</div>
 
         {
-          projects.success === true &&
+          projects &&
           <OurProjects projects={ projects } />
 
         }

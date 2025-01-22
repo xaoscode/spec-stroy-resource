@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
 		},
 	},
 	images: {
-		domains: ["localhost"], // Добавьте сюда домены, с которых будут загружаться изображения
+		domains: process.env.IMAGE_DOMAINS?.split(",") || ["localhost"],
 	},
 };
 

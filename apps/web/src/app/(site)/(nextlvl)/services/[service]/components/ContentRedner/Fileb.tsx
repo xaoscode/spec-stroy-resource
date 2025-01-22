@@ -6,7 +6,7 @@ import Link from "next/link";
 export async function Fileb({ initialContent }: { initialContent: IContent }) {
     return (
         <div>
-            <h3>{ initialContent.header }</h3>
+            <h2>{ initialContent.header }</h2>
             <div className="text-sm list-disc pl-6 text-gray-700 sm:text-base md:text-lg">
                 { initialContent.block.map((value) => (
                     <div key={ value.id } className="mb-4">

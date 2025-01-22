@@ -9,9 +9,10 @@ export async function fetchPage(slug: string) {
 		if (!response.ok) {
 			throw new Error(`Ошибка загрузки проектов: ${response.statusText}`);
 		}
-		return response.json();
+		const data = await response.json();
+		return { ...data, success: true };
 	} catch (error) {
 		console.log("Update content error", error);
-		return { success: false, error: error };
+		return { success: false };
 	}
 }
