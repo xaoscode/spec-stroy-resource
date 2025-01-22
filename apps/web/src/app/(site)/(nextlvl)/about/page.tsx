@@ -7,8 +7,7 @@ interface IPageWithStatus extends IPage {
 }
 
 export default async function AboutPage() {
-  const id = 'about'
-  const data: IPageWithStatus = await fetchPage(id)
+  const data: IPageWithStatus = await fetchPage('about')
   console.log(data)
   return <div className="flex flex-col">
 

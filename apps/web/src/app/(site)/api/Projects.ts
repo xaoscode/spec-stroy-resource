@@ -41,7 +41,6 @@ export async function getFiveLatestProjects() {
 		const data = await response.json();
 		return data;
 	} catch (error) {
-		console.log("Update content error", error);
 		return { success: false, error: error };
 	}
 }

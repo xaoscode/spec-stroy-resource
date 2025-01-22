@@ -6,8 +6,7 @@ interface IPageWithStatus extends IPage {
   success: boolean
 }
 export default async function DopuskPage() {
-  const id = 'dopusk'
-  const data: IPageWithStatus = await fetchPage(id)
+  const data: IPageWithStatus = await fetchPage('dopusk')
 
   return <div className="flex flex-col">
 

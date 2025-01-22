@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
 	output: "standalone",
+	staticPageGenerationTimeout: 180,
 	webpack(config) {
 		config.module.rules.push({
 			test: /\.svg$/i,
