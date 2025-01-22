@@ -1,14 +1,12 @@
-import { fetchPage } from "@/app/api/pages"
 import { IPage } from "@repo/interfaces"
 import { ContentRender } from "../services/[service]/components/ContentRedner/ContentRender"
+import { fetchPage } from "../../api/Pages"
 
 interface IPageWithStatus extends IPage {
   success: boolean
 }
-
 export default async function AboutPage() {
   const data: IPageWithStatus = await fetchPage('about')
-  console.log(data)
   return <div className="flex flex-col">
 
     { data.success ? data.section.map((section) => (

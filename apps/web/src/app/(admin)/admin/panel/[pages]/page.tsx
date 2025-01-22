@@ -1,4 +1,4 @@
-import { fetchPage } from "@/app/api/pages";
+import { fetchPage } from "@/app/(site)/api/Pages";
 
 import { IPage } from "@repo/interfaces";
 import { EditableSection } from "./components/Editable/EditableSection";

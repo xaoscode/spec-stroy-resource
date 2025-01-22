@@ -1,8 +1,10 @@
-"use server";
-import { API } from "../api";
+import { API } from "../../api";
 
 export async function fetchPage(slug: string) {
 	try {
+		if (!API.base) {
+			return { success: false };
+		}
 		const response = await fetch(`${API.pages}/get/${slug}`, {
 			method: "GET",
 		});
@@ -12,6 +14,6 @@ export async function fetchPage(slug: string) {
 		const data = await response.json();
 		return { ...data, success: true };
 	} catch (error) {
-		return { success: false, error };
+		return { success: false, error: error };
 	}
 }

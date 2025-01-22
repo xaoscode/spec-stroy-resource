@@ -1,4 +1,5 @@
 export const API = {
+	base: process.env.NEXT_PUBLIC_DOMAIN,
 	auth: process.env.NEXT_PUBLIC_DOMAIN + "/api/auth",
 	projects: process.env.NEXT_PUBLIC_DOMAIN + "/api/projects",
 	services: {
