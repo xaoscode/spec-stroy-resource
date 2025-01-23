@@ -1,8 +1,11 @@
 FROM alpine:latest
 
-RUN apk add --no-cache postgresql-client bash
+# Установка необходимых пакетов
+RUN apk add --no-cache postgresql-client bash gnupg
 
+# Копирование скрипта в контейнер
 COPY backup.sh /backup.sh
 RUN chmod +x /backup.sh
 
+# Настройка контейнера для выполнения скрипта
 CMD ["sh", "/backup.sh"]
