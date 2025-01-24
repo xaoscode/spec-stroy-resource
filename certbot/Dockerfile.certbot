@@ -1,21 +1,23 @@
-# Dockerfile
 FROM ubuntu:22.04
 
-
-# читаем переменные среды из .env
+# Читаем переменные среды
 ARG DOMAIN_EMAIL
 ARG DOMAIN_URL
 
-# устанавливаем переменные среды в переменные
+# Устанавливаем переменные среды
 ENV DOMAIN_EMAIL=$DOMAIN_EMAIL
 ENV DOMAIN_URL=$DOMAIN_URL
 
 WORKDIR /certbot
-COPY . /certbot
-WORKDIR /certbot
 
-RUN apt-get update
-RUN apt-get -y install certbot
+# Копируем все файлы из текущей директории в рабочую директорию контейнера
+COPY . .
 
-# запускаем скрипт генерации
-CMD ["sh", "generate-certificate.sh"]
+# Обновляем пакеты и устанавливаем certbot
+RUN apt-get update && apt-get -y install certbot
+
+# Устанавливаем права на выполнение скрипта
+RUN chmod +x generate-certificate.sh
+
+# Запускаем скрипт генерации сертификатов
+CMD ["sh", "./generate-certificate.sh"]
