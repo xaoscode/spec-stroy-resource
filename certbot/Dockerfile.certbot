@@ -16,8 +16,7 @@ COPY . .
 # Обновляем пакеты и устанавливаем certbot
 RUN apt-get update && apt-get -y install certbot
 
-# Устанавливаем права на выполнение скрипта
-RUN chmod +x generate-certificate.sh
+
 
 # Запускаем скрипт генерации сертификатов
 CMD ["sh", "./generate-certificate.sh"]
