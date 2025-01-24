@@ -7,6 +7,7 @@ env:
     API_IMAGE_NAME: ${{ github.repository }}-api
     WEB_IMAGE_NAME: ${{ github.repository }}-web
     BACKUP_IMAGE_NAME: ${{ github.repository }}-db-backup
+    CERTBOT_IMAGE_NAME: ${{ github.repository }}-certbot
 
 jobs:
     build:
@@ -91,3 +92,25 @@ jobs:
                       ${{ steps.meta-db-backup.outputs.tags }}
                       ${{ env.REGISTRY }}/${{ env.BACKUP_IMAGE_NAME }}:latest
                   labels: ${{ steps.meta-db-backup.outputs.labels }}
+
+            # Build and push certbot image
+            - name: Extract metadata for certbot
+              id: meta-certbot
+              uses: docker/metadata-action@v5
+              with:
+                  images: ${{ env.REGISTRY }}/${{ env.CERTBOT_IMAGE_NAME }}
+                  tags: |
+                      type=ref,event=branch
+                      type=sha
+                      latest
+
+            - name: Build and push Docker image (Web)
+              uses: docker/build-push-action@v6
+              with:
+                  context: ./
+                  file: ./certbot/Dockerfile.certbot
+                  push: true
+                  tags: |
+                      ${{ steps.meta-certbot.outputs.tags }}
+                      ${{ env.REGISTRY }}/${{ env.CERTBOT_IMAGE_NAME }}:latest
+                  labels: ${{ steps.meta-certbot.outputs.labels }}
