@@ -82,7 +82,7 @@ jobs:
                       type=sha
                       latest
 
-            - name: Build and push Docker image (Web)
+            - name: Build and push Docker image (db-backup)
               uses: docker/build-push-action@v6
               with:
                   context: ./
@@ -104,11 +104,11 @@ jobs:
                       type=sha
                       latest
 
-            - name: Build and push Docker image (Web)
+            - name: Build and push Docker image (certbot)
               uses: docker/build-push-action@v6
               with:
                   context: ./
-                  file: ./certbot/Dockerfile.certbot
+                  file: ./Dockerfile.certbot
                   push: true
                   tags: |
                       ${{ steps.meta-certbot.outputs.tags }}

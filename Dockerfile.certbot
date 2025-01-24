@@ -11,12 +11,12 @@ ENV DOMAIN_URL=$DOMAIN_URL
 WORKDIR /certbot
 
 # Копируем все файлы из текущей директории в рабочую директорию контейнера
-COPY ./certbot .
-
+COPY generate-certificate.sh /generate-certificate.sh
+RUN chmod +x /generate-certificate.sh
 # Обновляем пакеты и устанавливаем certbot
 RUN apt-get update && apt-get -y install certbot
 
 
 
 # Запускаем скрипт генерации сертификатов
-CMD ["sh", "./generate-certificate.sh"]
+CMD ["sh", "/generate-certificate.sh"]
