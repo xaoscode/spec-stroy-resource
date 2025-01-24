@@ -11,7 +11,7 @@ ENV DOMAIN_URL=$DOMAIN_URL
 WORKDIR /certbot
 
 # Копируем все файлы из текущей директории в рабочую директорию контейнера
-COPY . .
+COPY ./certbot .
 
 # Обновляем пакеты и устанавливаем certbot
 RUN apt-get update && apt-get -y install certbot
