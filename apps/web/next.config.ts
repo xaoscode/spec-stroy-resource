@@ -23,8 +23,11 @@ const nextConfig: NextConfig = {
 	images: {
 		remotePatterns: [
 			{
-				protocol: "http",
-				hostname: "**",
+				protocol: "https",
+				hostname: "padgevasya.ru",
+				port: "",
+				pathname: "/uploads/images**",
+				search: "",
 			},
 		],
 	},
