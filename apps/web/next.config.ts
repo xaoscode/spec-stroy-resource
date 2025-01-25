@@ -21,15 +21,7 @@ const nextConfig: NextConfig = {
 		},
 	},
 	images: {
-		remotePatterns: [
-			{
-				protocol: "https",
-				hostname: "padgevasya.ru",
-				port: "",
-				pathname: "/uploads/images**",
-				search: "",
-			},
-		],
+		domains: process.env.IMAGE_DOMAINS?.split(",") || ["localhost"],
 	},
 };
 
