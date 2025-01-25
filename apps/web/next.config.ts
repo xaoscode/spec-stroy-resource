@@ -19,12 +19,14 @@ const nextConfig: NextConfig = {
 				},
 			},
 		},
-		serverActions: {
-			allowedOrigins: process.env.ALLOWED_ORIGINS?.split(",") || [],
-		},
 	},
 	images: {
-		domains: process.env.IMAGE_DOMAINS?.split(",") || ["localhost"],
+		remotePatterns: [
+			{
+				protocol: "https",
+				hostname: "**",
+			},
+		],
 	},
 };
 
