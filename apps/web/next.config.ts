@@ -21,7 +21,15 @@ const nextConfig: NextConfig = {
 		},
 	},
 	images: {
-		domains: process.env.IMAGE_DOMAINS?.split(",") || ["localhost"],
+		remotePatterns: [
+			{
+				protocol: "http",
+				hostname: "spec-stroy-resource-api:3001",
+				port: "",
+				pathname: "/uploads/images**",
+				search: "",
+			},
+		],
 	},
 };
 
