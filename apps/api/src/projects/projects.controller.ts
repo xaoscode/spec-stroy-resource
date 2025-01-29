@@ -40,12 +40,9 @@ export default class ProjectsController {
   }
 
   @Get('all')
-  async getProjects(
-    @Query('page', ParseIntPipe) page: number,
-    @Query('limit', ParseIntPipe) limit: number,
-  ) {
+  async getProjects() {
     console.log('def');
-    return this.projectsService.getProjects(page, limit);
+    return this.projectsService.getProjects();
   }
 
   @Get('filter')
@@ -69,8 +66,6 @@ export default class ProjectsController {
     @Query('service') service?: string,
     @Query('search') search?: string,
   ) {
-    console.log(sector, service);
-
     return this.projectsService.getTotalProjectsCount({
       sector,
       service,
@@ -121,7 +116,6 @@ export default class ProjectsController {
     @Body('content') contentString: string,
   ) {
     const content = JSON.parse(contentString);
-    console.log(file);
     await this.projectsService.updateImage(content, {
       name: file.filename,
       url: `${this.configService.get('BASE_URL')}/${file.path}`,

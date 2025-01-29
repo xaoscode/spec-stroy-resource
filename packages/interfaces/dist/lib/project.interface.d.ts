@@ -6,6 +6,7 @@ export interface INewProject {
     price: number;
     sector: string;
     service: string;
+    purpose: string;
 }
 export interface IProject extends INewProject {
     id: string;

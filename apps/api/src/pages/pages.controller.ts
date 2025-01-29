@@ -77,12 +77,7 @@ export default class PagesController {
     @Body('content') contentString: string,
   ) {
     const content = JSON.parse(contentString);
-    if (file) {
-      const relativePath = file.path.replace(/\\/g, '/');
-      content.image = `${this.configService.get('BASE_URL')}/${relativePath}`;
-    }
-
-    return this.pageService.updateBlock(content);
+    return this.pageService.updateBlock(content, file?.filename);
   }
 
   @UseGuards(JwtAuthenticationGuard)

@@ -4,7 +4,7 @@ export const services = [
 		url: "services/stroy",
 	},
 	{
-		header: "Инструментально техническое обследование объектов",
+		header: "Инструментальное обследование объектов",
 		url: "services/instrumental",
 	},
 	{

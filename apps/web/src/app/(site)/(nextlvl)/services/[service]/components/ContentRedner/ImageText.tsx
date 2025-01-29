@@ -8,7 +8,7 @@ export async function ImageText({ initialContent }: { initialContent: IContent }
 
     return (
         <div>
-            <h2 className="text-center mb-6">{ initialContent.header }</h2>
+            <h3 className="text-center mb-6">{ initialContent.header }</h3>
 
             <div
                 className={ `flex ${isSingleBlock ? "flex-col lg:flex-row gap-6" : "flex-wrap justify-between gap-6"
@@ -28,7 +28,7 @@ export async function ImageText({ initialContent }: { initialContent: IContent }
                             priority
                         />
                         <div className="mt-3 space-y-2">
-                            <h3>{ block.header }</h3>
+                            <h4>{ block.header }</h4>
                             <p>{ block.text }</p>
                         </div>
                     </div>

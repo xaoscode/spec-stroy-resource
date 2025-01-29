@@ -7,7 +7,6 @@ import { revalidatePath } from "next/cache";
 export async function updateProject(project: IProject) {
 	try {
 		const session = await auth();
-		console.log(project);
 		const response = await fetch(`${API.projects}/update-project`, {
 			method: "PATCH",
 			headers: {

@@ -7,7 +7,6 @@ import { revalidatePath } from "next/cache";
 export default async function updateMessage(data: IComMessage) {
 	try {
 		const session = await auth();
-		console.log(data);
 		const response = await fetch(`${API.communication}/update-message`, {
 			method: "PATCH",
 			headers: {

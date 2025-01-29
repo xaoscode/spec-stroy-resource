@@ -12,8 +12,7 @@ const roboto = Roboto_Flex({
 });
 
 export const metadata: Metadata = {
-  title: "Строительная компания",
-  description: "Выезд специалиста",
+  title: "Строительная компания Спец Строй Ресурс Проектно-инженерная компания: узнайте цены на сайте ssr-dv",
 };
 
 export default function RootLayout({
@@ -23,14 +22,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={cn(roboto.className, styles.body__scroll)}>
-        <div className={styles.wrapper}>
-          <Header className={styles.header}></Header>
-          <div className={styles.body}>{children}</div>
-          <div className={styles.call}>
+      <body className={ cn(roboto.className, styles.body__scroll) }>
+        <div className={ styles.wrapper }>
+          <Header className={ styles.header }></Header>
+          <div className={ styles.body }>{ children }</div>
+          <div className={ styles.call }>
             <Call></Call>
           </div>
-          <Footer className={styles.footer} />
+          <Footer className={ styles.footer } />
         </div>
       </body>
     </html>

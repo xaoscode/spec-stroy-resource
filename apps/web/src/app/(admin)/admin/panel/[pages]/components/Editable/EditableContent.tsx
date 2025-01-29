@@ -82,9 +82,9 @@ export function EditableContent({ contents = [], sectionId = "" }: { contents?: 
 
                                             <div className="flex-1 ml-4">
                                                 <div className="flex flex-row justify-between">
-                                                    <h3 >
+                                                    <h4>
                                                         { item.type }
-                                                    </h3>
+                                                    </h4>
                                                     <AdminButton
                                                         onClick={ () => deleteContent(item.id) }
                                                         variant="remove"

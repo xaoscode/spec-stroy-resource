@@ -27,12 +27,8 @@ export default class ProjectsService {
     return project;
   }
 
-  async getProjects(page: number, limit: number) {
-    if (page < 1 || limit < 1) {
-      throw new Error('Page and limit must be greater than 0');
-    }
-
-    return this.projectsRepository.getProjects(page, limit);
+  async getProjects() {
+    return this.projectsRepository.getProjects();
   }
 
   async getProjectsByFilters(

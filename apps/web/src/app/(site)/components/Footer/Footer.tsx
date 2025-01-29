@@ -7,7 +7,7 @@ const contData = [
 ];
 export default function Footer({ ...props }: FooterProps) {
   return (
-    <div className="flex flex-col content-center" { ...props }>
+    <footer className="flex flex-col content-center" { ...props }>
       <div className="flex flex-wrap gap-3 justify-center">
         { urls.map((value, index) => (
           <Link
@@ -41,7 +41,7 @@ export default function Footer({ ...props }: FooterProps) {
           Политика конфиденциальности
         </Link>
       </div>
-    </div>
+    </footer>
 
   );
 }

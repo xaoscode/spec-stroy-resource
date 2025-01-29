@@ -5,6 +5,10 @@ import ProjectsTable from "./components/Table/Table";
 import { Combobox } from "./components/Combobox/Combobox";
 import { PaginationMod } from "../components/PaginationMod/PaginationMod";
 import { fetchProjectsCout } from "../../api/Projects";
+import { Metadata } from "next";
+import allMetadata from "../lib/metadata";
+
+export const metadata: Metadata = { ...allMetadata.projects }
 
 export default async function Projects(props: {
   searchParams?: Promise<{
@@ -23,6 +27,7 @@ export default async function Projects(props: {
     search: searchParams?.search || "",
     page: searchParams?.page || "",
   };
+
   const totalPages = await fetchProjectsCout(filters);
 
   return (

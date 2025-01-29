@@ -2,6 +2,7 @@ import { IImage, IProject } from '@repo/interfaces';
 import { Expose } from 'class-transformer';
 
 export class ProjectModel implements IProject {
+  purpose: string;
   id: string;
   name: string;
   description: string;

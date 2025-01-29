@@ -26,8 +26,8 @@ export default class PagesRepositroy {
   async addPage(dto: PageDto) {
     const response = await this.databaseService.runQuery(
       `
-        INSERT INTO page (slug, title, description)
-        VALUES ($1, $2, $3)
+        INSERT INTO page (slug, title, description, keywords)
+        VALUES ($1, $2, $3, $4)
         RETURNING id
       `,
       [dto.slug, dto.title, dto.description],
@@ -150,6 +150,11 @@ export default class PagesRepositroy {
       updateValues.push(dto.description);
     }
 
+    if (dto.keywords !== undefined) {
+      updateFields.push(`keywords = $${updateFields.length + 1}`);
+      updateValues.push(dto.keywords);
+    }
+
     if (updateFields.length === 0) {
       throw new Error('No fields to update');
     }
@@ -223,7 +228,6 @@ export default class PagesRepositroy {
   async updateBlock(dto: UpdateBlockDto) {
     const updateFields: string[] = [];
     const updateValues: any[] = [];
-
     if (dto.header !== undefined) {
       updateFields.push(`header = $${updateFields.length + 1}`);
       updateValues.push(dto.header);

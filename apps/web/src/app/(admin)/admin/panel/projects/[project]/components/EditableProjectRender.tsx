@@ -6,6 +6,9 @@ import { AdminButton } from "../../../components/AdminButton/AdminButton";
 import { addImage, deleteImage, deleteProject, updateImage, updateProject } from "../../lib/project-service";
 import { useDebouncedCallback } from "use-debounce";
 import { useRouter } from "next/navigation";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Sector, Service } from "../../../lib/constants";
 
 export default function EditableProjectRender({ project }: { project: IProject }) {
 
@@ -66,6 +69,18 @@ export default function EditableProjectRender({ project }: { project: IProject }
                     />
                 </div>
                 <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                        Цели проекта (краткое описание)
+                    </label>
+                    <input
+                        id="name"
+                        type="text"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                        defaultValue={ project.purpose }
+                        onChange={ (e) => handleUpdateProject({ ...project, purpose: e.target.value }) }
+                    />
+                </div>
+                <div>
                     <label htmlFor="description" className="block text-sm font-medium text-gray-700">
                         Описание
                     </label>
@@ -115,25 +130,45 @@ export default function EditableProjectRender({ project }: { project: IProject }
                     <label htmlFor="sector" className="block text-sm font-medium text-gray-700">
                         Сектор
                     </label>
-                    <input
-                        id="sector"
-                        type="text"
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                        defaultValue={ project.sector }
-                        onChange={ (e) => handleUpdateProject({ ...project, sector: e.target.value }) }
-                    />
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" className="mt-1 block w-full border-gray-300 rounded-md py-2 text-left">
+                                { project.sector || "Выберите сектор" }
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start">
+                            <DropdownMenuLabel>Выберите сектор</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            { Object.values(Sector).map((sector, index) => (
+                                <DropdownMenuItem key={ index } onClick={ () => handleUpdateProject({ ...project, sector }) }>
+                                    { sector }
+                                </DropdownMenuItem>
+                            )) }
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+
                 </div>
                 <div>
                     <label htmlFor="service" className="block text-sm font-medium text-gray-700">
                         Услуга
                     </label>
-                    <input
-                        id="service"
-                        type="text"
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                        defaultValue={ project.service }
-                        onChange={ (e) => handleUpdateProject({ ...project, service: e.target.value }) }
-                    />
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" className="mt-1 block w-full border-gray-300 rounded-md py-2 text-left">
+                                { project.service || "Выберите сектор" }
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start">
+                            <DropdownMenuLabel>Выберите сектор</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            { Object.values(Service).map((service, index) => (
+                                <DropdownMenuItem key={ index } onClick={ () => handleUpdateProject({ ...project, service }) }>
+                                    { service }
+                                </DropdownMenuItem>
+                            )) }
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+
                 </div>
             </div>
             <AdminButton variant="add" onClick={ async () => {
@@ -162,6 +197,7 @@ export default function EditableProjectRender({ project }: { project: IProject }
                                         width={ 300 }
                                         height={ 300 }
                                         className="rounded-md object-contain max-w-full"
+                                        priority
                                     />
                                 ) : (
                                     <span className="text-gray-500">Нажмите, чтобы добавить изображение типов jpg, jpeg, png, gif, svg</span>

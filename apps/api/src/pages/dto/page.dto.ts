@@ -9,6 +9,7 @@ import {
 } from '@repo/interfaces';
 
 export class PageDto implements INewPage {
+  keywords: string;
   slug: string;
   title: string;
   description: string;

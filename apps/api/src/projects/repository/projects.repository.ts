@@ -30,8 +30,8 @@ export default class ProjectsRepository {
     const response = await this.databaseService.runQuery(
       `
       INSERT INTO projects 
-      (name, description, client, work_structure, price, sector, service) 
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      (name, description, client, work_structure, price, sector, service, purpose) 
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING *;
       `,
       [
@@ -42,6 +42,7 @@ export default class ProjectsRepository {
         dto.price,
         dto.sector,
         dto.service,
+        dto.purpose,
       ],
     );
     if (images) {
@@ -88,6 +89,7 @@ export default class ProjectsRepository {
         p.price, 
         p.sector, 
         p.service,
+        p.purpose,
         json_agg(
           json_build_object(
             'id', i.id,
@@ -107,28 +109,14 @@ export default class ProjectsRepository {
     return plainToInstance(ProjectModel, projectsResponse.rows);
   }
   // Получить проекты с пагинацией
-  async getProjects(page: number, limit: number) {
-    const offset = (page - 1) * limit;
-
+  async getProjects() {
     const response = await this.databaseService.runQuery(
       `
     SELECT * FROM projects
-    ORDER BY id
-    LIMIT $1 OFFSET $2;
-    `,
-      [limit, offset],
-    );
-
-    const countResponse = await this.databaseService.runQuery(
-      `
-    SELECT COUNT(*) AS total FROM projects;
     `,
     );
 
-    return {
-      projects: plainToInstance(ProjectModel, response.rows),
-      total: parseInt(countResponse.rows[0].total, 10),
-    };
+    return plainToInstance(ProjectModel, response.rows);
   }
 
   async getTotalProjectsCount(filters?: IProjectFilters) {
@@ -244,7 +232,6 @@ export default class ProjectsRepository {
   }
 
   async updateProject(dto: UpdateProjectDto) {
-    console.log(dto);
     const updateFields: string[] = [];
     const updateValues: any[] = [];
     Object.entries(dto).forEach(([key, value]) => {
@@ -254,6 +241,7 @@ export default class ProjectsRepository {
           case 'description':
           case 'client':
           case 'price':
+          case 'purpose':
           case 'sector':
           case 'service':
             updateFields.push(`${key} = $${updateFields.length + 1}`);
@@ -281,7 +269,6 @@ export default class ProjectsRepository {
         SET ${updateFields.join(', ')}
         WHERE id = $${updateFields.length + 1}
     `;
-    console.log(query);
     await this.databaseService.runQuery(query, updateValues);
   }
 

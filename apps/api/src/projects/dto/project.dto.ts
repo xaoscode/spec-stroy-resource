@@ -1,6 +1,7 @@
 import { IImage, INewProject, IUpdateProject } from '@repo/interfaces';
 
 export class ProjectDto implements INewProject {
+  purpose: string;
   client: string;
   workStructure: string;
   sector: string;
@@ -12,6 +13,7 @@ export class ProjectDto implements INewProject {
 }
 
 export class UpdateProjectDto implements IUpdateProject {
+  purpose: string;
   id: string;
   name: string;
   description: string;

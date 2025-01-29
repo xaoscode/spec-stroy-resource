@@ -1,3 +1,8 @@
+import { Metadata } from "next";
+import allMetadata from "../lib/metadata";
+
+export const metadata: Metadata = { ...allMetadata.contacts }
+
 export default function ContactsPage() {
   return (
     <div className="container mx-auto p-4">

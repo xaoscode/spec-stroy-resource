@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { updateContent } from "../lib/content-service";
+import { AdminInput } from "../../../../components/AdminInput/AdminInput";
 
 export function ComButton({ initialContent }: { initialContent: IContent }) {
     const [isSaving, setIsSaving] = useState(false);
@@ -28,23 +29,16 @@ export function ComButton({ initialContent }: { initialContent: IContent }) {
     }, 500)
     return (
         <div className="flex flex-col p-4 bg-white rounded shadow gap-6">
-            <input
+
+            <AdminInput
                 type="text"
-                defaultValue={ initialContent.header }
-                onChange={ (e) =>
-                    handleAction({ ...initialContent, header: e.target.value })
-                }
-                placeholder="Введите заголовок"
-                className="w-full text-center font-semibold text-lg p-2 border rounded"
-            />
-            <input
-                type="text"
+                inputSize="small"
                 defaultValue={ initialContent.text }
                 onChange={ (e) =>
                     handleAction({ ...initialContent, text: e.target.value })
                 }
-                placeholder="Введите заголовок"
-                className="w-full text-center font-semibold text-lg p-2 border rounded"
+                placeholder="Введите содержание кнопки"
+                className="text-center "
             />
 
             <div className="flex flex-col items-center mt-4 space-y-4">

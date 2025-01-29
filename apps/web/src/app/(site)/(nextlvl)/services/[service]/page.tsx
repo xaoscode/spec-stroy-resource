@@ -3,9 +3,32 @@ import { IPage } from "@repo/interfaces";
 import { ContentRender } from "./components/ContentRedner/ContentRender";
 import { OurProjects } from "@/components/OurProjects/OurProjects";
 import { fetchFilteredProjects } from "@/app/(site)/api/Projects";
+import { Metadata } from "next";
 
 interface IPageWithStatus extends IPage {
     success: boolean
+}
+type Props = {
+    params: Promise<{ service: string }>;
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const id = (await params).service;
+    const data: IPageWithStatus = await fetchPage(id)
+    if (!data.success) {
+        return {
+            title: "Не найдено",
+        };
+    }
+
+
+
+    return {
+        title: data.title,
+        description: `${data.description}`,
+        keywords: data.keywords
+    };
 }
 
 export default async function ProjectDetails({
@@ -18,11 +41,11 @@ export default async function ProjectDetails({
 
     const projects = await fetchFilteredProjects(1, 5, { service: id })
 
-    return <div className="flex flex-col">
+    return <div className="flex flex-col gap-10">
 
         { data ? data.section.map((section) => (
             <div key={ section.id } className="flex flex-col space-y-6 p-6 bg-gray-50 rounded-lg shadow-md gap-5">
-                <h1 className=" text-center">{ section.title }</h1>
+                <h2 className=" text-center">{ section.title }</h2>
                 { section.content.map((content) => (
                     <ContentRender key={ content.id } customContent={ content } />
                 )) }

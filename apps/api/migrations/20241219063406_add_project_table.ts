@@ -11,7 +11,8 @@ export async function up(knex: Knex): Promise<void> {
       price NUMERIC,
       sector VARCHAR(255),
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      service VARCHAR(255)
+      service VARCHAR(255),
+      purpose VARCHAR(255)
     );
 
     CREATE TABLE images (

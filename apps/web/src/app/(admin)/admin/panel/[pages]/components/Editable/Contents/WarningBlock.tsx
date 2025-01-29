@@ -6,6 +6,7 @@ import { addBlockAction, updateBlock, updateContent } from "../lib/content-servi
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useDebouncedCallback } from "use-debounce";
+import { AdminInput } from "../../../../components/AdminInput/AdminInput";
 
 export function WarningBlock({ initialContent }: { initialContent: IContent }) {
     const [isSaving, setIsSaving] = useState(false);
@@ -72,49 +73,58 @@ export function WarningBlock({ initialContent }: { initialContent: IContent }) {
 
     return (
         <div className="flex flex-col p-4 gap-6 bg-yellow-100 border-l-4 border-yellow-500 rounded shadow">
-            <input
+            <AdminInput
+                inputSize="medium"
                 type="text"
                 defaultValue={ initialContent.header }
                 onChange={ (e) =>
                     updateContentHandle({ ...initialContent, header: e.target.value })
                 }
                 placeholder="Введите заголовок"
-                className="w-full text-center font-semibold text-lg p-2 border rounded"
+                className="font-"
+
             />
-            { initialContent.block.map((block) => (
-                <div key={ block.id } className="flex flex-col gap-5">
-                    <input
-                        type="text"
-                        defaultValue={ block.header }
-                        onChange={ (e) =>
-                            updateBlockHandle({ content: { ...block, header: e.target.value } })
-                        }
-                        placeholder="Введите заголовок"
-                        className="w-full text-center font-semibold text-lg p-2 border rounded"
-                    />
-                    <textarea
-                        defaultValue={ block.text }
-                        onChange={ (e) =>
-                            updateBlockHandle({ content: { ...block, text: e.target.value } })
-                        }
-                        placeholder="Введите описание"
-                        className="w-full  bg-white p-2 border rounded "
-                    />
-                </div>
-            )) }
-            <AdminButton onClick={ () =>
-                addBlockHandle({
-                    header: "",
-                    text: "",
-                    image: "",
-                    index: initialContent.block.length + 1,
-                    contentId: initialContent.id,
-                }) } variant="add">
-                Добавить блок
-            </AdminButton>
-            { isSaving && (
-                <p className="text-gray-500 text-sm">Сохранение...</p>
-            ) }
+            <div className="border-t border-gray-300 pt-4">
+                { initialContent.block.map((block) => (
+                    <div key={ block.id } className="flex flex-col gap-3">
+                        <AdminInput
+                            type="text"
+                            inputSize="small"
+                            defaultValue={ block.header }
+                            onChange={ (e) =>
+                                updateBlockHandle({ content: { ...block, header: e.target.value } })
+                            }
+
+                        />
+                        <textarea
+                            defaultValue={ block.text }
+                            onChange={ (e) =>
+                                updateBlockHandle({ content: { ...block, text: e.target.value } })
+                            }
+                            placeholder="Введите описание"
+                            className="w-full  bg-white p-2 border rounded "
+                        />
+                    </div>
+                )) }
+            </div>
+
+            <div className="flex flex-col items-center mt-4 space-y-4">
+                <AdminButton
+                    onClick={ () =>
+                        addBlockHandle({
+                            header: "",
+                            text: "",
+                            image: "",
+                            index: initialContent.block.length + 1,
+                            contentId: initialContent.id,
+                        })
+                    }
+                    variant="add"
+                >
+                    Добавить блок
+                </AdminButton>
+                { isSaving && <p className="text-gray-500 text-sm">Сохранение...</p> }
+            </div>
         </div>
     )
 };

@@ -1,6 +1,10 @@
 import { IPage } from "@repo/interfaces"
 import { ContentRender } from "../services/[service]/components/ContentRedner/ContentRender"
 import { fetchPage } from "../../api/Pages"
+import { Metadata } from "next"
+import allMetadata from "../lib/metadata"
+
+export const metadata: Metadata = { ...allMetadata.about }
 
 interface IPageWithStatus extends IPage {
   success: boolean

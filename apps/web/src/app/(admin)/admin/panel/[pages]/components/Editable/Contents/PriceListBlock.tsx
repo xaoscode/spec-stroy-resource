@@ -6,6 +6,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useDebouncedCallback } from "use-debounce";
 import { content } from "../../../../../../../../../tailwind.config";
+import { AdminInput } from "../../../../components/AdminInput/AdminInput";
 
 export function PriceListBlock({ initialContent }: { initialContent: IContent }) {
     const [isSaving, setIsSaving] = useState(false);
@@ -88,16 +89,18 @@ export function PriceListBlock({ initialContent }: { initialContent: IContent })
     }
     return (
         <div className="flex flex-col gap-5 p-6 bg-gray-50 rounded-lg shadow-md">
-            <input
+            <AdminInput
+                inputSize="medium"
                 type="text"
                 defaultValue={ initialContent.header }
                 onChange={ (e) =>
                     updateContentHandle({ ...initialContent, header: e.target.value })
                 }
                 placeholder="Введите заголовок"
-                className="w-full text-center font-semibold text-lg p-2 border rounded"
+                className="font-"
+
             />
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 border-t border-gray-300 pt-4">
                 { initialContent.block.map((block, index) => (
                     <div
                         key={ index }

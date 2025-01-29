@@ -2,6 +2,7 @@ export interface INewPage {
     slug: string;
     title: string;
     description: string;
+    keywords: string;
 }
 export interface INewSection {
     title: string;

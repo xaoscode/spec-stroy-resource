@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Fragment } from "react";
-import { breadcrumbTranslations } from "./lib/breadcrumbTranslations";
+import { breadcrumbTranslations, headers } from "../../lib/breadcrumbTranslations";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -24,53 +24,57 @@ export function BreadcrumbModule() {
   };
 
   return (
-    <div className="flex lg:flex-row   gap-4 flex-col">
-      {/* Breadcrumb Section */ }
-      <Breadcrumb className="flex-grow">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="/">Главная</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          { pathParts.map((part, index) => {
-            const isLast = index === pathParts.length - 1;
-            const href = "/" + pathParts.slice(0, index + 1).join("/");
-            const name = breadcrumbTranslations[part] || part;
-            return (
-              <Fragment key={ index }>
-                { isLast ? (
-                  <BreadcrumbItem>
-                    <span>{ name }</span>
-                  </BreadcrumbItem>
-                ) : (
-                  <>
+    <div className="flex flex-col gap-20">
+      <div className="flex lg:flex-row  gap-4 flex-col">
+        <Breadcrumb className="flex-grow">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/">Главная</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            { pathParts.map((part, index) => {
+              const isLast = index === pathParts.length - 1;
+              const href = "/" + pathParts.slice(0, index + 1).join("/");
+              const name = breadcrumbTranslations[part] || part;
+              return (
+                <Fragment key={ index }>
+                  { isLast ? (
                     <BreadcrumbItem>
-                      <BreadcrumbLink asChild>
-                        <Link href={ href }>{ name }</Link>
-                      </BreadcrumbLink>
+                      <span>{ name }</span>
                     </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                  </>
-                ) }
-              </Fragment>
-            );
-          }) }
-        </BreadcrumbList>
-      </Breadcrumb>
+                  ) : (
+                    <>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink asChild>
+                          <Link href={ href }>{ name }</Link>
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator />
+                    </>
+                  ) }
+                </Fragment>
+              );
+            }) }
+          </BreadcrumbList>
+        </Breadcrumb>
 
-      {/* Back Button */ }
-      <button
-        onClick={ handleBackClick }
-        className={ cn(
-          "flex items-center gap-3 text-xl text-white font-normal hover:text-black",
-          "self-end "
-        ) }
-      >
-        <MoveLeft />
-        <span>Назад</span>
-      </button>
+        <button
+          onClick={ handleBackClick }
+          className={ cn(
+            "flex items-center gap-3 text-xl text-white font-normal hover:text-black",
+            "self-end "
+          ) }
+        >
+          <MoveLeft />
+          <span>Назад</span>
+        </button>
+
+      </div>
+      <h1 className="text-white">{ headers[pathParts[pathParts.length - 1]] }</h1>
+
     </div>
+
   );
 }

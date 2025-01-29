@@ -2,6 +2,7 @@ import { IBlock, IContent, IPage, ISection } from '@repo/interfaces';
 import { Expose } from 'class-transformer';
 
 export class PageModel implements IPage {
+  keywords: string;
   id: string;
   section: SectionModel[];
   slug: string;

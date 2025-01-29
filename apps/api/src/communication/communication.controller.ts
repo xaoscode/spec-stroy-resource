@@ -24,7 +24,6 @@ export class CommunicationController {
   @UseGuards(JwtAuthenticationGuard)
   @Patch('update-message')
   async updateMessage(@Body() dto: UpdateMessageDto) {
-    console.log(dto);
     this.communicationService.updateMessage(dto);
   }
 }

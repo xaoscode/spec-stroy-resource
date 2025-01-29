@@ -8,9 +8,7 @@ export async function CommBut({ initialContent }: { initialContent: IContent }) 
 
     return (
         <div className="flex flex-col items-center gap-5">
-            <h2 className="text-center">{ initialContent.header }</h2>
             <DialogWin variant="filled" size="lg" text={ initialContent.text } />
-
         </div>
     );
 }

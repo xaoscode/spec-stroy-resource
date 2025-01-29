@@ -7,6 +7,7 @@ import { EditableContent } from "./EditableContent";
 import { addSectionAction, deleteAction, reorderAction, updateSection } from "./lib/content-service";
 import { AdminButton } from "../../../components/AdminButton/AdminButton";
 import { useDebouncedCallback } from "use-debounce";
+import { AdminInput } from "../../../components/AdminInput/AdminInput";
 
 
 export function EditableSection({ sections = [], pageId = "" }: { sections?: ISection[], pageId?: string }) {
@@ -87,7 +88,7 @@ export function EditableSection({ sections = [], pageId = "" }: { sections?: ISe
                                             </div>
                                             <div className="flex-1">
                                                 <div className="flex flex-row justify-between">
-                                                    <h1>Секция: { item.index }</h1>
+                                                    <h3>Секция: { item.index }</h3>
 
                                                     <AdminButton
                                                         onClick={ () => deleteSection(item.id) }
@@ -96,14 +97,15 @@ export function EditableSection({ sections = [], pageId = "" }: { sections?: ISe
                                                         Удалить секцию
                                                     </AdminButton>
                                                 </div>
-                                                <input
+                                                <AdminInput
                                                     type="text"
+                                                    inputSize="large"
                                                     defaultValue={ item.title }
                                                     onChange={ (e) =>
                                                         saveSection({ ...item, title: e.target.value })
                                                     }
-                                                    placeholder="Введите заголовок"
-                                                    className="w-full text-center font-semibold text-lg p-2 border rounded mb-5"
+                                                    placeholder="Введите заголовок секции"
+                                                    className="mb-5"
                                                 />
                                                 <EditableContent contents={ item.content } sectionId={ item.id } pageId={ pageId } />
                                                 <p className="text-sm text-gray-500">id: { item.id }</p>

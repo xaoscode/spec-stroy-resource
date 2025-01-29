@@ -8,8 +8,11 @@ import ServiceBlock from "@/components/ServiceBlock/ServiceBlock";
 import { Button } from "@/components/Button/Button";
 import { getFiveLatestProjects } from "./api/Projects";
 import Link from "next/link";
+import allMetadata from "./(nextlvl)/lib/metadata";
 
-export const metadata: Metadata = { title: "Главная" };
+export const metadata: Metadata = {
+  ...allMetadata.main
+};
 
 
 
@@ -32,13 +35,10 @@ export default async function Home() {
       </div>
       <InfoBlock className={ styles.projects }>
         <div className={ styles.header }>НАШИ ПРОЕКТЫ</div>
-
         {
           projects &&
           <OurProjects projects={ projects } />
-
         }
-
         <Button size="lg" variant="filled" className="mx-5">
           <Link href="/projects">Все проекты</Link>
         </Button>

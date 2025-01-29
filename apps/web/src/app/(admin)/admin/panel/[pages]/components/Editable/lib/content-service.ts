@@ -115,7 +115,6 @@ export async function addBlockAction(contentData: INewBlock) {
 export async function updateSection(content: ISection) {
 	try {
 		const session = await auth();
-		console.log(content);
 		const response = await fetch(`${API.pages}/update-section`, {
 			method: "PATCH",
 			headers: {
@@ -154,6 +153,7 @@ export async function updateContent(content: IContent) {
 		if (!response.ok) {
 			return { success: false, error: "Failed to save content" };
 		}
+
 		revalidatePath("/");
 		return { success: true };
 	} catch (error) {
@@ -165,14 +165,13 @@ export async function updateContent(content: IContent) {
 export async function updateBlock(data: { content: IBlock; file?: File }) {
 	try {
 		const session = await auth();
-
 		const formData = new FormData();
 
 		if (data.file) {
 			formData.append("image", data.file);
 		}
 
-		formData.append("content", JSON.stringify({ ...data.content, image: undefined }));
+		formData.append("content", JSON.stringify({ ...data.content }));
 		const response = await fetch(`${API.pages}/update-block`, {
 			method: "PATCH",
 			headers: {

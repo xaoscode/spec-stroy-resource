@@ -7,10 +7,10 @@ export async function Text({ initialContent }: { initialContent: IContent }) {
 
     return (
         <div>
-            <h2>{ initialContent?.header }</h2>
+            <h3>{ initialContent?.header }</h3>
             { initialContent.block.map((value) => (
                 <div key={ value.id }>
-                    <h3>{ value.header }</h3>
+                    <h4>{ value.header }</h4>
                     <p>{ value.text }</p>
                 </div>
             )) }

@@ -35,8 +35,6 @@ export async function NewMessageAction(
 
 	const data = parse.data;
 	try {
-		console.log(data);
-
 		const response = await fetch(`${API.communication}/message`, {
 			method: "POST",
 			headers: {

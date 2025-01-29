@@ -26,7 +26,8 @@ export const authConfig = {
 	},
 	trustHost: true,
 	callbacks: {
-		authorized({ auth, request: { nextUrl } }) {
+		authorized({ auth, request: { nextUrl, headers } }) {
+			console.log("admin", headers.get("host"));
 			const isLoggedIn = !!auth?.user;
 			const isOnDashboard = nextUrl.pathname.startsWith("/admin");
 			const isOnLogin = nextUrl.pathname.startsWith("/admin/login");

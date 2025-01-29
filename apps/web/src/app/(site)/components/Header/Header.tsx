@@ -6,17 +6,24 @@ import Link from "next/link";
 import { ContactData } from "@/components/ContactData/ContactData";
 import { urls } from "../lib/urls";
 import { DraweMod } from "./components/DrawerMod/DrawerMod";
+import { Button } from "@/components/Button/Button";
 
 export default function Header({ className, ...props }: HeaderProps) {
   return (
-    <div className={ cn(className, styles.header) } { ...props }>
+    <header className={ cn(className, styles.header) } { ...props }>
       <div className={ styles.main__header }>
-        <DialogWin
+        <Button asChild size="lg" variant="default">
+          <Link href="/calculator" className={ styles.dialog }>
+            Рассчитать цену
+          </Link>
+        </Button>
+
+        {/* <DialogWin
           variant="default"
           size="lg"
           text="Рассчитать цену"
           className={ styles.dialog }
-        />
+        /> */}
         <ul className={ styles.links }>
           { urls.map((value, i) => (
             <li key={ i }>
@@ -37,6 +44,7 @@ export default function Header({ className, ...props }: HeaderProps) {
           className={ styles.instr }
         />
       </div>
-    </div>
+
+    </header >
   );
 }

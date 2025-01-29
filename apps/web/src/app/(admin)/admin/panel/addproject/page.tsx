@@ -20,6 +20,7 @@ export default function AdminAddProject() {
         price: 0,
         sector: "",
         service: "",
+        purpose: "",
         images: [] as File[],
     });
 
@@ -82,6 +83,7 @@ export default function AdminAddProject() {
                 workStructure: "",
                 price: 0,
                 sector: "",
+                purpose: "",
                 service: "",
                 images: [],
             });
@@ -108,7 +110,20 @@ export default function AdminAddProject() {
                         required
                     />
                 </div>
-
+                <div>
+                    <label htmlFor="purpose" className="block text-sm font-medium">
+                        Цели проекта (краткое описание)
+                    </label>
+                    <input
+                        type="text"
+                        id="purpose"
+                        name="purpose"
+                        value={ projectData.purpose }
+                        onChange={ handleInputChange }
+                        className="mt-1 block w-full rounded-md"
+                        required
+                    />
+                </div>
                 <div>
                     <label htmlFor="description" className="block text-sm font-medium">
                         Описание

@@ -10,7 +10,11 @@ export const multerConfig: MulterOptions = {
     },
   }),
   fileFilter: (req, file, callback) => {
-    if (file.mimetype.match(/\/(jpg|jpeg|png|gif|svg\+xml)$/)) {
+    if (
+      file.mimetype.match(
+        /\/(jpg|jpeg|png|gif|svg\+xml|pdf|plain|msword|vnd.openxmlformats-officedocument.wordprocessingml.document)$/,
+      )
+    ) {
       callback(null, true);
     } else {
       callback(new Error('Unsupported file format'), false);
