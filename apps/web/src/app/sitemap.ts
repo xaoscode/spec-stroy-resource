@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { allProjects } from "./(site)/api/Projects";
 
+export const revalidate = 60;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const domain = "https://ssr-db.ru";
 	let dynamicPages = [];
