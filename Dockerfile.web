@@ -26,8 +26,7 @@ RUN turbo build
 
 FROM base AS runner
 ENV NODE_ENV=production
-ENV BASE_URL=ssr-db.ru
-ENV API_URL=http://spec-stroy-resource-api:3001
+
 
 WORKDIR /app
 

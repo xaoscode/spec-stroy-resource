@@ -106,11 +106,11 @@ export async function deleteProject(id: number) {
 }
 
 export async function allProjects() {
-	const dynamicPages = await fetch(`${process.env.API_URL}/api/projects/all`)
+	const dynamicPages = await fetch(`http://spec-stroy-resource-api:3001/api/projects/all`)
 		.then((res) => res.json())
 		.then((pages) =>
 			pages.map((page: IProject) => ({
-				url: `${process.env.BASE_URL}/projects/${page.id}`,
+				url: `https://ssr-db.ru/projects/${page.id}`,
 				lastModified: new Date(),
 				changeFrequency: "monthly",
 				priority: 0.5,
