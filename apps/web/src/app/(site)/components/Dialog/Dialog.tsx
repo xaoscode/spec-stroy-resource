@@ -61,13 +61,13 @@ export function DialogWin({
         <DialogContent className=" bg-primary sm:max-w-[425px]">
           <DialogHeader className="">
             <DialogTitle className="text-center text-white text-2xl text-wrap">
-              Заказать звонок
+
             </DialogTitle>
             <DialogDescription className="text-center text-white text-lg text-wrap font-light">
-              Заполните форму и мы Вам позвоним
+
             </DialogDescription>
           </DialogHeader>
-          <CallForm className="grid grid-cols-1 gap-6 w-full" setState={ setOpen } />
+          <CallForm className="grid grid-cols-1 gap-6 w-full" />
         </DialogContent>
       </Dialog>
     );
@@ -82,14 +82,14 @@ export function DialogWin({
       <DrawerContent className="bg-primary">
         <DrawerHeader>
           <DrawerTitle className="text-center text-white  text-2xl text-wrap">
-            Заказать звонок
+
           </DrawerTitle>
           <DrawerDescription className="text-center text-white text-lg text-wrap font-light">
-            Заполните форму и мы Вам позвоним
+
           </DrawerDescription>
         </DrawerHeader>
         <DrawerFooter className="text-white">
-          <CallForm className="grid grid-cols-1 gap-6 w-full" setState={ setOpen } />
+          <CallForm className="grid grid-cols-1 gap-6 w-full" />
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

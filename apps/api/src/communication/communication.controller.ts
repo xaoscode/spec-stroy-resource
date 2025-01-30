@@ -8,7 +8,7 @@ import { Throttle } from '@nestjs/throttler';
 export class CommunicationController {
   constructor(private readonly communicationService: CommunicationService) {}
 
-  @Throttle({ default: { limit: 2, ttl: 600000 } })
+  @Throttle({ default: { limit: 100, ttl: 600000 } })
   @Post('message')
   async newMessage(@Body() dto: MessageDto) {
     console.log('message');

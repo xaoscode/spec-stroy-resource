@@ -44,9 +44,9 @@ export default async function Projects(props: {
         <ProjectsTable filters={ filters } currentPage={ currentPage } currentPath={ "/projects" } />
       </Suspense>
 
-      <PaginationMod
+      { totalPages > 0 ? <PaginationMod
         totalPages={ Math.ceil(totalPages / 9) }
-      />
+      /> : <p className="text-lg text-gray-600">Проекты не найдены</p> }
     </div>
   );
 }

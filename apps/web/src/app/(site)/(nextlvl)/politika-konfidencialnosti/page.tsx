@@ -7,8 +7,8 @@ import { Metadata } from 'next';
 export const metadata: Metadata = { ...allMetadata.politika }
 
 const PrivacyPolicy = () => {
-    const companyName = process.env.NEXT_PUBLIC_COMPANY_NAME || 'Название компании';
-    const domain = process.env.NEXT_PUBLIC_WEBSITE_DOMAIN || 'example.com';
+    const companyName = process.env.NEXT_PUBLIC_COMPANY_NAME || 'Спец Строй Ресурс ';
+    const domain = process.env.NEXT_PUBLIC_WEBSITE_DOMAIN || 'ssr-dv.ru';
 
     return (
         <div className="flex flex-col privacy-policy gap-5">

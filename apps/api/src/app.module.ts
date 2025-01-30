@@ -33,7 +33,7 @@ import { CustomThrottlerGuard } from './customThrottlerGuard';
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
-        limit: 500,
+        limit: 5000,
       },
     ]),
     CommunicationModule,

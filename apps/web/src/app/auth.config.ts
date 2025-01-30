@@ -44,12 +44,10 @@ export const authConfig = {
 		},
 
 		async jwt({ token, user }) {
-			console.log("jwt", user);
 			if (user) {
 				return { ...token, ...user };
 			}
 			const now = Date.now();
-			console.log(token.backendTokens.accessExp - now);
 			if (now < token.backendTokens.accessExp) {
 				return token;
 			}
@@ -69,7 +67,6 @@ export const authConfig = {
 		},
 
 		async session({ token, session, trigger }) {
-			console.log("session");
 			if (trigger === "update") {
 				console.log("update session");
 			}
