@@ -5,7 +5,7 @@ import { API } from "./api";
 export const revalidate = 86400;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	const domain = process.env.NEXT_PUBLIC_WEBSITE_DOMAIN || "example.com";
+	const domain = process.env.WEBSITE_DOMAIN;
 	let dynamicPages = [];
 
 	try {

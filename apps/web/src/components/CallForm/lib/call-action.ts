@@ -1,3 +1,4 @@
+"use server";
 import { API } from "@/app/api";
 import { z } from "zod";
 

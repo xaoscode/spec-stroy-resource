@@ -1,6 +1,7 @@
+"use server";
 import type { MetadataRoute } from "next";
 
-export default function robots(): MetadataRoute.Robots {
+export default async function robots(): Promise<MetadataRoute.Robots> {
 	const domain = process.env.NEXT_PUBLIC_WEBSITE_DOMAIN || "example.com";
 
 	return {
@@ -9,6 +10,6 @@ export default function robots(): MetadataRoute.Robots {
 			allow: "/",
 			disallow: "/admin/",
 		},
-		sitemap: `${domain}/sitemap.xml"`,
+		sitemap: `${domain}/sitemap.xml`,
 	};
 }
