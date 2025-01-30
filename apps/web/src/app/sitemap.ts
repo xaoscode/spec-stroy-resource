@@ -1,8 +1,7 @@
+"use server";
 import type { MetadataRoute } from "next";
 import { IProject } from "@repo/interfaces";
 import { API } from "./api";
-
-export const revalidate = 86400;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const domain = process.env.WEBSITE_DOMAIN;
