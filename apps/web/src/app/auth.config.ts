@@ -3,6 +3,7 @@ import { JWT } from "next-auth/jwt";
 import { API } from "./api";
 
 async function refreshToken(token: JWT): Promise<JWT | null> {
+	console.log("refresh");
 	const res = await fetch(API.auth + "/refresh", {
 		method: "GET",
 		headers: {
@@ -25,15 +26,15 @@ export const authConfig = {
 		signIn: "/admin/login",
 	},
 	trustHost: true,
+
 	callbacks: {
-		authorized({ auth, request: { nextUrl, headers } }) {
-			console.log("admin", headers.get("host"));
+		authorized({ auth, request: { nextUrl } }) {
 			const isLoggedIn = !!auth?.user;
 			const isOnDashboard = nextUrl.pathname.startsWith("/admin");
 			const isOnLogin = nextUrl.pathname.startsWith("/admin/login");
 
 			if (isOnLogin && isLoggedIn) {
-				return Response.redirect(new URL("/admin/panel", nextUrl));
+				return Response.redirect(new URL("/admin/panel", process.env.NEXTAUTH_URL));
 			}
 			if (isOnDashboard) {
 				if (isLoggedIn) return true;
@@ -43,10 +44,12 @@ export const authConfig = {
 		},
 
 		async jwt({ token, user }) {
+			console.log("jwt", user);
 			if (user) {
 				return { ...token, ...user };
 			}
 			const now = Date.now();
+			console.log(token.backendTokens.accessExp - now);
 			if (now < token.backendTokens.accessExp) {
 				return token;
 			}
@@ -66,6 +69,7 @@ export const authConfig = {
 		},
 
 		async session({ token, session, trigger }) {
+			console.log("session");
 			if (trigger === "update") {
 				console.log("update session");
 			}

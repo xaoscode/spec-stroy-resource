@@ -101,7 +101,7 @@ export async function up(knex: Knex): Promise<void> {
       )
   `);
 
-  const password = 'fdas5KGFvvbnnf';
+  const password = process.env.ADMIN_PASS;
   const saltRounds = 10;
   const hashedPassword = await hash(password, saltRounds);
 

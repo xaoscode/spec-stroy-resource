@@ -68,7 +68,7 @@ export default function AdminAddProject() {
         const content = {
             ...projectData,
             images: updatedNames.map((file: File) => {
-                return `${process.env.NEXT_PUBLIC_DOMAIN}/uploads/images/${file.name}`
+                return `${process.env.NEXT_PUBLIC_API_DOMAIN}/uploads/images/${file.name}`
             })
         };
 
