@@ -1,6 +1,5 @@
 "use server";
 import type { MetadataRoute } from "next";
-import { API } from "./api";
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
 	return {
@@ -9,6 +8,6 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
 			allow: "/",
 			disallow: "/admin/",
 		},
-		sitemap: `${API.BASE_URL}/sitemap.xml`,
+		sitemap: `${process.env.BASE_URL}/sitemap.xml`,
 	};
 }

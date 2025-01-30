@@ -1,90 +1,80 @@
 "use server";
 import type { MetadataRoute } from "next";
-import { IProject } from "@repo/interfaces";
-import { API } from "./api";
+import { allProjects } from "./(site)/api/Projects";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	const domain = process.env.WEBSITE_DOMAIN;
+	const domain = process.env.BASE_URL;
 	let dynamicPages = [];
 
 	try {
-		dynamicPages = await fetch(`${API.projects}/all`)
-			.then((res) => res.json())
-			.then((pages) =>
-				pages.map((page: IProject) => ({
-					url: `${domain}/projects/${page.id}`,
-					lastModified: new Date(),
-					changeFrequency: "monthly",
-					priority: 0.5,
-				}))
-			);
+		dynamicPages = await allProjects();
 	} catch (error) {
 		console.error("Error fetching dynamic pages:", error);
 	}
 
 	const staticPages = [
 		{
-			url: `${API.BASE_URL}`,
+			url: `${domain}`,
 			lastModified: new Date(),
 			changeFrequency: "yearly",
 			priority: 1,
 		},
 		{
-			url: `${API.BASE_URL}/about`,
+			url: `${domain}/about`,
 			lastModified: new Date(),
 			changeFrequency: "weekly",
 			priority: 0.9,
 		},
 		{
-			url: `${API.BASE_URL}/calculator`,
+			url: `${domain}/calculator`,
 			lastModified: new Date(),
 			changeFrequency: "yearly",
 			priority: 0.9,
 		},
 		{
-			url: `${API.BASE_URL}/contacts`,
+			url: `${domain}/contacts`,
 			lastModified: new Date(),
 			changeFrequency: "yearly",
 			priority: 0.5,
 		},
 		{
-			url: `${API.BASE_URL}/dopusk`,
+			url: `${domain}/dopusk`,
 			lastModified: new Date(),
 			changeFrequency: "weekly",
 			priority: 0.8,
 		},
 		{
-			url: `${API.BASE_URL}/politika-konfidencialnosti`,
+			url: `${domain}/politika-konfidencialnosti`,
 			lastModified: new Date(),
 			changeFrequency: "yearly",
 			priority: 0.3,
 		},
 		{
-			url: `${API.BASE_URL}/services/stroy`,
+			url: `${domain}/services/stroy`,
 			lastModified: new Date(),
 			changeFrequency: "weekly",
 			priority: 0.8,
 		},
 		{
-			url: `${API.BASE_URL}/services/instrumental`,
+			url: `${domain}/services/instrumental`,
 			lastModified: new Date(),
 			changeFrequency: "weekly",
 			priority: 0.8,
 		},
 		{
-			url: `${API.BASE_URL}/services/bim`,
+			url: `${domain}/services/bim`,
 			lastModified: new Date(),
 			changeFrequency: "weekly",
 			priority: 0.8,
 		},
 		{
-			url: `${API.BASE_URL}/services/complex`,
+			url: `${domain}/services/complex`,
 			lastModified: new Date(),
 			changeFrequency: "weekly",
 			priority: 0.8,
 		},
 		{
-			url: `${API.BASE_URL}/services/engineering`,
+			url: `${domain}/services/engineering`,
 			lastModified: new Date(),
 			changeFrequency: "weekly",
 			priority: 0.8,
