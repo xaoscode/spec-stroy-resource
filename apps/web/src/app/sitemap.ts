@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { allProjects } from "./(site)/api/Projects";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const domain = "https://ssr-db.ru";

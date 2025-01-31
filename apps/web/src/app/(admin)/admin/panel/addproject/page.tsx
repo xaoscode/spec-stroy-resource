@@ -135,6 +135,7 @@ export default function AdminAddProject() {
                         onChange={ handleInputChange }
                         className="mt-1 block w-full bg-white rounded-md"
                         rows={ 4 }
+                        required
                     ></textarea>
                 </div>
 
@@ -149,6 +150,7 @@ export default function AdminAddProject() {
                         value={ projectData.client }
                         onChange={ handleInputChange }
                         className="mt-1 block w-full border-gray-300 rounded-md"
+                        required
                     />
                 </div>
 
@@ -163,6 +165,7 @@ export default function AdminAddProject() {
                         onChange={ handleInputChange }
                         className="mt-1 block w-full bg-white rounded-md"
                         rows={ 4 }
+                        required
                     ></textarea>
                 </div>
 
@@ -178,6 +181,7 @@ export default function AdminAddProject() {
                         onChange={ handleInputChange }
                         className="mt-1 block w-full border-gray-300 rounded-md"
                         min={ 0 }
+                        required
                     />
                 </div>
 

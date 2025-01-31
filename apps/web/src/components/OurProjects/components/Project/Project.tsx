@@ -23,11 +23,11 @@ export function Project({ index, project, className, ...props }: ProjectProps) {
       ) }
       { ...props }
     >
-      <div className={ cn({}) }>
-        <EmblaCarousel slides={ project.images } />
+      <div>
+        { project.images[0]?.url != null ? <EmblaCarousel slides={ project.images } /> : <div className="lg:w-80 lg:h-80"></div> }
       </div>
 
-      <div className="flex flex-col gap-6 lg:w-2/3 justify-between">
+      <div className={ cn("flex flex-col gap-6 lg:w-2/3 justify-between") }>
         <div className="flex flex-col gap-4 ">
           <Link
             className="text-2xl  sm:text-3xl text-primary font-medium hover:underline"
@@ -50,7 +50,7 @@ export function Project({ index, project, className, ...props }: ProjectProps) {
           </span>
         </div>
       </div>
-    </div>
+    </div >
 
   );
 }
