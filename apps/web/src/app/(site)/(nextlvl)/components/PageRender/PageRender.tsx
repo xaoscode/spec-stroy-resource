@@ -1,3 +1,4 @@
+"use server"
 import { fetchPage } from "@/app/(site)/api/Pages"
 import { IPage } from "@repo/interfaces"
 
