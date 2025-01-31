@@ -7,7 +7,7 @@ export const metadata: Metadata = { ...allMetadata.calculator }
 
 
 export default async function AboutPage() {
-    const domain = process.env.NEXT_PUBLIC_WEBSITE_DOMAIN || 'example.com';
+    const domain = process.env.NEXT_PUBLIC_WEBSITE_DOMAIN || 'https://ssr-dv.ru';
     const companyName = process.env.NEXT_PUBLIC_COMPANY_NAME || 'Название компании';
 
     return <div className="flex flex-col gap-10">

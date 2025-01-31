@@ -8,6 +8,7 @@ export const metadata: Metadata = { ...allMetadata.about }
 
 interface IPageWithStatus extends IPage {
   success: boolean
+
 }
 export default async function AboutPage() {
   const data: IPageWithStatus = await fetchPage('about')

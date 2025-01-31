@@ -35,7 +35,7 @@ const items = [
           { title: "Инструментальное обследование объектов", url: "instrumental" },
           { title: "BIM проектирование", url: "bim" },
           { title: "Комплексное проектирование", url: "complex" },
-          { title: "Проектирование инженерных систем и сетей", url: "project" },
+          { title: "Проектирование инженерных систем и сетей", url: "engineering" },
         ],
       },
       { title: "О компании", url: "about" },

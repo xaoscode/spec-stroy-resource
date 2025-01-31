@@ -8,7 +8,7 @@ export const breadcrumbTranslations: Record<string, string> = {
 	instrumental: "Инструментально техническое обследование",
 	bim: "BIM проектирование",
 	complex: "Комплексное проектирование",
-	project: "Проектирование инженерных систем и сетей",
+	engineering: "Проектирование инженерных систем и сетей",
 	"politika-konfidencialnosti": "Политика конфиденциальности",
 	calculator: "Онлайн-калькулятор",
 };
