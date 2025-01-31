@@ -7,8 +7,8 @@ import { Metadata } from 'next';
 export const metadata: Metadata = { ...allMetadata.politika }
 
 const PrivacyPolicy = () => {
-    const companyName = process.env.NEXT_PUBLIC_COMPANY_NAME || 'Спец Строй Ресурс ';
-    const domain = process.env.NEXT_PUBLIC_WEBSITE_DOMAIN || 'ssr-dv.ru';
+    const domain = 'ssr-dv.ru';
+    const companyName = 'Спец Строй Ресурс';
 
     return (
         <div className="flex flex-col privacy-policy gap-5">
@@ -219,7 +219,7 @@ const PrivacyPolicy = () => {
                     <strong>9.3.</strong> Контактные данные для вопросов: <Link className='text-blue-700 hover:underline' href="mailto:ssr-dv@mail.ru">ssr-dv@mail.ru</Link>.
                 </li>
                 <li>
-                    <strong>9.4.</strong> Действующая редакция Политики размещена на странице: <Link className='text-blue-700 hover:underline' href={ `${domain}/politika-konfidencialnosti` } target="_blank">{ `${domain}/politika-konfidencialnosti` }</Link>.
+                    <strong>9.4.</strong> Действующая редакция Политики размещена на странице: <Link className='text-blue-700 hover:underline' href={ `/politika-konfidencialnosti` } target="_blank">{ `${domain}/politika-konfidencialnosti` }</Link>.
                 </li>
             </ol>
 

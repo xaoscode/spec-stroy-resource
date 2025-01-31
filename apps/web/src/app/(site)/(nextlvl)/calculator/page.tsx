@@ -7,8 +7,8 @@ export const metadata: Metadata = { ...allMetadata.calculator }
 
 
 export default async function AboutPage() {
-    const domain = process.env.NEXT_PUBLIC_WEBSITE_DOMAIN || 'https://ssr-dv.ru';
-    const companyName = process.env.NEXT_PUBLIC_COMPANY_NAME || 'Название компании';
+    const domain = 'ssr-dv.ru';
+    const companyName = 'Спец Строй Ресурс';
 
     return <div className="flex flex-col gap-10">
         <div className="flex flex-col items-center gap-5">
@@ -27,7 +27,7 @@ export default async function AboutPage() {
 
             <h2 >Онлайн-калькулятор — это быстрый способ расчета стоимости</h2>
             <p >
-                На сайте <Link href={ domain } className="text-blue-600 hover:text-blue-800">{ domain }</Link> вы можете заказать услугу расчета стоимости проектных работ. Мы предоставляем прайс-лист бесплатно, и цена не изменится в процессе работы. Вы получите точную информацию по всем этапам разработки проектной и рабочей документации, включая двенадцать разделов.
+                На сайте <Link href={ "/" } className="text-blue-600 hover:text-blue-800">{ domain }</Link> вы можете заказать услугу расчета стоимости проектных работ. Мы предоставляем прайс-лист бесплатно, и цена не изменится в процессе работы. Вы получите точную информацию по всем этапам разработки проектной и рабочей документации, включая двенадцать разделов.
             </p>
 
             <h2 >Как рассчитать стоимость строительного проекта?</h2>
