@@ -20,7 +20,7 @@ export async function updateProject(project: IProject) {
 		if (!response.ok) {
 			return { success: false, error: "Failed to save content" };
 		}
-		revalidatePath("/");
+		revalidatePath("/", "layout");
 
 		return { success: true };
 	} catch (error) {
@@ -52,7 +52,7 @@ export async function addProject(content: INewProject, images: File[]) {
 		if (!response.ok) {
 			return { success: false, error: "Failed to save content" };
 		}
-		revalidatePath("/");
+		revalidatePath("/", "layout");
 		return { success: true };
 	} catch (error) {
 		console.log("Update content error", error);
@@ -99,7 +99,7 @@ export async function updateImage(image: IImage, file: File) {
 		if (!response.ok) {
 			return { success: false, error: "Failed to save content" };
 		}
-		revalidatePath("/");
+		revalidatePath("/", "layout");
 		return { success: true };
 	} catch (error) {
 		console.log("Update content error", error);
@@ -121,7 +121,7 @@ export async function deleteProject(id: string) {
 		if (!response.ok) {
 			return { success: false, error: "Failed to save content" };
 		}
-		revalidatePath("/");
+		revalidatePath("/", "layout");
 		return { success: true };
 	} catch (error) {
 		console.log("Update content error", error);
@@ -141,7 +141,7 @@ export async function deleteImage(id: string) {
 		if (!response.ok) {
 			return { success: false, error: "Failed to delete image" };
 		}
-		revalidatePath("/");
+		revalidatePath("/", "layout");
 		return { success: true };
 	} catch (error) {
 		console.log("Delete image error", error);
@@ -161,7 +161,7 @@ export async function addImage(id: string) {
 		if (!response.ok) {
 			return { success: false, error: "Failed to delete image" };
 		}
-		revalidatePath("/");
+		revalidatePath("/", "layout");
 		return { success: true };
 	} catch (error) {
 		console.log("Delete image error", error);

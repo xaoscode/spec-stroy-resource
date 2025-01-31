@@ -18,7 +18,7 @@ export async function addSectionAction(contentData: INewSection, id: string) {
 			body: JSON.stringify({ ...contentData }),
 			cache: "no-cache",
 		});
-		revalidatePath("/");
+		revalidatePath("/", "layout");
 	} catch (error) {
 		console.error("Upload section Error:", error);
 		throw error;
@@ -38,7 +38,7 @@ export async function addContentAction(contentData: INewContent, id: string) {
 			body: JSON.stringify({ ...contentData }),
 			cache: "no-cache",
 		});
-		revalidatePath("/");
+		revalidatePath("/", "layout");
 	} catch (error) {
 		console.error("Upload section Error:", error);
 		throw error;
@@ -58,7 +58,7 @@ export async function reorderAction(pageId: string, sourceItemId: string, destin
 			body: JSON.stringify({ pageId, sourceItemId, destinationPosition, parentTable, childTable }),
 			cache: "no-cache",
 		});
-		revalidatePath("/");
+		revalidatePath("/", "layout");
 	} catch (error) {
 		console.log("Swap section error", error);
 		throw error;
@@ -80,7 +80,7 @@ export async function deleteAction(data: { id: string; childTable: string; paren
 		if (!response.ok) {
 			return { success: false, error: "Failed to remove" };
 		}
-		revalidatePath("/");
+		revalidatePath("/", "layout");
 		return { success: true };
 	} catch (error) {
 		console.log("Delete section error", error);
@@ -104,7 +104,7 @@ export async function addBlockAction(contentData: INewBlock) {
 		if (!response.ok) {
 			return { success: false, error: "Failed to save" };
 		}
-		revalidatePath("/");
+		revalidatePath("/", "layout");
 		return { success: true };
 	} catch (error) {
 		console.error("Upload section Error:", error);
@@ -128,7 +128,7 @@ export async function updateSection(content: ISection) {
 		if (!response.ok) {
 			return { success: false, error: "Failed to save content" };
 		}
-		revalidatePath("/");
+		revalidatePath("/", "layout");
 		return { success: true };
 	} catch (error) {
 		console.error("Update content error", error);
@@ -154,7 +154,7 @@ export async function updateContent(content: IContent) {
 			return { success: false, error: "Failed to save content" };
 		}
 
-		revalidatePath("/");
+		revalidatePath("/", "layout");
 		return { success: true };
 	} catch (error) {
 		console.error("Update content error", error);
@@ -184,7 +184,7 @@ export async function updateBlock(data: { content: IBlock; file?: File }) {
 		if (!response.ok) {
 			return { success: false, error: "Failed to save content" };
 		}
-		revalidatePath("/");
+		revalidatePath("/", "layout");
 
 		return { success: true };
 	} catch (error) {

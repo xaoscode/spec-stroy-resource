@@ -33,7 +33,7 @@ export async function getProjects(page: number, limit: number) {
 
 export async function getFiveLatestProjects() {
 	try {
-		const response = await fetch(`${API.projects}/five-latest`, { cache: "no-cache" });
+		const response = await fetch(`${API.projects}/five-latest`, { cache: "force-cache" });
 		if (!response.ok) {
 			console.error(`Failed to fetch product data: ${response.statusText}`);
 			throw new Error("API responded with an error");

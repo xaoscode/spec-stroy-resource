@@ -36,6 +36,7 @@ export default class PagesController {
 
   @Get('get/:slug')
   async getPage(@Param('slug') slug: string) {
+    console.log(slug);
     return this.pageService.getPage(slug);
   }
 

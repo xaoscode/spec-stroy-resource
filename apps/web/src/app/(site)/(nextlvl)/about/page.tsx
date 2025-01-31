@@ -1,6 +1,6 @@
 import { IPage } from "@repo/interfaces"
 import { ContentRender } from "../services/[service]/components/ContentRedner/ContentRender"
-import { fetchPage } from "../../api/Pages"
+import { fetchCachedPage } from "../../api/Pages"
 import { Metadata } from "next"
 import allMetadata from "../lib/metadata"
 
@@ -10,7 +10,7 @@ interface IPageWithStatus extends IPage {
   success: boolean
 }
 export default async function AboutPage() {
-  const data: IPageWithStatus = await fetchPage('about')
+  const data: IPageWithStatus = await fetchCachedPage('about')
   return <div className="flex flex-col">
 
     { data.success ? data.section.map((section) => (
@@ -25,3 +25,4 @@ export default async function AboutPage() {
 
   </div>
 }
+export const dynamic = "force-dynamic";
