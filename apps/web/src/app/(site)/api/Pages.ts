@@ -2,7 +2,7 @@ import { API } from "../../api";
 
 export async function fetchPage(slug: string) {
 	try {
-		const response = await fetch(`${API.pages}/get/${slug}`, { cache: "force-cache" });
+		const response = await fetch(`${API.pages}/get/${slug}`, { cache: "no-cache" });
 		if (!response.ok) {
 			throw new Error(`Ошибка загрузки страницы: ${response.statusText}`);
 		}
