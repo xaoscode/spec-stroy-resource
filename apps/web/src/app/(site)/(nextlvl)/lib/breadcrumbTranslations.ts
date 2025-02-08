@@ -14,7 +14,7 @@ export const breadcrumbTranslations: Record<string, string> = {
 };
 
 export const headers: Record<string, string> = {
-	services: "Услуги по проектированию зданий",
+	services: "Предоставляемые услуги",
 	calculator: "Калькулятор расчета стоимости проектных работ",
 	engineering: "Проектирование инженерных систем и сетей",
 	complex: "Комплексное проектирование",
