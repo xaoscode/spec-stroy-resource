@@ -106,6 +106,14 @@ export function ListBlock({ initialContent }: { initialContent: IContent }) {
                     placeholder="Введите заголовок списка"
 
                 />
+                <textarea
+                    defaultValue={ initialContent.text }
+                    onChange={ (e) =>
+                        updateContentHandle({ ...initialContent, text: e.target.value })
+                    }
+                    placeholder="Введите описание"
+                    className="w-full p-2 border rounded outline-none focus:outline-none focus:ring-1 focus:ring-gray-400 shadow"
+                />
                 <div className="flex flex-col gap-2 border-t border-gray-300 pt-4">
                     { initialContent.block.map((block, index) => (
                         <ul key={ index } className="text-center space-y-3 relative">

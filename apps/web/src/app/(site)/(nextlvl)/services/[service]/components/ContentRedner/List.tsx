@@ -8,6 +8,7 @@ export async function List({ initialContent }: { initialContent: IContent }) {
     return (
         <div>
             <h4>{ initialContent.header }</h4>
+            <p>{ initialContent.header }</p>
             <ul className="text-sm list-disc pl-6 text-gray-700  sm:text-base md:text-lg">
                 { initialContent.block.map((value) => (
                     <li key={ value.id }>
