@@ -8,7 +8,7 @@ export const services = [
 		url: "services/instrumental",
 	},
 	{
-		header: "BIM проектирование",
+		header: "BIM-проектирование",
 		url: "/services/bim",
 	},
 	{

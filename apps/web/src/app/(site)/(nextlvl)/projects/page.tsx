@@ -35,7 +35,7 @@ export default async function Projects(props: {
       <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
         <div className="text-2xl font-bold text-primary">Наши проекты</div>
         <div className="flex flex-col justify-end gap-4 lg:flex-row">
-          <Search placeholder={ "Поиспк проектов..." } />
+          <Search placeholder={ "Поиск проектов..." } />
           <Combobox />
         </div>
       </div>

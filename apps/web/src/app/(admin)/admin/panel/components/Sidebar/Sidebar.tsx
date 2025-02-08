@@ -33,7 +33,7 @@ const items = [
         subSubItems: [
           { title: "Строительно-техническая экспертиза жилья", url: "stroy" },
           { title: "Инструментальное обследование объектов", url: "instrumental" },
-          { title: "BIM проектирование", url: "bim" },
+          { title: "BIM-проектирование", url: "bim" },
           { title: "Комплексное проектирование", url: "complex" },
           { title: "Проектирование инженерных систем и сетей", url: "engineering" },
         ],
