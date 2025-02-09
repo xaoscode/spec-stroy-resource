@@ -67,7 +67,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
         </div>
       </div>
 
-      <div className={ styles.embla_thumbs }>
+      { slides.length > 1 && <div className={ styles.embla_thumbs }>
         <div className={ styles.embla_thumbs__viewport } ref={ emblaThumbsRef }>
           <div className={ styles.embla_thumbs__container }>
             { slides.map((index, element) => (
@@ -84,7 +84,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
             )) }
           </div>
         </div>
-      </div>
+      </div> }
     </div>
   );
 };

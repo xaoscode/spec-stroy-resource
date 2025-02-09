@@ -154,7 +154,7 @@ export default function AdminAddProject() {
                     />
                 </div>
 
-                <div>
+                {/* <div>
                     <label htmlFor="workStructure" className="block text-sm font-medium">
                         Структура работы
                     </label>
@@ -167,7 +167,7 @@ export default function AdminAddProject() {
                         rows={ 4 }
                         required
                     ></textarea>
-                </div>
+                </div> */}
 
                 <div>
                     <label htmlFor="price" className="block text-sm font-medium">

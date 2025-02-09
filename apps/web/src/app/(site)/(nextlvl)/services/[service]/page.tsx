@@ -51,19 +51,18 @@ export default async function ProjectDetails({
                 )) }
             </div>
         )) : <div>Элементы страницы</div> }
-        <div className="p-6 bg-gray-50 rounded-lg shadow-md  place-items-center">
+        { projects.data.length > 0 && <div className="p-6 bg-gray-50 rounded-lg shadow-md  place-items-center">
             <div
                 className="text-center text-xl sm:text-2xl md:text-3xl font-bold text-primary
 "
             >
                 Примеры
             </div>
-            {
-                projects.success ?
-                    <OurProjects projects={ projects.data } /> : <></>
 
-            }
-        </div>
+            <OurProjects projects={ projects.data } /> <></>
+
+        </div> }
+
 
     </div>
 }

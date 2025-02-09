@@ -73,7 +73,7 @@ export default function CallForm({ className, ...props }: CallFormProps) {
       ) : (
         <div className="flex flex-col items-center justify-center px-5 gap-5">
           <div className="text-3xl text-center font-bold text-white ">
-            Воспользуйтесь консультацией от специалиста
+            Оставить заявку на консультацию
           </div>
           <div className={ cn(className, "gap-5") }>
 

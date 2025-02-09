@@ -6,6 +6,7 @@ import Footer from "./components/Footer/Footer";
 import cn from "classnames";
 import Header from "./components/Header/Header";
 import Call from "./components/Call/Call";
+import ScrollButton from "./components/ScrollButton/ScrollButton";
 const roboto = Roboto_Flex({
   subsets: ["latin"],
   display: "swap",
@@ -30,6 +31,7 @@ export default function RootLayout({
             <Call></Call>
           </div>
           <Footer className={ styles.footer } />
+          <ScrollButton />
         </div>
       </body>
     </html>

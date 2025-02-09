@@ -103,7 +103,7 @@ export default function EditableProjectRender({ project }: { project: IProject }
                         onChange={ (e) => handleUpdateProject({ ...project, client: e.target.value }) }
                     />
                 </div>
-                <div>
+                {/* <div>
                     <label htmlFor="workStructure" className="block text-sm font-medium text-gray-700">
                         Структура работы
                     </label>
@@ -113,7 +113,7 @@ export default function EditableProjectRender({ project }: { project: IProject }
                         defaultValue={ project.workStructure }
                         onChange={ (e) => handleUpdateProject({ ...project, workStructure: e.target.value }) }
                     />
-                </div>
+                </div> */}
                 <div>
                     <label htmlFor="price" className="block text-sm font-medium text-gray-700">
                         Цена

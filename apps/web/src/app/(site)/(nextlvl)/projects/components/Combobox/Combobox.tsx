@@ -20,11 +20,11 @@ import { Button } from "@/components/ui/button";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 const sectors = [
-  { label: "Административные здания.", value: "administrative_buildings" },
-  { label: "Многоквартирные жилые дома", value: "apartment_buildings" },
-  { label: "Промышленные объекты: заводы и фабрики.", value: "industrial_facilities" },
-  { label: "Образовательные учреждения", value: "educational_institutions" },
-  { label: "Логистические центры и склады.", value: "logistics_centers" },
+  { label: "Административные здания.", value: "administrative" },
+  { label: "Многоквартирные жилые дома", value: "apartment" },
+  { label: "Промышленные объекты: заводы и фабрики.", value: "industrial" },
+  { label: "Образовательные учреждения", value: "educational" },
+  { label: "Логистические центры и склады.", value: "logistics" },
   { label: "Реконструкция", value: "reconstruction" },
 ];
 

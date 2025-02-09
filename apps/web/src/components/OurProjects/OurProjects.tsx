@@ -13,7 +13,6 @@ export function OurProjects({ projects }: { projects: IProject[] }) {
         ))
       ) : (
         <div className="text-center text-gray-500">
-          <p>Проекты не найдены</p>
         </div>
       ) }
     </div>

@@ -61,10 +61,10 @@ export default async function ProjectDetails({
         <p className="text-gray-600 leading-relaxed">{ project.description }</p>
       </section>
 
-      <section className="mb-8 bg-gray-50 p-4 rounded-lg shadow-md">
+      {/* <section className="mb-8 bg-gray-50 p-4 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold  mb-4">Состав работ</h2>
         <p className="text-gray-600 leading-relaxed">{ project.workStructure }</p>
-      </section>
+      </section> */}
 
       <section className="mb-8 bg-gray-50 p-4 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold  mb-4">Область проекта</h2>
