@@ -1,0 +1,46 @@
+name: Build and Push DB Backup Docker Image
+
+on: [workflow_dispatch]
+
+env:
+    REGISTRY: ghcr.io
+    BACKUP_IMAGE_NAME: ${{ github.repository }}-db-backup
+
+jobs:
+    build-db-backup:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            packages: write
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Log in to the Container registry
+              uses: docker/login-action@v2
+              with:
+                  registry: ${{ env.REGISTRY }}
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GH_PAT }}
+
+            - name: Extract metadata (tags, labels) for Docker
+              id: meta-db-backup
+              uses: docker/metadata-action@v5
+              with:
+                  images: ${{ env.REGISTRY }}/${{ env.BACKUP_IMAGE_NAME }}
+                  tags: |
+                      type=ref,event=branch
+                      type=sha
+                      latest
+
+            - name: Build and push Docker image (db-backup)
+              uses: docker/build-push-action@v6
+              with:
+                  context: ./
+                  file: ./Dockerfile.backup
+                  push: true
+                  tags: |
+                      ${{ steps.meta-db-backup.outputs.tags }}
+                      ${{ env.REGISTRY }}/${{ env.BACKUP_IMAGE_NAME }}:latest
+                  labels: ${{ steps.meta-db-backup.outputs.labels }}

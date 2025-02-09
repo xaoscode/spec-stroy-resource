@@ -1,0 +1,7 @@
+.overflow-ellipsis-multiline {
+	display: -webkit-box;
+	-webkit-line-clamp: 7; /* Ограничение на 3 строки */
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

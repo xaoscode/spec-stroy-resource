@@ -18,7 +18,7 @@ export default function EditableProjectRender({ project }: { project: IProject }
         try {
             const status = await updateProject(project)
             if (status.success) {
-                toast.success('Успешное обоновления проекте')
+                toast.success('Успешное обоновление проекта')
             } else {
                 toast.error("Ошибка при сохранении изменений.")
             }

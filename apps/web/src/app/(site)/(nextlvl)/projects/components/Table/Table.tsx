@@ -2,7 +2,7 @@ import { fetchFilteredProjects } from "@/app/(site)/api/Projects";
 import { IProject, IProjectFilters } from "@repo/interfaces";
 import Image from "next/image";
 import Link from "next/link";
-
+import styles from './Table.module.css'
 export default async function ProjectsTable({
     filters,
     currentPage,
@@ -63,13 +63,13 @@ export default async function ProjectsTable({
 
                             <div className="grid grid-cols-[120px_1fr] gap-4 mt-4">
                                 <div className="font-light text-primary text-lg">Описание:</div>
-                                <p>{ project.description }</p>
+                                <p className={ styles["overflow-ellipsis-multiline"] }>{ project.description }</p>
 
-                                <div className="font-light text-primary text-lg">Состав работ:</div>
-                                <p>{ project.workStructure }</p>
+                                {/* <div className="font-light text-primary text-lg">Состав работ:</div>
+                                <p className="overflow-hidden text-ellipsis whitespace-nowrap">{ project.workStructure }</p> */}
 
                                 <div className="font-light text-primary text-lg">Заказчик:</div>
-                                <p>{ project.client }</p>
+                                <p className="overflow-hidden text-ellipsis whitespace-nowrap">{ project.client }</p>
 
                                 <div className="font-light text-primary text-lg">Сумма:</div>
                                 <p>{ new Intl.NumberFormat("ru-RU").format(project.price) } ₽</p>
