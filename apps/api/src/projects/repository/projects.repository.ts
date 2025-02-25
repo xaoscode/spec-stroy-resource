@@ -202,7 +202,7 @@ export default class ProjectsRepository {
       ORDER BY id
       LIMIT $${params.length + 1} OFFSET $${params.length + 2};
     `;
-
+    console.log(query, params);
     params.push(limit, offset);
 
     // Выполняем запрос
