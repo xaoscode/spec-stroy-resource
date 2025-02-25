@@ -126,11 +126,15 @@ export default class ProjectsRepository {
     `;
 
     const filterConditions: string[] = [];
-    const params: (string | number)[] = [];
+    const params: (string | number | string[])[] = [];
 
     if (filters?.sector) {
-      filterConditions.push(`sector = $${filterConditions.length + 1}`);
-      params.push(Sector[filters.sector]);
+      const sectors = Array.isArray(filters.sector)
+        ? filters.sector.split(',')
+        : [...filters.sector.split(',')];
+      const sectorValues = sectors.map((s) => Sector[s]);
+      filterConditions.push(`sector = ANY($${filterConditions.length + 1})`);
+      params.push(sectorValues);
     }
 
     if (filters?.service) {
@@ -148,7 +152,6 @@ export default class ProjectsRepository {
       ${filterConditions.length ? 'AND ' + filterConditions.join(' AND ') : ''}
     `;
 
-    // Выполняем запрос для подсчета общего количества
     const countResponse = await this.databaseService.runQuery(
       countQuery,
       params,
@@ -163,59 +166,57 @@ export default class ProjectsRepository {
   ) {
     const offset = (page - 1) * limit;
 
-    // Базовый SQL-запрос
     const baseQuery = `
       SELECT * FROM projects
       WHERE 1=1
     `;
 
     const filterConditions: string[] = [];
-    const params: (string | number)[] = [];
-
-    // Условия фильтрации
+    const params: (string | number | string[])[] = []; // Добавлен тип string[]
+    // Фильтр по sector
     if (filters?.sector) {
-      filterConditions.push(`sector = $${filterConditions.length + 1}`);
-      params.push(Sector[filters.sector]);
+      const sectors = Array.isArray(filters.sector)
+        ? filters.sector.split(',')
+        : [...filters.sector.split(',')];
+      const sectorValues = sectors.map((s) => Sector[s]);
+      filterConditions.push(`sector = ANY($${filterConditions.length + 1})`);
+      params.push(sectorValues);
     }
 
+    // Фильтр по service (оставляем без изменений)
     if (filters?.service) {
-      console.log(filters.service);
       filterConditions.push(`service = $${filterConditions.length + 1}`);
       params.push(Service[filters.service]);
     }
 
+    // Поиск по имени (оставляем без изменений)
     if (filters?.search) {
       filterConditions.push(`name ILIKE $${filterConditions.length + 1}`);
       params.push(`%${filters.search}%`);
     }
 
-    // Финальный SQL-запрос
+    // Формируем финальный запрос
     const query = `
       ${baseQuery}
       ${filterConditions.length ? 'AND ' + filterConditions.join(' AND ') : ''}
       ORDER BY id
       LIMIT $${params.length + 1} OFFSET $${params.length + 2};
     `;
+
     params.push(limit, offset);
 
-    // Выполнение запроса к базе данных
+    // Выполняем запрос
     const response = await this.databaseService.runQuery(query, params);
     const projects = plainToInstance(ProjectModel, response.rows);
 
-    // Загрузка изображений для каждого проекта
+    // Загрузка изображений (без изменений)
     for (const project of projects) {
       const imagesResponse = await this.databaseService.runQuery(
-        `
-        SELECT * FROM images WHERE project_id = $1
-        `,
+        `SELECT * FROM images WHERE project_id = $1`,
         [project.id],
       );
-
-      // Привязываем изображения к проекту
       project.images = plainToInstance(ImageModel, imagesResponse.rows);
     }
-
-    // Возвращаем результат с мета-информацией для пагинации
     return projects;
   }
 
