@@ -20,11 +20,11 @@ import { Button } from "@/components/ui/button";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 const sectors = [
-  { label: "Административные здания.", value: "administrative" },
+  { label: "Административные здания", value: "administrative" },
   { label: "Многоквартирные жилые дома", value: "apartment" },
-  { label: "Промышленные объекты: заводы и фабрики.", value: "industrial" },
+  { label: "Промышленные объекты: заводы и фабрики", value: "industrial" },
   { label: "Образовательные учреждения", value: "educational" },
-  { label: "Логистические центры и склады.", value: "logistics" },
+  { label: "Логистические центры и склады", value: "logistics" },
   { label: "Реконструкция", value: "reconstruction" },
 ];
 
@@ -33,29 +33,38 @@ export function Combobox() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-  const sectorParam = searchParams.get("sector") || "";
-  const [value, setValue] = React.useState(sectorParam);
+
+  const sectorParam = searchParams.get("sector")?.split(",") || [];
+  const [selectedValues, setSelectedValues] = React.useState<string[]>(sectorParam);
 
   const handleSelect = (currentValue: string) => {
-    const newValue = currentValue === value ? "" : currentValue;
+    let newValues = [...selectedValues];
+    if (newValues.includes(currentValue)) {
+      newValues = newValues.filter(v => v !== currentValue);
+    } else {
+      newValues.push(currentValue);
+    }
+
     const params = new URLSearchParams(searchParams);
     params.set('page', '1');
 
-    if (newValue) {
-      params.set("sector", newValue);
+    if (newValues.length > 0) {
+      params.set("sector", newValues.join(","));
     } else {
       params.delete("sector");
     }
 
-    setValue(newValue);
+    setSelectedValues(newValues);
     replace(`${pathname}?${params.toString()}`);
-    setOpen(false);
   };
 
-  const getSelectedLabel = () =>
-    value
-      ? sectors.find((sector) => sector.value === value)?.label
-      : "Выберите отрасль";
+  const getSelectedLabels = () => {
+    if (selectedValues.length === 0) return "Выберите отрасли";
+    if (selectedValues.length === 1) {
+      return sectors.find(s => s.value === selectedValues[0])?.label;
+    }
+    return `Выбрано: ${selectedValues.length}`;
+  };
 
   return (
     <Popover open={ open } onOpenChange={ setOpen }>
@@ -66,7 +75,7 @@ export function Combobox() {
           role="combobox"
           aria-expanded={ open }
         >
-          <span className="truncate">{ getSelectedLabel() }</span>
+          <span className="truncate">{ getSelectedLabels() }</span>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 text-black" />
         </Button>
       </PopoverTrigger>
@@ -85,7 +94,9 @@ export function Combobox() {
                   <Check
                     className={ cn(
                       "mr-2 h-4 w-4",
-                      value === sector.value ? "opacity-100" : "opacity-0"
+                      selectedValues.includes(sector.value)
+                        ? "opacity-100"
+                        : "opacity-0"
                     ) }
                   />
                   { sector.label }

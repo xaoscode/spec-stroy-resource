@@ -49,13 +49,14 @@ export async function fetchFilteredProjects(page: number, limit: number, filters
 	const params = new URLSearchParams({
 		page: page.toString(),
 		limit: limit.toString(),
-		...(filters?.sector && { sector: filters.sector }),
+		...(filters?.sector && {
+			sector: Array.isArray(filters.sector) ? filters.sector.join(",") : filters.sector,
+		}),
 		...(filters?.service && { service: filters.service }),
 		...(filters?.search && { search: filters.search }),
 	});
 	try {
 		const url = `${API.projects}/filter?${params.toString()}`;
-
 		const response = await fetch(url, { cache: "no-cache" });
 		if (!response.ok) {
 			throw new Error(`Ошибка загрузки проектов: ${response.statusText}`);
@@ -70,7 +71,9 @@ export async function fetchFilteredProjects(page: number, limit: number, filters
 
 export async function fetchProjectsCout(filters?: IProjectFilters) {
 	const params = new URLSearchParams({
-		...(filters?.sector && { sector: filters.sector }),
+		...(filters?.sector && {
+			sector: Array.isArray(filters.sector) ? filters.sector.join(",") : filters.sector,
+		}),
 		...(filters?.service && { service: filters.service }),
 		...(filters?.search && { search: filters.search }),
 	});

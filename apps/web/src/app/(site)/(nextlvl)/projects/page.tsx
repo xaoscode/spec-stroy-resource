@@ -27,7 +27,6 @@ export default async function Projects(props: {
     search: searchParams?.search || "",
     page: searchParams?.page || "",
   };
-
   const totalPages = await fetchProjectsCout(filters);
 
   return (
