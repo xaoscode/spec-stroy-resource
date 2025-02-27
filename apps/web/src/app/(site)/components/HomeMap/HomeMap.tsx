@@ -16,7 +16,7 @@ export default function HomeMap({
   useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(() => {
-      setActiveIndex((prevIndex) => (prevIndex + 1) % 6);
+      setActiveIndex((prevIndex) => (prevIndex + 1) % 8);
     }, 5000);
 
     return () => clearInterval(interval);
@@ -25,15 +25,15 @@ export default function HomeMap({
   const items = [
     {
       className: styles["item-1"],
-      text: "Административные здания.",
-      image: "/zdan.svg",
-      url: "/projects?page=1&sector=administrative"
+      text: "Строительно-техническая экспертиза жилья",
+      image: "/plan.svg",
+      url: "/services/stroy"
     },
     {
       className: styles["item-2"],
-      text: "Многоквартирные жилые дома",
+      text: "Многоквартирные жилые дома и административные здания",
       image: "/apart.svg",
-      url: "/projects?page=1&sector=apartment"
+      url: "/projects?page=1&sector=apartment&sector=administrative"
     },
     {
       className: styles["item-3"],
@@ -43,7 +43,7 @@ export default function HomeMap({
     },
     {
       className: styles["item-4"],
-      text: "Образовательные учреждения",
+      text: "Образовательные и медицинские учреждения",
       image: "/school.svg",
       url: "/projects?page=1&sector=educational"
 
@@ -55,8 +55,18 @@ export default function HomeMap({
       url: "/projects?page=1&sector=logistics"
     },
     {
-      className: styles["item-6"], text: "Реконструкция", image: "/rec.svg",
+      className: styles["item-6"], text: "Малоэтажное строительство", image: "/rec.svg",
       url: "/projects?page=1&sector=reconstruction"
+
+    },
+    {
+      className: styles["item-7"], text: "BIM-проектирование", image: "/bim.svg",
+      url: "/services/bim"
+
+    },
+    {
+      className: styles["item-8"], text: "Проектирование инженерных систем и сетей", image: "/ing.svg",
+      url: "/services/engineering"
 
     },
   ];
