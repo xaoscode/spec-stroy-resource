@@ -48,7 +48,7 @@ export default function ContactsPage() {
       <section className="mb-6">
         <h2 className="text-2xl font-semibold mb-2">Контакты</h2>
         <p className="mb-2">
-          <strong>Телефон:</strong> 8 (909) 824-57-50
+          <strong>Телефон:</strong> 8 (909) 824-57-70
         </p>
         <p>
           <strong>Email:</strong> <a href="mailto:ssr-dv@mail.ru" className="text-blue-600 hover:underline">ssr-dv@mail.ru</a>
