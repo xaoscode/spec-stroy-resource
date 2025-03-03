@@ -2,9 +2,10 @@ import { FooterProps } from "./Footer.props";
 import Link from "next/link";
 import { urls } from "../lib/urls";
 const contData = [
-  { h: "tel:84212211607", text: "8 (4212) 21-16-07" },
+  { h: "tel:89098245770", text: "8 (909) 824-57-50" },
   { h: "mailto:ssr-dv@mail.ru", text: "ssr-dv@mail.ru" },
 ];
+
 export default function Footer({ ...props }: FooterProps) {
   return (
     <footer className="flex flex-col content-center" { ...props }>

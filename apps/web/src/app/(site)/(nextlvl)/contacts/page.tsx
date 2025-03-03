@@ -29,9 +29,9 @@ export default function ContactsPage() {
       </section>
 
       <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-2">Адрес юридический и фактический:  </h2>
+        <h2 className="text-2xl font-semibold mb-2">Адрес:  </h2>
         <p>
-          680007, г. Хабаровск, пер. Трубный, д. 14, корп. 1, оф. 4.
+          г. Хабаровск, улица Волочаевская, дом 8Е.
         </p>
       </section>
 
@@ -48,7 +48,7 @@ export default function ContactsPage() {
       <section className="mb-6">
         <h2 className="text-2xl font-semibold mb-2">Контакты</h2>
         <p className="mb-2">
-          <strong>Телефон:</strong> 8(4212) 21-16-07
+          <strong>Телефон:</strong> 8 (909) 824-57-50
         </p>
         <p>
           <strong>Email:</strong> <a href="mailto:ssr-dv@mail.ru" className="text-blue-600 hover:underline">ssr-dv@mail.ru</a>

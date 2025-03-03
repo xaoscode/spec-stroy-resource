@@ -9,8 +9,8 @@ export function ContactData({ className, ...props }: ContactDataProps) {
     <ul className={ cn(styles.contact, className) } { ...props }>
       <li className={ styles.li }>
         <PhoneIcon />
-        <Link className={ styles.link } href="tel:84212211607">
-          <span>8 (4212) 21-16-07</span>
+        <Link className={ styles.link } href="tel:89098245770">
+          <span>8 (909) 824-57-50</span>
         </Link>
       </li>
       <span className={ styles.separator }>/</span>
