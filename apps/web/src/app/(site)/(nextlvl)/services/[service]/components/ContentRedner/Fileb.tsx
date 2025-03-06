@@ -20,7 +20,6 @@ const FileIcon = ({ fileType }: { fileType: string }) => {
 };
 export async function Fileb({ initialContent }: { initialContent: IContent }) {
     const baseUrl = "https://ssr-dv.ru";
-    const newUrl = initialContent.image?.replace(/^.*(?=\/uploads)/, baseUrl) || baseUrl;
     return (
         <div>
             <h3>{ initialContent.header }</h3>
@@ -31,13 +30,14 @@ export async function Fileb({ initialContent }: { initialContent: IContent }) {
                         className="flex-shrink-0 w-64 h-32 border rounded-lg p-4 flex flex-col items-center justify-center bg-gray-100"
                     >
                         <FileIcon fileType={ file.image.split('.')[file.image.split('.').length - 1] } />
-                        <Link
-                            href={ newUrl }
+                        { initialContent.image && <Link
+                            href={ initialContent.image?.replace(/^.*(?=\/uploads)/, baseUrl) }
                             target="_blank"
                             className="mt-2 text-blue-500 underline text-center"
                         >
                             { file.text }
-                        </Link>
+                        </Link> }
+
                     </div>
                 )) }
             </div>
