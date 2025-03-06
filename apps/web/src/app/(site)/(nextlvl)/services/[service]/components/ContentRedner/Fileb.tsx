@@ -15,10 +15,12 @@ const FileIcon = ({ fileType }: { fileType: string }) => {
         case 'jpeg':
             return <FaFileImage className="text-green-500 text-4xl" />;
         default:
-            return <FaFile className="text-gray-500 text-4xl" />;
+            return <FaFile className="text-gray-500 text-4xl" />
     }
 };
 export async function Fileb({ initialContent }: { initialContent: IContent }) {
+    const baseUrl = "https://ssr-dv.ru";
+    const newUrl = initialContent.image?.replace(/^.*(?=\/uploads)/, baseUrl) || baseUrl;
     return (
         <div>
             <h3>{ initialContent.header }</h3>
@@ -30,7 +32,7 @@ export async function Fileb({ initialContent }: { initialContent: IContent }) {
                     >
                         <FileIcon fileType={ file.image.split('.')[file.image.split('.').length - 1] } />
                         <Link
-                            href={ file.image }
+                            href={ newUrl }
                             target="_blank"
                             className="mt-2 text-blue-500 underline text-center"
                         >
