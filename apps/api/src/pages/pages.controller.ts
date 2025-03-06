@@ -77,7 +77,6 @@ export default class PagesController {
     @UploadedFile() file: Express.Multer.File,
     @Body('content') contentString: string,
   ) {
-    console.log(file);
     const content = JSON.parse(contentString);
     return this.pageService.updateBlock(content, file?.filename);
   }
